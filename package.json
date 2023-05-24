@@ -1,0 +1,22 @@
+{
+  "name": "hymnalfiles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lugandahymnalnew/hymnalfiles.git"
+  },
+  "author": "kita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lugandahymnalnew/hymnalfiles/issues"
+  },
+  "homepage": "https://github.com/lugandahymnalnew/hymnalfiles#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
