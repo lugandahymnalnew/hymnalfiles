@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wagila omulimu</title>
+    <link rel="stylesheet" href="style%5Cstylepay.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Donate </h2>
+        <h3>Wagila omulimu</h3>
+        <div class="tnx">
+            <p>Thank you for considering the New Luganda Hymnal. Reaching this page means you have really taken your time with the app</p>
+            <p class="lug">Webale nyo okukozessa oluyimba lunno. Okutukka wanno kitegeza owadeyo obudde bwo okulaba App enno.</p>
+        </div>
+        <div class="msg">
+            <p>This project is to reach all platforms, but due to low funds, am able to have only the android version because its cheap. For iphone and windows, I need to pay a development fee of about 300Usd in total all combined</p>
+            <p class="lug">Project enno yali egoba okulaba nga buli simu ne computer omuntu asobola okuba n'oluyimba. Naye ku lwebbula lyensimbi nasobola kutekka ku simmu zabulijjo zokka. Esimu nga Iphone ne computer netaaga dola 300</p>
+        </div>
+        <div class="don">
+            <div class="pay1" >
+                <p>Use Paypal</p>
+                <button onclick="paypal()">Paypal</button>
+            </div>
+            <div class="pay2" >
+                <p>Use World Remit</p>
+                <button onclick="wave()">Wave</button>
+            </div>
+            <div class="pay3" >
+                <p>Use Mtn Mobile money</p>
+                <button onclick="ussd('*165*1*1*0789291098#')">Momo</button>
+				<p>Send to 0789291098 if button fails</p>
+            </div>
+            <div class="pay4" >
+                <p>Use Airtel Money</p>
+                <button onclick="ussd('*185*1*1*0705573671#')">Airtel</button>
+				<p>Send to 0757035774 if button fails</p>
+            </div>
+        </div>
+        <div class="don">
+            <h3 style="padding: 2px;">Share Files</h3>
+            <p>You can also support us by sharing missing file like the midi files. A little help in ironing out the mistakes will do the magic.</p>
+            <p class="lug">Ossobola okutuwagila nga otuyambakko okujamu ensobi ezili mu nnyimba ezenjawulo.</p>
+            <div class="pay1">
+                <p>Share file or send error</p>
+                <button onclick="B4A.CallSub('SendError', true, 'support', 'Click the file clip to send files : ')">Click Me</button>
+            </div>
+        </div>
+        <div class="msg">
+            <p>Any contribution will be fully appreciated. May the good Lord Bless you.</p>
+            <p class="lug">Obuwagizi bwona busibwamu ekitibwa. Mukama akuwe omukisa.</p>
+        </div>
+        <div class="foot">
+            <p>Email: kitarogz@gmail.com</p>
+            <p>Facebook: Kita Rog Hope</p>
+            <p>Whatsapp: +256 757 035774</p>
+            <p>&copy;kitaroghope 2022</p>
+        </div>
+    </div>
+    <script src="js%5Cshare.js" defer></script>
+    <script>
+        function trying(func){
+            try {
+                eval(func)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+    </script>
+</body>
+</html>

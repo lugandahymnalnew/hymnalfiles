@@ -1,0 +1,490 @@
+html{
+    max-width: calc(100vw - 3px);
+    overflow: hidden;
+}
+body{
+    background: black;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    min-width: 300px;
+    min-height: 440px;
+    width: calc(100vw - 3px);
+    height: calc(100vh - (100vh - 100%));
+}
+body:hover{
+    overflow: scroll;
+}
+body::-webkit-scrollbar{
+    display: none;
+}
+
+/* ALL  */
+
+.container{
+    background: darkslategray;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    
+}
+.child{
+    background: lightsalmon;
+    color: orangered;
+}
+#ind{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+#ind a{
+    width: 100%;
+    margin: 0 auto;
+}
+.tittle{
+    background: white;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    padding: 5px;
+    color: black;
+    margin: 2px auto;
+	border-radius: 1px;
+    overflow: hidden;
+}
+.No{
+    width: 15%;
+}
+.song{
+    width: 45%;
+}
+.sign{
+    width: 10%;
+}
+.comp{
+    width: 30%;
+}
+a{
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    align-items: center;
+    overflow: hidden;
+}
+.tittle:hover{
+    background: silver;
+}
+.btn{
+    background: rgba(255, 197, 195, 0.678);
+    border-radius: 5px;
+    position: fixed;
+    position: -webkit-sticky;
+    position: -ms-page;
+    float: left;
+    bottom: 2px;
+    padding: 5px;
+    text-align: center;
+}
+
+small{
+    color: lightgray;
+}
+Pre{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+pre::-webkit-scrollbar{
+    display: none;
+}
+.hymn{
+    overflow: scroll;
+    width: 100%;
+    padding: 1px;
+}
+.hymn:hover{
+    overflow: auto;
+}
+.hymn::-webkit-scrollbar{
+    display: none;
+}
+.warn{
+	width: 100%;
+    text-align: center;
+    background: rgb(250, 192, 158);
+	display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+	margin: 0 auto;
+}
+h1,h2{
+    color: red;
+    text-align: center;
+}
+.footer{
+    bottom: 5px;
+    position: fixed;
+    float: left;
+}
+.warning{
+    text-align: center;
+}
+p{
+    color: orangered;
+    word-wrap: normal;
+    text-align: center;
+    padding: 0;
+}
+.link{
+    background: rgb(102, 45, 12);
+    text-align: center;
+    color: white;
+	width: 95%;
+	margin: 0 auto;
+}
+.an{
+    width: 5%;
+}
+div{
+    font-size: 1rem;
+}
+
+/* index page css */
+
+.inp{
+    margin: 0 auto;
+    width: 98%;
+    position: sticky;
+    position: -webkit-sticky;
+    position: -ms-sticky;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    background: whitesmoke;
+    top: 0;
+    box-sizing: border-box;
+    border-radius: 50px;
+    border: 5px solid rgb(243, 160, 160);
+}
+.inp div{
+    color: rgb(145, 114, 48);
+    height: 100%;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 49%;
+    
+}
+.inp #ser{
+    width: 100px;
+    font-size: xx-large;
+	color: white;
+    background: rgb(0, 0, 0);
+    border-radius: 50px;
+}
+
+.inp button{
+    width: 60%;
+    height: 50%;
+}
+.slid{
+    width: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 2px;
+}
+#siz::before{
+    content: 'Small';
+    color: black;
+    top: 80%;
+    position: absolute;
+}
+#siz::after{
+    content: 'Large';
+    color: black;
+    top: 80%;
+    left: 80%;
+    position: absolute;
+}
+#siz{
+    width: 90%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: linear-gradient(90deg, blue, green,yellow, red);
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    border-radius: 50%;
+    box-shadow: 0px 1px 10px 1px orangered;
+}
+#siz::-webkit-slider-thumb{
+     -webkit-appearance: none;
+     appearance: none;
+     width: 10px;
+     height: 10px;
+     background: orangered;
+     border-radius: 50%;
+}
+
+/*HYmn menu section starts here*/
+.calc{
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: peachpuff;
+    height: 100%;
+    box-sizing: border-box;
+    border-top: 5px peachpuff solid;
+}
+.calc .form{
+    width: 90%;
+    text-align: center;
+    margin: auto;
+    height: 20%;
+}
+.calc .form .txtview{
+    overflow: hidden;
+    margin: auto;
+    height: 50%;
+    width: 100%;
+    font-size: large;
+    background: wheat;
+    box-sizing: border-box;
+    border: goldenrod 2px solid;
+    border-radius: 20px;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+}
+.calc .form .input{
+    height: 50%;
+    font-size: x-large;
+    box-sizing: border-box;
+    border-top: 5px peachpuff solid;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+}
+.calc .form .input #num{
+    text-align: center;
+    height: 50%;
+    width: 100%;
+    border-radius: 30px;
+    user-select: none;
+}
+.txtview p{
+    font-size: large;
+}
+.calc table{
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    height: 78%;
+    max-height: 80%;
+}
+.calc table tr{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    width: 100%;
+    height: 20%;
+}
+.calc table td{
+    flex: 1;
+    -webkit-box: 1;
+    -webkit-flex: 1;
+    -ms-flexbox: 1;
+    height: 100%;
+}
+.calc table  td .btni{
+    width: 100%;
+    background: rgb(66, 66, 224);
+    height: 100%;
+    box-sizing: border-box;
+    font-size: x-large;
+    border-radius: 10px;
+    border:10px navy rgba(red, green, blue, 1) solid;
+}
+.calc table td:hover .btni{
+    background: white;
+    box-sizing: border-box;
+    border:2px rgb(34, 158, 230) solid;
+}
+.calc table td a, .a{
+    font-family: cursive;
+    display: block;
+    width: 100%;
+    color: black;
+    background: chocolate;
+    height: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    border-radius: 10px;
+    text-decoration: none;
+    box-sizing: border-box;
+    border: 10px pink solid;
+}
+.calc table td:hover a,.calc table td:hover .a{
+    background: peachpuff;
+}
+.inp button{
+    background: chocolate;
+    border-radius: 5px;
+}
+.inp button:hover{
+    background: peachpuff;
+}
+.terms{
+    text-align: center;
+}
+.links{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+}
+.links ul{
+    list-style: none;
+    margin: o;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+}
+.links ul li{
+    flex: 1;
+    -webkit-box: 1;
+    -webkit-flex: 1;
+    -ms-flexbox: 1;
+    text-align: center;
+}
+.links ul li:hover a, .links ul li:hover .fab{
+    color: bisque;
+    background: black;
+}
+/** alert box 
+#alert_container{
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	display: none;
+}
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+**/
+/* custom alert starts here */
+.magl{
+	top: 40%;
+	left: 50%;
+	position:fixed;
+    position: absolute;
+    max-width: 100px;
+}
+.magr{
+    top: 50%;
+    left: 50%;
+    position: fixed;
+    position: absolute;
+    max-width: 100px;
+}
+
+#alert_container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: table;
+    vertical-align: middle;
+    left: 0;
+    top: 0;
+    display: none;
+}
+#alert_container .alert{
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+#alert_container .alert div{
+    text-align: center;
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.closebtn:hover {
+  color: black;
+}

@@ -1,0 +1,450 @@
+:root {
+    --primary-color: hsl(207, 88%, 20%);
+    --secondary-color: hsl(207, 68%, 77%);
+    --text-color: #333;
+    --background-color: #FFF;
+  }
+body{
+    background: var(--secondary-color);
+    overflow: scroll;
+    padding: 0;
+    user-select: none; 
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+body:hover{
+    overflow: scroll;
+}
+body::-webkit-scrollbar{
+    display: none;
+}
+.container{
+    background: white;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    
+}
+.child{
+    background: rgb(7, 9, 114);
+    color: orangered;
+}
+.tittle, .tittle-1{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    padding: 5px;
+    overflow: hidden;
+    margin: 5px 0;
+	border-radius: 1px;
+}
+.tittle{
+    background: rgb(2, 3, 66);
+    color: white;
+}
+.tittle-1{
+    background: white;
+
+}
+.No{
+    width: 15%;
+}
+.song{
+    width: 45%;
+}
+.sign{
+    width: 10%;
+}
+a{
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    align-items: center;
+}
+.tittle:hover{
+    background: rgba(135, 104, 245, 0.171);
+}
+#txt{
+    margin: auto;
+    width: fit-content;
+}
+.btn{
+    background: rgb(2, 3, 66);
+    border-radius: 5px;
+    color: white;
+    float: left;
+    bottom: 2px;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+small{
+    color: lightgray;
+}
+
+pre{
+    font-size: 1rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+pre::-webkit-scrollbar{
+    display: none;
+}
+.hymn{
+    overflow: scroll;
+    width: 100%;
+    padding: 1px;
+}
+.hymn:hover{
+    overflow: auto;
+}
+.hymn::-webkit-scrollbar{
+    display: none;
+}
+.warn{
+	width: 100%;
+    text-align: center;
+    background: rgb(250, 192, 158);
+	display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+	margin: 0 auto;
+}
+h1,h2{
+    color: white;
+    text-align: center;
+}
+.footer{
+    bottom: 5px;
+    position: fixed;
+    float: left;
+}
+.warning{
+    text-align: center;
+}
+p{
+    color: orangered;
+    word-wrap: normal;
+    text-align: center;
+    padding: 0;
+}
+.link{
+    background: rgb(102, 45, 12);
+    text-align: center;
+    color: white;
+	width: 95%;
+	margin: 0 auto;
+}
+.an{
+    width: 5%;
+}
+/* Start of the tittle  */
+
+/* Tittle and search */
+.inp{
+    width: 100%;
+    top: 0;
+    position: sticky;
+
+}
+.inp div{
+    margin: auto;
+    width: 90%;
+    text-align: center;
+}
+.inp div #ser{
+    width: 100%;
+    border-radius: 5px;
+    min-height: 20px;
+    margin-bottom: 10px;
+}
+
+div{
+    font-size: 1rem;
+}
+
+.slid{
+    width: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 2px;
+}
+#siz::before{
+    content: 'Small';
+    color: black;
+    top: 80%;
+    position: absolute;
+}
+#siz::after{
+    content: 'Large';
+    color: black;
+    top: 80%;
+    left: 80%;
+    position: absolute;
+}
+#siz{
+    width: 90%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: linear-gradient(90deg, green, yellow, red);
+}
+/* #siz{
+    width: 90%;
+    -webkit-appearance: none;
+    height: 3px;
+    background: linear-gradient(90deg, blue, green,yellow, red);
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    border-radius: 50%;
+    box-shadow: 0px 1px 10px 1px orangered;
+} */
+#siz::-webkit-slider-thumb{
+     -webkit-appearance: none;
+     appearance: none;
+     width: 10px;
+     height: 10px;
+     background: orangered;
+     border-radius: 50%;
+}
+
+/*HYmn menu section starts here*/
+.calc{
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: peachpuff;
+    height: 100vh;
+    box-sizing: border-box;
+    border-top: 5px peachpuff solid;
+}
+.calc .form{
+    width: 90%;
+    text-align: center;
+    margin: auto;
+    height: 20%;
+}
+.calc .form .txtview{
+    overflow: hidden;
+    margin: auto;
+    height: 50%;
+    width: 100%;
+    font-size: large;
+    background: wheat;
+    box-sizing: border-box;
+    border: goldenrod 2px solid;
+    border-radius: 20px;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+}
+.calc .form .input{
+    height: 50%;
+    font-size: x-large;
+    box-sizing: border-box;
+    border-top: 5px peachpuff solid;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+}
+.calc .form .input #num{
+    text-align: center;
+    height: 50%;
+    width: 100%;
+    border-radius: 30px;
+    user-select: none;
+}
+.txtview p{
+    font-size: large;
+}
+.calc table{
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    height: 78%;
+    max-height: 80%;
+}
+.calc table tr{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    width: 100%;
+    height: 20%;
+}
+.calc table td{
+    flex: 1;
+    height: 100%;
+}
+.calc table  td .btni{
+    width: 100%;
+    background: rgb(66, 66, 224);
+    height: 100%;
+    box-sizing: border-box;
+    font-size: x-large;
+    border-radius: 10px;
+    border:10px navy rgba(red, green, blue, 1) solid;
+}
+.calc table td:hover .btni{
+    background: white;
+    box-sizing: border-box;
+    border:2px rgb(34, 158, 230) solid;
+}
+.calc table td a, .a{
+    font-family: cursive;
+    display: block;
+    width: 100%;
+    color: black;
+    background: chocolate;
+    height: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    border-radius: 10px;
+    text-decoration: none;
+    box-sizing: border-box;
+    border: 10px pink solid;
+}
+.calc table td:hover a,.calc table td:hover .a{
+    background: peachpuff;
+}
+.inp button{
+    background: chocolate;
+    border-radius: 5px;
+}
+.inp button:hover{
+    background: peachpuff;
+}
+.terms{
+    text-align: center;
+}
+.links{
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    justify-content: center;
+}
+.links ul{
+    list-style: none;
+    margin: o;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+}
+.links ul li{
+    flex: 1;
+    text-align: center;
+}
+.links ul li:hover a, .links ul li:hover .fab{
+    color: bisque;
+    background: black;
+}
+/** alert box **/
+#alert_container{
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	display: none;
+}
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+.magr{
+	top: 50%;
+	left: 50%;
+	position:fixed;
+}
+.magl{
+    top: 40%;
+    left: 50%;
+    position: fixed;
+}
+.check{
+    top: 60%;
+    left: 50%;
+    position: fixed;
+}
+
+.disappear, .magr, .magl{
+    display: none;
+}
+.btn_cont{
+    margin: 0 auto;
+    width: 90%;
+    text-align: center;
+    display: block;
+}
+.stop, .play, .share, .err{
+    margin-top: 2px;
+    margin-left: 5px;
+    background: rgb(2, 3, 66);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+pre b{
+    text-shadow: 0 0 1px blue;
+}
+.stop:hover, .play:hover, .share:hover, .err:hover{
+    animation: press_key 0.2s linear;
+}
+@keyframes press_key
+{
+    0%,100%{
+        background: rgb(2, 3, 66);
+        color: chocolate;
+    }
+    50%{
+        background: var(--secondary-color);
+        color: black;
+    }
+}

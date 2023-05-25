@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <!-- <link rel="stylesheet" href="../style/stylem.css"> -->
+	<link rel="stylesheet" href="style%5Cstylem.css">
+    <script src="js%5Cjs.js"></script>
+    <script>
+        function go(){
+            var link = document.getElementById('hym');
+            var t = document.getElementById('num');
+            var x = num.value;
+            if(!x || x == 0){
+                link.href = "#";
+				document.getElementById('alert_container').style.display='block';
+            }
+            else{
+                link.href = "pages/"+x*1+".html"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="calc">
+        <div class="form">
+            <div class="txtview" id="txt">
+                <p>New Luganda Hymnal</p>
+            </div>
+            <div class="input">
+                <div><input id="num" readonly></div>
+            </div>
+        </div>
+        <table id="tbl">
+            <tr>
+                <td><input class="btni" type="button" value="1" onclick="inser(1)"></td>
+                <td><input class="btni" type="button" value="2" onclick="inser(2)"></td>
+                <td><input class="btni" type="button" value="3" onclick="inser(3)"></td>
+            </tr>
+            <tr>
+                <td><input class="btni" type="button" value="4" onclick="inser(4)"></td>
+                <td><input class="btni" type="button" value="5" onclick="inser(5)"></td>
+                <td><input class="btni" type="button" value="6" onclick="inser(6)"></td>
+            </tr>
+            <tr>
+                <td><input class="btni" type="button" value="7" onclick="inser(7)"></td>
+                <td><input class="btni" type="button" value="8" onclick="inser(8)"></td>
+                <td><input class="btni" type="button" value="9" onclick="inser(9)"></td>
+            </tr>
+            <tr>
+                <td><button class="a" type="button" onclick="backSpace()">Del</button></td>
+                <td><input class="btni" type="button" value="0" onclick="inser(0)"></td>
+                <td><a id="hym" onclick="go()"><button>Open</button></a></td>
+            </tr>
+            <tr>
+                <td colspan="3"><a class="go_to" href="index.html"><button style="font-size: large;">Index <br> <small>&copy;KitaRogHope</small></button></a></td>
+            </tr>
+        </table>
+    </div>
+		<div id="alert_container" onclick="style.display='none'">
+			<div class="alert">
+                <div>
+                    <span class="closebtn" onclick="document.getElementById('alert_container').style.display='none';">&times;</span> 
+                    <strong>Nedda!</strong> Enyimba zivva ku namba 1 paka ku 250. Bwoba oyagala z'abaana, ddayo emabega olabe "Enyimba Z'abaana"
+                </div>
+			</div>
+		</div>
+		
+	<script>
+		backSpace = function (){
+			var str= document.getElementById("num").value;
+			var position = document.getElementById('num').selectionStart-1;
+
+			str = str.substr(0, position) + '' + str.substr(position + 1);
+			document.getElementById("num").value = str;
+			
+            return;
+		}
+	</script>
+</body>
+</html>

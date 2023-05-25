@@ -1,0 +1,209 @@
+:root {
+    --primary-color: hsl(207, 88%, 20%);
+    --secondary-color: hsl(207, 68%, 77%);
+    --text-color: #333;
+    --background-color: #FFF;
+  }
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background: var(--secondary-color);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+.calc{
+    width: calc(100vw - (100vw - 100%));
+    height: calc(100vh - 6px);
+    background: var(--secondary-color);
+    min-height: 455px;
+    overflow: hidden;
+    min-width: 310px;
+    min-height: 445px;
+    border-top: 5px solid rgb(242, 239, 255);
+}
+
+
+.form{
+    width: 98%;
+    height: 26%;
+    min-height: 137px;
+    border: 2%;
+    display: block;
+    text-align: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.txtview{
+    width: 100%;
+    height: 50%;
+    min-height: 91px;
+    text-align: center;
+    display: table;
+    vertical-align: middle;
+    font-size: large;
+    background: rgb(245, 222, 179);
+    box-sizing: border-box;
+    border: rgb(218, 165, 32) 2px solid;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+.txtview p{
+    display: table-cell;
+    vertical-align: middle;
+    font-size: x-large;
+}
+.input{
+    width: 100%;
+    height: 50%;
+    min-height: 68px;
+    text-align: center;
+    display: table;
+    font-size: x-large;
+    box-sizing: border-box;
+    border: 5px rgba(106, 98, 139, 0) solid;
+    margin: 0 auto;
+}
+.input div{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+
+}
+.input div #num{
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 30px;
+    user-select: none;
+    font-size: 2rem;
+}
+
+
+/* all button sets start here */
+#tbl{
+    height: 70%;
+    min-height: 300px;
+    width: 86%;
+    background: var(--secondary-color);
+    margin: 2% auto;
+
+}
+#tbl tr{
+    height: 20%;
+    min-height: 91px;
+}
+
+#tbl tr td{
+    width: 30%;
+    min-height: 91px;
+}
+.btni{
+    width: 100%;
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 10px;
+    color: white;
+    font-size: 2rem;
+}
+.btni:hover, .btni:active{
+    animation: press_key 0.3s linear;
+}
+/* Buttons press animation */
+@keyframes press_key
+{
+    0%,100%{
+        background: blue;
+        color: chocolate;
+    }
+    50%{
+        background: white;
+        color: black;
+    }
+    /* 100%{
+        background: blue;
+    } */
+}
+
+
+/* custom alert starts here */
+
+#alert_container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: table;
+    vertical-align: middle;
+    left: 0;
+    top: 0;
+    display: none;
+}
+#alert_container .alert{
+    width: 100%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: middle;
+}
+#alert_container .alert div{
+    text-align: center;
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+/* clear and go button */
+
+.a, #hym, #hym button{
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: rgb(0, 1, 70);
+    font-size: x-large;
+}
+.a{
+    border-radius: 10px;
+}
+#hym, #hym button{
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+}
+.go_to{
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+.go_to button{
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    color: white;
+    background: rgb(0, 1, 70);
+    font-size: x-large;
+}
+
