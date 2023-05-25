@@ -4,9 +4,26 @@ function share(){
     var text = $("#txt").html().replace('<b>', '').replace('</b>','');
     var ktc="*No. "+No+ "\n\n" + Song + '\n\n' + text;
     var kit; 
-    kit = ktc + "\n*Download New Luganda Hymnal from here* \n https://ictgoldenstar.blogspot.com/2022/05/download-new-luganda-hymnal-from-here.html"
+    kit = ktc + "\n*Download New Luganda Hymnal from here* \n https://newlugandahymnal.onrender.com/download.html"
     //console.log(ktc); 
-    trying("B4A.CallSub('ShareMessage', true ,kit);")
+    if(trying("B4A.CallSub('ShareMessage', true ,kit);")){
+		return
+	}
+	else{
+		if (navigator.share) {
+		navigator.share({
+		  title: 'Sharing Hymn',
+		  text: kit,
+		  url: 'https://newlugandahymnal.onrender.com/'
+		})
+		  .then(function () {
+			console.log('Kit shared successfully.');
+		  })
+		  .catch(function (error) {
+			console.error('Error sharing kit:', error);
+		  });
+	  }
+	}
 }
 function ussd(num){
     //console.log("hi")

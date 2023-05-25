@@ -23,9 +23,26 @@ $(document).ready(function(){
         inm = inm.replace(/<h2>/g,'').replace('<b>', '').replace('</b>','').replace(/<\/h2>/g,'\n').replace(/<h3>/g,'').replace(/<\/h3>/g,'\n');
         // console.log(inm);
         inm = inm.replace('</div>','')
-        inm = inm + "\n*Download New Luganda Hymnal from here* \n https://ictgoldenstar.blogspot.com/2022/05/download-new-luganda-hymnal-from-here.html"
+        inm = inm + "\n*Download New Luganda Hymnal from here* \n https://newlugandahymnal.onrender.com/download.html"
         console.log(inm)
-        trying("B4A.CallSub('ShareMessage', true ,inm)");
+        if(trying("B4A.CallSub('ShareMessage', true ,inm)")){
+            return
+        }
+        else{
+            if (navigator.share) {
+                navigator.share({
+                  title: 'Sharing Hymn',
+                  text: imn,
+                  url: 'https://newlugandahymnal.onrender.com/'
+                })
+                  .then(function () {
+                    console.log('hymn shared successfully.');
+                  })
+                  .catch(function (error) {
+                    console.error('Error sharing hymn:', error);
+                  });
+              }
+        }
         // let string = ":insertx: :insertx: :inserty: :inserty: :insertz: :insertz:";
         // let newstring = string.replace(/:insertx:/g, 'hello!');
         // console.log(newstring);

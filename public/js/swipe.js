@@ -85,7 +85,7 @@ tT /= 1000
 });
 function trying(func) {
 	try {
-		eval(func)
+		eval(func);
 	} catch (error) {
 		if(func.includes('swipeLeft')){
 			window.location.href = nextR
@@ -94,7 +94,9 @@ function trying(func) {
 			window.location.href = prevL
 		}
 		console.log(error.message)
+		return false
 	}
+	return true
 }
 // function touchStart(evt){
 // }
