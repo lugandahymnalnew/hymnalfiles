@@ -119,7 +119,7 @@ async function getDeviceInfo() {
     }
 }
 async function iosCheck(){
-    var min = getDeviceInfo()
+    var min = await getDeviceInfo()
     if(min){
         window.location.href = "/"
     }
