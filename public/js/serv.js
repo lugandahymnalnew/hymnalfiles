@@ -98,6 +98,7 @@ function uninstallApp() {
         }
 
         alert('App has been uninstalled.');
+          window.location.href = "/"
       })
       .catch(function(error) {
         alert('There was an error during app uninstallation.');
