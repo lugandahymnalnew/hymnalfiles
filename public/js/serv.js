@@ -1,6 +1,8 @@
 const snackbar = document.getElementById('install-message');
 const fileMessage = document.getElementById('file-message');
 const installButton = document.getElementById('install-button');
+const btnIn = document.getElementById("ins")
+const spin = document.getElementById("spin")
 const ovd = document.getElementById("overlay")
       // Check if the browser supports service workers
       function installApp(){
@@ -17,6 +19,7 @@ const ovd = document.getElementById("overlay")
       // Display installation message to the client
       registration.addEventListener('updatefound', function() {
         installButton.style.display = "none";
+        spin.style.display = "block"
         const installingWorker = registration.installing;
         console.log('Service Worker installing');
             // Display custom installation message to the client
@@ -25,6 +28,7 @@ const ovd = document.getElementById("overlay")
         installingWorker.addEventListener('statechange', function() {
           if (installingWorker.state === 'installed') {
             console.log('Service Worker installed');
+            spin.style.display = "none";
             snackbar.innerText = 'App has been installed successfully, Now click below. Make sure you tick the option which adds an icon to your home screen.';
             promptAddToHomeScreen();
 
@@ -42,10 +46,12 @@ const ovd = document.getElementById("overlay")
     .catch(function(error) {
       // Service worker registration failed
       snackbar.innerText = "Installation failed"
+      installButton.style.display = "block"
       console.log('Service Worker registration failed:', error);
     });
 } else {
   snackbar.innerText = "Sorry, for some reason you cant use this feature."
+  installButton.style.display = "block"
   console.log('Service Worker is not supported');
 }
       }
@@ -55,24 +61,24 @@ function promptAddToHomeScreen() {
     event.preventDefault(); // Prevent the default prompt
     snackbar.innerText = "Now Adding Icon to home screen"
     const installPrompt = event;
-    installButton.innerText = "Click here, "
-    installButton.style.display = "block";
+    btnIn.innerText = "Click here"
+    btnIn.style.display = "block";
     // Show a custom install prompt to the user
 
-    installButton.addEventListener('click', function() {
+    btnIn.addEventListener('click', function() {
       installPrompt.prompt(); // Show the browser's install prompt
-      installButton.style.display = 'none';
+      btnIn.style.display = 'none';
 
       // Wait for the user to respond to the prompt
       installPrompt.userChoice.then(function(choiceResult) {
         if (choiceResult.outcome === 'accepted') {
           snackbar.innerText = "Icon Added succesfully"
           console.log('App installed');
-          ovd.style.display = "none"
+          installButton.style.display = "block"
         } else {
           snackbar.innerText = "Shortcut not added."
           console.log('App installation declined');
-          ovd.style.display = "none"
+          installButton.style.display = "block"
         }
       });
     });
@@ -129,3 +135,6 @@ async function iosCheck(){
     }
 }
 
+function closeD(){
+  ovd.style.display = "none"
+}
