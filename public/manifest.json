@@ -1,17 +1,25 @@
 {
-    "name": "Ennyimba Za Kristo",
-    "short_name": "Ennyimba",
-    "description": "Ennyima Za Kristo",
-    "icons": [
-      {
-        "src": "src/images/app.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ],
-    "start_url": "src/menu.html",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000"
-  }
-  
+  "name": "Ennyimba Za Kristo",
+  "short_name": "Ennyimba",
+  "description": "Ennyimba Za Kristo",
+  "icons": [
+    {
+      "src": "src/images/app.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/src/menu.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://newlugandahymnal.onrender.com/src/menu.html",
+      "id": "com.LugandaHymnalNew"
+    }
+  ]
+}

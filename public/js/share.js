@@ -14,7 +14,7 @@ function share(){
 		navigator.share({
 		  title: 'Sharing Hymn',
 		  text: kit,
-		  url: 'https://newlugandahymnal.onrender.com/'
+		  url: 'https://newlugandahymnal.onrender.com/download.html'
 		})
 		  .then(function () {
 			console.log('Kit shared successfully.');

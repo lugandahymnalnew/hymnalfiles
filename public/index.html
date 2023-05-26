@@ -4,70 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Ennyimba Za Kristo">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/src/images/app.png">
     <title>Ennyimba Za Kristo</title>
+    <style>
+      #install-message {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+#install-message.show {
+  opacity: 1;
+}
+
+#file-message {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+#overlay{
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.185);
+}
+.div1{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 200px;
+  background: yellow;
+}
+
+    </style>
     <link rel="shortcut icon" href="src/images/app.png" type="image/x-icon">
 </head>
 <body>
-    <script src="js/serv.js"></script>
     <a href="src/menu.html">Go to menue</a>
+    <button onclick="installApp()">Install</button>
     <button onclick="uninstallApp()">reinstall</button>
-    <script>
-        // Check if the browser supports service workers
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(function(registration) {
-      console.log('Service Worker registered with scope:', registration.scope);
-    })
-    .catch(function(error) {
-      console.error('Service Worker registration failed:', error);
-    });
-}
-
-// Check if the browser supports the Web App Manifest
-if ('manifest' in document.createElement('link')) {
-  const link = document.createElement('link');
-  link.rel = 'manifest';
-  link.href = '/manifest.json';
-  document.head.appendChild(link);
-}
-
-// Add a shortcut to the home screen
-function addToHomeScreen() {
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    console.log('App is already installed and running in standalone mode.');
-  } else {
-    const iconPath = '/src/images/app.icon';
-    const appName = 'My App';
-
-    const promptEvent = window.beforeinstallprompt;
-
-    if (promptEvent) {
-      // Prevent the default browser prompt
-      promptEvent.preventDefault();
-
-      // Show your custom installation prompt
-      // You can customize this according to your needs
-      // For example, you can show a custom modal or a button
-      const installButton = document.createElement('button');
-      installButton.textContent = 'Install ' + appName;
-      installButton.addEventListener('click', function() {
-        promptEvent.prompt();
-      });
-
-      document.body.appendChild(installButton);
-    }
-  }
-}
-
-// Check if the browser has the beforeinstallprompt event
-window.addEventListener('beforeinstallprompt', function(event) {
-  event.preventDefault();
-  window.beforeinstallprompt = event;
-});
-
-// Call the addToHomeScreen function when needed
-addToHomeScreen();
-
-    </script>
+    <div id="overlay">
+      <div class="div1">
+        <div id="install-message"></div>
+        <div id="file-message"></div>
+        <button id="install-button">Ok</button>
+      </div>
+    </div>
+    <script src="js/serv.js" defer></script>
 </body>
 </html>
