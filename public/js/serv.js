@@ -65,7 +65,7 @@ function promptAddToHomeScreen() {
     btnIn.style.display = "block";
     // Show a custom install prompt to the user
 
-    btnIn.addEventListener('click', function() {
+   // btnIn.addEventListener('click', function() {
       installPrompt.prompt(); // Show the browser's install prompt
       btnIn.style.display = 'none';
 
@@ -81,7 +81,7 @@ function promptAddToHomeScreen() {
           installButton.style.display = "block"
         }
       });
-    });
+   // });
   });
 }
 
