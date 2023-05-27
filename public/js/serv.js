@@ -82,6 +82,7 @@ function promptAddToHomeScreen() {
         }
       });
    });
+        btnIn.click();
   });
 }
 
