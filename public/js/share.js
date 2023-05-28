@@ -4,7 +4,7 @@ function share(){
     var text = $("#txt").html().replace('<b>', '').replace('</b>','');
     var ktc="*No. "+No+ "\n\n" + Song + '\n\n' + text;
     var kit; 
-    kit = ktc + "\n*Download New Luganda Hymnal from here* \n https://newlugandahymnal.onrender.com/download.html"
+    kit = ktc + "\n*Download New Luganda Hymnal from here* \n"
     //console.log(ktc); 
     if(trying("B4A.CallSub('ShareMessage', true ,kit);")){
 		return
@@ -26,26 +26,31 @@ function share(){
 	}
 }
 function ussd(num){
-    //console.log("hi")
-
-    trying("B4A.CallSub('Call', true ,num)");
+    // console.log("hi")
+    // trying("B4A.CallSub('Call', true ,num)");
+    var telUrl = 'tel:' + encodeURIComponent(num);
+    open_link(telUrl);
 }
 function open_link(link){
-    trying("B4A.CallSub('Open_web', true ,link)");
+  var newTab = window.open(link, '_blank');
+  newTab.focus();
+    // trying("B4A.CallSub('Open_web', true ,link)");
 }
+
 function play(){
     $('.play').css("display","none");
     $('.stop').css("display","");
-    trying("B4A.CallSub('DoLoad', true, song_midi, loop)");
+    // trying("B4A.CallSub('DoLoad', true, song_midi, loop)");
 }
 function stop(){
     $('.play').css("display","")
     $('.stop').css("display","none")
-    trying("B4A.CallSub('Stop', true)")
+    // trying("B4A.CallSub('Stop', true)")
 }
 function E_err(){
     console.log('hlo')
-    trying("B4A.CallSub('SendError', true, `${pages[Npg]}`,'You can edit the error: ')")
+    sEC("kitarogz@gmail.com",`Hymnal ${pages[Npg]}`,"Write your Error here ");
+    // trying("B4A.CallSub('SendError', true, `${pages[Npg]}`,'You can edit the error: ')")
 }
 function N_next(){
     //console.log("next link: "+next)
@@ -56,8 +61,17 @@ function P_prev(){
 	window.location.href = prev;
 }
 function wave(){
-	trying("B4A.CallSub('Open_web', true, 'https://pay.wave.com')")
+	// trying("B4A.CallSub('Open_web', true, 'https://pay.wave.com')")
+  open_link("https://www.worldremit.com/en?amountfrom=100.00&selectfrom=us&currencyfrom=usd&selectto=ug&currencyto=ugx&transfer=bnk");
 }
 function paypal(){
-	trying("B4A.CallSub('Open_web', true, 'https://paypal.me/newlugandahymnal?country.x=en_US')")
+	// trying("B4A.CallSub('Open_web', true, 'https://paypal.me/newlugandahymnal?country.x=en_US')")
+  open_link('https://paypal.me/newlugandahymnal?country.x=en_US');
+}
+
+function sEC(rec, sub, bod) {
+  var mailtoUrl = 'mailto:' + rec +
+    '?subject=' + encodeURIComponent(sub) +
+    '&body=' + encodeURIComponent(bod);
+    open_link(mailtoUrl);
 }

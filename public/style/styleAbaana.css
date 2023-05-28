@@ -171,10 +171,7 @@ div{
     display: none;
 }
 .shareD{
-    height: 30px;
-    width: 100px;
     display: block;
-    background: gray;
     border-radius: 5px;
     display: flex;
     display: -webkit-box;
@@ -182,14 +179,16 @@ div{
     display: -ms-flexbox;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
 }
 .shareD button{
-    background: lightsteelblue;
+    background: hsl(207, 88%, 20%);
+    padding: 6px;
     border-radius: 2px;
+    color: white;
     border: none;
-    height: 26px;
-    width: 92px;
+    margin: 0 auto 10px auto;
+    box-shadow: 0 0 5px 2px black;
+
 }
 
 summary{

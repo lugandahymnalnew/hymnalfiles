@@ -448,3 +448,12 @@ pre b{
         color: black;
     }
 }
+
+/* Menu page */
+
+.instruction{
+    width: 90%;
+}
+.instruction img{
+    max-width: 100%;
+}

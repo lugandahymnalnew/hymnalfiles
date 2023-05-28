@@ -23,7 +23,7 @@ $(document).ready(function(){
         inm = inm.replace(/<h2>/g,'').replace('<b>', '').replace('</b>','').replace(/<\/h2>/g,'\n').replace(/<h3>/g,'').replace(/<\/h3>/g,'\n');
         // console.log(inm);
         inm = inm.replace('</div>','')
-        inm = inm + "\n*Download New Luganda Hymnal from here* \n https://newlugandahymnal.onrender.com/download.html"
+        inm = inm + "\n*Download New Luganda Hymnal from here* \n "
         console.log(inm)
         if(trying("B4A.CallSub('ShareMessage', true ,inm)")){
             return
@@ -32,7 +32,7 @@ $(document).ready(function(){
             if (navigator.share) {
                 navigator.share({
                   title: 'Sharing Hymn',
-                  text: imn,
+                  text: inm,
                   url: 'https://newlugandahymnal.onrender.com/'
                 })
                   .then(function () {

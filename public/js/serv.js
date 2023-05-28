@@ -4,6 +4,17 @@ const installButton = document.getElementById('install-button');
 const btnIn = document.getElementById("ins")
 const spin = document.getElementById("spin")
 const ovd = document.getElementById("overlay")
+var him = `
+<div class="instruction">
+  <h3>Adding app to home screen</h3>
+  <h5>step 1</h5>
+  <p>Click share Icon as shown bellow</p>
+  <img src="src/images/step1.jpg" alt="step 1">
+  <h5>step 2</h5>
+  <p>select "Add To Home Screen</p>
+  <img src="src/images/step2.png" alt="step 2">
+  <button onclick="closeD()">Alright</button>
+</div>`
       // Check if the browser supports service workers
       function installApp(){
         ovd.style.display = "block"
@@ -14,8 +25,8 @@ const ovd = document.getElementById("overlay")
       console.log('Service Worker registered with scope:', registration.scope);
       ovd.style.display = "block"
       snackbar.classList.add('show');
-      snackbar.innerText = "Already Installed"
-      
+      snackbar.innerText = "App is Already Installed";
+      snackbar.innerHTML +=`<button onclick="addScreen()">Add app icon to home</button>`;
       // Display installation message to the client
       registration.addEventListener('updatefound', function() {
         installButton.style.display = "none";
@@ -30,6 +41,7 @@ const ovd = document.getElementById("overlay")
             console.log('Service Worker installed');
             spin.style.display = "none";
             snackbar.innerText = 'App has been installed successfully, Now click below. Make sure you tick the option which adds an icon to your home screen.';
+            snackbar.innerHTML +=`<button onclick="addScreen()">How to add app to home screen</button>`;
             promptAddToHomeScreen();
 
             // Show the current file being saved
@@ -50,40 +62,42 @@ const ovd = document.getElementById("overlay")
       console.log('Service Worker registration failed:', error);
     });
 } else {
-  snackbar.innerText = "Sorry, for some reason you cant use this feature."
+  snackbar.innerText = "Sorry, You can not install the app in this browser."
   installButton.style.display = "block"
   console.log('Service Worker is not supported');
 }
       }
 
-function promptAddToHomeScreen() {
-  window.addEventListener('beforeinstallprompt', function(event) {
-    event.preventDefault(); // Prevent the default prompt
-    snackbar.innerText = "Now Adding Icon to home screen"
-    const installPrompt = event;
-    btnIn.innerText = "Click here"
-    btnIn.style.display = "block";
-    // Show a custom install prompt to the user
-
-    btnIn.addEventListener('click', function() {
-      installPrompt.prompt(); // Show the browser's install prompt
-      btnIn.style.display = 'none';
-
-      // Wait for the user to respond to the prompt
-      installPrompt.userChoice.then(function(choiceResult) {
-        if (choiceResult.outcome === 'accepted') {
-          snackbar.innerText = "Icon Added succesfully"
-          console.log('App installed');
-          installButton.style.display = "block"
-        } else {
-          snackbar.innerText = "Shortcut not added."
-          console.log('App installation declined');
-          installButton.style.display = "block"
-        }
-      });
-    });
-  });
-}
+      function promptAddToHomeScreen() {
+        window.addEventListener('beforeinstallprompt', function(event) {
+          event.preventDefault(); // Prevent the default prompt
+      
+          const installPrompt = event;
+          snackbar.innerText = "Now Add Icon to home screen";
+          btnIn.innerText = "Click here";
+          btnIn.style.display = "block";
+      
+          // Show a custom install prompt to the user
+          btnIn.addEventListener('click', function() {
+            installPrompt.prompt(); // Show the browser's install prompt
+            btnIn.style.display = 'none';
+      
+            // Wait for the user to respond to the prompt
+            installPrompt.userChoice.then(function(choiceResult) {
+              if (choiceResult.outcome === 'accepted') {
+                snackbar.innerText = "Icon Added successfully";
+                console.log('App installed');
+                installButton.style.display = "block";
+              } else {
+                snackbar.innerText = "Shortcut not added.";
+                console.log('App installation declined');
+                installButton.style.display = "block";
+              }
+            });
+          });
+        });
+      }
+      
 
 function uninstallApp() {
   if ('serviceWorker' in navigator) {
@@ -98,13 +112,13 @@ function uninstallApp() {
           caches.keys()
             .then(function(cacheNames) {
               cacheNames.forEach(function(cacheName) {
+                console.log(cacheName)
                 caches.delete(cacheName);
               });
             });
         }
 
         alert('App has been uninstalled.');
-          window.location.href = "/"
       })
       .catch(function(error) {
         alert('There was an error during app uninstallation.');
@@ -137,4 +151,8 @@ async function iosCheck(){
 
 function closeD(){
   ovd.style.display = "none"
+}
+
+function addScreen(){
+  fileMessage.innerHTML = him
 }
