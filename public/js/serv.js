@@ -74,7 +74,8 @@ var him = `
       
           const installPrompt = event;
           snackbar.innerText = "Now Add Icon to home screen";
-          btnIn.innerText = "Click here";
+          snackbar.innerHTML +=`<button onclick="addScreen()">Click here if Iphone</button>`;
+          btnIn.innerText = "Click here if Windows";
           btnIn.style.display = "block";
       
           // Show a custom install prompt to the user
