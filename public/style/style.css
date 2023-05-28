@@ -468,3 +468,6 @@ pre b{
     color: white;
     padding: 10px;
 }
+.btncn h2,.btncn p{
+    color: hsl(207, 88%, 20%);
+}

@@ -155,5 +155,6 @@ function closeD(){
 }
 
 function addScreen(){
+  ovd.style.display = "block"
   fileMessage.innerHTML = him
 }
