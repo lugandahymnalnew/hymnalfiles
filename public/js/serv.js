@@ -13,6 +13,8 @@ var him = `
   <h5>step 2</h5>
   <p>select "Add To Home Screen</p>
   <img src="src/images/step2.png" alt="step 2">
+  <br>
+  To update the app, uninstall, then install. I wish you a nice worship experience.
   <button onclick="closeD()">Alright</button>
 </div>`
       // Check if the browser supports service workers
