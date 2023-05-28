@@ -457,3 +457,14 @@ pre b{
 .instruction img{
     max-width: 100%;
 }
+.btncn{
+    width: calc(100% - 20px);
+    max-width: 350px;
+    min-width: 200px;
+    margin: 0 auto;
+}
+.btncn a{
+    background: hsl(207, 88%, 20%);
+    color: white;
+    padding: 10px;
+}
