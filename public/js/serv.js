@@ -12,7 +12,7 @@ var him = `
   <img src="src/images/step1.jpg" alt="step 1">
   <h5>step 2</h5>
   <p>select "Add To Home Screen</p>
-  <img src="src/images/step2.png" alt="step 2">
+  <img src="src/images/step2.jpg" alt="step 2">
   <br>
   To update the app, uninstall, then install. I wish you a nice worship experience.
   <button onclick="closeD()">Alright</button>
