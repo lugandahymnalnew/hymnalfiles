@@ -9,7 +9,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/src/menu.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
