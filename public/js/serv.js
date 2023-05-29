@@ -8,11 +8,23 @@ var him = `
 <div class="instruction">
   <h3>Adding app to home screen</h3>
   <h5>step 1</h5>
-  <p>Click share Icon as shown bellow</p>
+  <p>Select "Go to songs"</p>
   <img src="src/images/step1.jpg" alt="step 1">
   <h5>step 2</h5>
-  <p>select "Add To Home Screen</p>
+  <p>Touch the share icon</p>
   <img src="src/images/step2.jpg" alt="step 2">
+  <br>
+  <h5>step 3</h5>
+  <p>select "Add To Home Screen"</p>
+  <img src="src/images/step3.jpg" alt="step 2">
+  <br>
+  <h5>step 4</h5>
+  <p>You can edit the name of the app as you want. Then press "done"</p>
+  <img src="src/images/step4.jpg" alt="step 4">
+  <br>
+  <h5>step 5</h5>
+  <p>Drag the icon and place it where you want.</p>
+  <img src="src/images/step5.jpg" alt="step 5">
   <br>
   To update the app, uninstall, then install. I wish you a nice worship experience.
   <button onclick="closeD()">Alright</button>
