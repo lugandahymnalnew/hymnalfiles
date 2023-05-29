@@ -165,7 +165,8 @@ async function iosCheck(){
 }
 
 function closeD(){
-  ovd.style.display = "none"
+  ovd.style.display = "none";
+  fileMessage.innerHTML = "";
 }
 
 function addScreen(){
