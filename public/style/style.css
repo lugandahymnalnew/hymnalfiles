@@ -40,7 +40,7 @@ body::-webkit-scrollbar{
 	border-radius: 1px;
 }
 .tittle{
-    background: rgb(2, 3, 66);
+    background: hsl(207, 88%, 20%);
     color: white;
 }
 .tittle-1{
@@ -157,7 +157,8 @@ p{
     width: 100%;
     top: 0;
     position: sticky;
-
+    box-shadow: 0 0 20px 2px rgb(0, 0, 0);
+    background: var(--secondary-color);
 }
 .inp div{
     margin: auto;
@@ -453,12 +454,15 @@ pre b{
 
 .instruction{
     width: 90%;
+    margin: 0 auto;
 }
 .instruction img{
     max-width: 100%;
 }
+.contMain{
+    width: calc((6/7) * 100%);
+}
 .btncn{
-    width: calc(100% - 20px);
     max-width: 350px;
     min-width: 200px;
     margin: 0 auto;
@@ -470,4 +474,53 @@ pre b{
 }
 .btncn h2,.btncn p{
     color: hsl(207, 88%, 20%);
+}
+.btncn details{
+    padding: 0;
+    color: white;padding: 10px;
+    border: hsl(207, 88%, 20%) 2px solid;
+}
+.btncn summary{
+    background: hsl(207, 88%, 20%);
+    padding: 10px;
+}
+.btncn button{
+    padding: 5px;
+    background-color:hsla(0, 100%, 100%, 0.87);
+    color:  #06375b;
+    border: none;
+    margin-left: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}.btmm{
+    position: fixed;
+    top: calc(100% - (100% - 30px));
+    left: calc(100% - 60px);
+    display: block;
+}
+.btmm button{
+    width: 60px;
+    height: 60px;
+    border-radius: 50% 0 0 50%;
+    color: white;
+    background: var(--secondary-color);
+    overflow: hidden;
+    box-shadow: 0 0 5px 2px black;
+    border: 2px rgba(0, 0, 0, 0) solid;
+}
+.sdaL{
+    background: hsl(207, 88%, 20%);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc((1/7) * 100%);
+    height: 100%;
+    border-left: 5px hsl(207, 68%, 77%) solid;
+}
+.sdaL img{
+    display: block;
+    width: calc(100% - 10px);
+    position: absolute;
+    left: 5px;
+    bottom: 40px;
 }

@@ -38,6 +38,7 @@
   width: 100%;
   height: 100%;
   position: fixed;
+  z-index: 1000;
    top: 0;
     left:0;
   background: rgba(0, 0, 0, 0.185);
@@ -53,7 +54,6 @@
   overflow: auto;
   width: calc(100% - 20px);
   max-width: 350px;
-  background: yellow;
   box-shadow: 0 0 10px 1px black;
 }
 .div1 button{
@@ -86,10 +86,8 @@
     <link rel="shortcut icon" href="src/images/app.png" type="image/x-icon">
 </head>
 <body>
-    <button onclick="installApp()">Install</button>
-    <button onclick="uninstallApp()">Uninstall</button>
-    <button onclick="addScreen()">How to add app to home screen on Iphone</button>
-    <br><br>
+    <div class="contMain">
+      <br><br>
     <div class="btncn">
       <br>
       <h2>Ennyimba Za Kristo</h2>
@@ -102,15 +100,29 @@
       <a href="src/pages/agree.html">Terms and conditions</a>
       <br>
       <a href="src/pages/mpagila.html">Donate</a>
-      </div>
+      <br>
+      <details open>
+        <summary>Install Section</summary>
+        <br>
+        <button onclick="installApp()">Install</button>
+        <br><br>
+        <button onclick="addScreen()">How to add app to home screen on Iphone</button>
+        <br><br>
+        <button onclick="uninstallApp()">Uninstall</button>
+      </details>
+    </div>
+    </div>
     <div id="overlay">
       <div class="div1">
         <button id="ins"></button>
         <div class="spinner" id="spin"></div>
         <div id="install-message"></div>
         <div id="file-message"></div>
-        <button id="install-button" onclick="closeD()">Ok</button>
+        <!-- <button id="install-button" onclick="closeD()">Ok</button> -->
       </div>
+    </div>
+    <div class="sdaL">
+      <img src="sidelogo.png" alt="sda logo">
     </div>
     <script src="js/serv.js" defer></script>
 </body>
