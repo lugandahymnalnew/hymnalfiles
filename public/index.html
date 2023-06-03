@@ -11,106 +11,34 @@
     <link rel="apple-touch-icon" href="/src/images/app.png">
     <link rel="stylesheet" href="style/style.css">
     <title>Ennyimba Za Kristo</title>
-    <style>
-      #install-message {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-}
-
-#install-message.show {
-  opacity: 1;
-}
-
-#file-message {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-#overlay{
-  display: none;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 1000;
-   top: 0;
-    left:0;
-  background: rgba(0, 0, 0, 0.185);
-}
-.div1{
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  border-radius: 5px;
-  padding: 5px;
-  max-height: 90%;
-  overflow: auto;
-  width: calc(100% - 20px);
-  max-width: 350px;
-  box-shadow: 0 0 10px 1px black;
-}
-.div1 button{
-    display: block;
-    padding: 10px;
-    margin: 5px auto;
-}
-#ins{
-  display: none;
-  margin: 5px auto;
-  padding: 10px;
-}
-    #spin {
-      display: none;
-      margin: 5px auto;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #3498db;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    </style>
     <link rel="shortcut icon" href="src/images/app.png" type="image/x-icon">
 </head>
 <body>
     <div class="contMain">
       <br><br>
-    <div class="btncn">
-      <br>
-      <h2>Ennyimba Za Kristo</h2>
-      <p>version 1.0.3</p>
-      <br><br>
-      <a href="src/menu.html">Go to Songs</a>
-      <br>
-      <a href="src/index.html">Go to Index of Songs</a>
-      <br>
-      <a href="src/pages/agree.html">Terms and conditions</a>
-      <br>
-      <a href="src/pages/mpagila.html">Donate</a>
-      <br>
-      <details open>
-        <summary>Install Section</summary>
+      <div class="btncn">
         <br>
-        <button onclick="installApp()">Install</button>
+        <h2>Ennyimba Za Kristo</h2>
+        <p>version 1.0.3</p>
         <br><br>
-        <button onclick="addScreen()">How to add app to home screen on Iphone</button>
-        <br><br>
-        <button onclick="uninstallApp()">Uninstall</button>
-      </details>
-    </div>
+        <a href="src/menu.html">Go to Songs</a>
+        <br>
+        <a href="src/index.html">Go to Index of Songs</a>
+        <br>
+        <a href="src/pages/agree.html">Terms and conditions</a>
+        <br>
+        <a href="src/pages/mpagila.html">Donate</a>
+        <br>
+        <details open>
+          <summary>Install Section</summary>
+          <br>
+          <button onclick="installApp()">Install</button>
+          <br><br>
+          <button onclick="addScreen()">How to add app to home screen on iPhone</button>
+          <br><br>
+          <button onclick="uninstallApp()">Uninstall</button>
+        </details>
+      </div>
     </div>
     <div id="overlay">
       <div class="div1">
@@ -125,5 +53,131 @@
       <img src="sidelogo.png" alt="sda logo">
     </div>
     <script src="js/serv.js" defer></script>
+    <!-- <script>
+      function installApp() {
+        var overlay = document.getElementById('overlay');
+        var installMessage = document.getElementById('install-message');
+        var spin = document.getElementById('spin');
+        overlay.style.display = 'block';
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then(function(registration) {
+              console.log('Service Worker registered with scope:', registration.scope);
+              overlay.style.display = 'block';
+              installMessage.classList.add('show');
+              installMessage.innerText = 'App is Already Installed';
+              installMessage.innerHTML +=
+                '<button onclick="addScreen()">Add app icon to home</button>';
+              installMessage.innerHTML += '<button onclick="closeD()">Close</button>';
+              registration.addEventListener('updatefound', function() {
+                spin.style.display = 'block';
+                var installingWorker = registration.installing;
+                console.log('Service Worker installing');
+                installMessage.innerText = 'App is being installed. Please wait...';
+                installingWorker.addEventListener('statechange', function() {
+                  if (installingWorker.state === 'installed') {
+                    console.log('Service Worker installed');
+                    spin.style.display = 'none';
+                    installMessage.innerText =
+                      'App has been installed successfully. Now click below. Make sure you tick the option which adds an icon to your home screen.';
+                    installMessage.innerHTML +=
+                      '<button onclick="addScreen()">How to add app to home screen</button>';
+                    installMessage.innerHTML += '<button onclick="closeD()">Okay</button>';
+                    promptAddToHomeScreen();
+                    installingWorker.addEventListener('get', function(event) {
+                      var fileName = event.request.url;
+                      console.log('Saving file:', fileName);
+                      // Display the current file being saved in the installation message
+                      installMessage.innerHTML +=
+                        '<div id="file-message">Saving file: ' + fileName + '</div>';
+                    });
+                  }
+                });
+              });
+            })
+            .catch(function(error) {
+              installMessage.innerText = 'Installation failed';
+              installMessage.innerHTML += '<button onclick="closeD()">Close</button>';
+              console.log('Service Worker registration failed:', error);
+            });
+        } else {
+          installMessage.innerText = 'Sorry, You cannot install the app in this browser.';
+          installMessage.innerHTML += '<button onclick="closeD()">Close</button>';
+          console.log('Service Worker is not supported');
+        }
+      }
+
+      function promptAddToHomeScreen() {
+        window.addEventListener('beforeinstallprompt', function(event) {
+          event.preventDefault(); // Prevent the default prompt
+
+          const installPrompt = event;
+          const snackbar = document.getElementById('install-message');
+          snackbar.innerText = 'Now Add Icon to home screen';
+          snackbar.innerHTML +=
+            '<button onclick="addScreen()">Click here if iPhone</button>';
+          btnIn.innerText = 'Click here if Windows';
+          btnIn.style.display = 'block';
+
+          // Show a custom install prompt to the user
+          btnIn.addEventListener('click', function() {
+            installPrompt.prompt(); // Show the browser's install prompt
+            btnIn.style.display = 'none';
+
+            // Wait for the user to respond to the prompt
+            installPrompt.userChoice.then(function(choiceResult) {
+              if (choiceResult.outcome === 'accepted') {
+                snackbar.innerText = 'Icon Added successfully';
+                snackbar.innerHTML += '<button onclick="addScreen()">Ok</button>';
+                console.log('App installed');
+              } else {
+                snackbar.innerText = 'Shortcut not added.';
+                console.log('App installation declined');
+                snackbar.innerHTML += '<button onclick="addScreen()">Okay</button>';
+              }
+            });
+          });
+        });
+      }
+
+      function addScreen() {
+        var ins = document.getElementById('ins');
+        ins.innerHTML = '<a onclick="closeD()">Close</a>';
+        if (window.navigator.standalone === true) {
+          ins.innerHTML +=
+            '<br><br>It looks like you already have the app installed. You can now close this message.';
+        } else if (window.matchMedia('(display-mode: standalone)').matches) {
+          ins.innerHTML +=
+            '<br><br>It looks like you already have the app installed. You can now close this message.';
+        } else {
+          ins.innerHTML +=
+            '<br><br><b>iPhone/iPad:</b><br><br> Tap the "Share" button on Safari\'s toolbar (the rectangle with an arrow pointing upward). <br>Then tap "Add to Home Screen" to add the app icon to your home screen.<br><br>';
+          ins.innerHTML +=
+            '<b>Windows:</b><br><br> Tap the three dots in the upper-right corner of the screen, and then tap "Pin to Start" in the menu that appears.<br><br>';
+          ins.innerHTML += '<br><br><a onclick="closeD()">Close</a>';
+        }
+        ins.style.display = 'block';
+      }
+
+      function uninstallApp() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistration().then(function(registration) {
+            if (registration) {
+              registration.unregister().then(function() {
+                location.reload();
+              });
+            }
+          });
+        }
+      }
+
+      function closeD() {
+        var overlay = document.getElementById('overlay');
+        overlay.style.display = 'none';
+        var ins = document.getElementById('ins');
+        ins.style.display = 'none';
+      }
+    </script> -->
 </body>
 </html>
