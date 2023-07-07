@@ -55,6 +55,24 @@ function executeTaskEvery10Minutes() {
   // Repeat the task every 10 minutes (600,000 milliseconds)
   setInterval(function() {
     console.log("Task Executed at "+ Date.now());
+    const data = { key1: 'value1', key2: 'value2' };
+
+fetch("https://hiweightechsystemsltd.onrender.com/keepAlive", {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(data)
+})
+  .then(response => response.json())
+  .then(responseData => {
+    // Process the response data
+    console.log(responseData);
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error('Error:', error);
+  });
     return executeTaskEvery10Minutes();
     // Add your task logic here
   }, 600000);
@@ -65,7 +83,8 @@ executeTaskEvery10Minutes();
 
 
 app.get('/keepAlive', (req, res)=>{
-  console.log('checked');
+  console.log('Status checked, clear');
+  res.send("hlo");
 })
 
 // Serve all files in the "public" folder
