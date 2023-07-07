@@ -56,7 +56,7 @@ function executeTaskEvery10Minutes() {
   setInterval(function() {
 
 fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
-  .then(response => response.json())
+  .then(response => console.log(response))
   .then(responseData => {
     // Process the response data
     console.log(responseData);
