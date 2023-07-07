@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('./mongoDBApi');
 const cors = require('cors');
-
+const fetch = require('node-fetch');
 var files1 = "";
 
 function str(inputPath) {
@@ -54,16 +54,8 @@ function executeTaskEvery10Minutes() {
 
   // Repeat the task every 10 minutes (600,000 milliseconds)
   setInterval(function() {
-    console.log("Task Executed at "+ Date.now());
-    const data = { key1: 'value1', key2: 'value2' };
 
-fetch("https://hiweightechsystemsltd.onrender.com/keepAlive", {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(data)
-})
+fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
   .then(response => response.json())
   .then(responseData => {
     // Process the response data
