@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const db = require('./mongoDBApi')
+const db = require('./mongoDBApi');
+const cors = require('cors');
 
 var files1 = "";
 
@@ -40,6 +41,32 @@ async function ht(){
 
 
 const app = express();
+
+app.use(cors({
+  origin: "https://hiweightechsystemsltd.onrender.com",
+  methods: "*",
+  allowedHeaders:"*"
+}));
+
+function executeTaskEvery10Minutes() {
+  // Task to execute
+  console.log("Executing task...");
+
+  // Repeat the task every 10 minutes (600,000 milliseconds)
+  setInterval(function() {
+    console.log("Task Executed at "+ Date.now());
+    return executeTaskEvery10Minutes();
+    // Add your task logic here
+  }, 600000);
+}
+
+// Call the function to start executing the task every 10 minutes
+executeTaskEvery10Minutes();
+
+
+app.get('/keepAlive', (req, res)=>{
+  console.log('checked');
+})
 
 // Serve all files in the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));

@@ -25,6 +25,18 @@ function share(){
 	  }
 	}
 }
+
+var player1 = `<section id="section3">
+<!-- <h2>Custom player and visualizer style</h2> -->
+<midi-player
+  src="../../midi/${pages[Npg]}.mid"
+  sound-font visualizer="#section3 midi-visualizer">
+</midi-player>
+<!-- <midi-visualizer
+  src="${pages[Npg]}.mid">
+</midi-visualizer> -->
+</section>`
+
 function ussd(num){
     // console.log("hi")
     // trying("B4A.CallSub('Call', true ,num)");
@@ -40,11 +52,13 @@ function open_link(link){
 function play(){
     $('.play').css("display","none");
     $('.stop').css("display","");
+    $('.play_cont').html(player1);
     // trying("B4A.CallSub('DoLoad', true, song_midi, loop)");
 }
 function stop(){
     $('.play').css("display","")
     $('.stop').css("display","none")
+    $('.play_cont').html("");
     // trying("B4A.CallSub('Stop', true)")
 }
 function E_err(){

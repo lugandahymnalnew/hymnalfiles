@@ -29,6 +29,9 @@ $(document).ready(function(){
 // creating the control buttons area
 var btn_cont = document.createElement('div');
 btn_cont.className = "btn_cont";
+
+var play_cont = document.createElement('div');
+play_cont.className = "play_cont";
 //play button
 var btn_play = document.createElement('button');
 btn_play.className = "play";
@@ -59,6 +62,7 @@ $(document).on('click','.err',function(){
 });
 // puting buttons in place
 $('.tittle-1').after(btn_cont);
+$('.tittle-1').after(play_cont);
 //(btn_cont).after($('.tittle'))
 $(".btn_cont").append(btn_play);
 $(".btn_cont").append(btn_stop);
