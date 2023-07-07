@@ -64,6 +64,7 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
   .catch(error => {
     // Handle any errors
     console.error('Error:', error);
+    return executeTaskEvery10Minutes();
   });
     return executeTaskEvery10Minutes();
     // Add your task logic here
