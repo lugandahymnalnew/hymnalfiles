@@ -66,7 +66,7 @@ function executeTaskEvery10Minutes() {
       })
       .catch(error => {
         // Handle any errors gracefully
-        console.error('Error:', error);
+        console.log('Error:', error);
         // Take alternative actions or provide appropriate feedback
       })
       .finally(() => {
