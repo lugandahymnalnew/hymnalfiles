@@ -24,11 +24,11 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response;
       })
   .then(responseData => {
     // Process the response data
-    console.log(responseData);
+    console.log("Response clear");
   })
   .catch(error => {
         // Handle any errors gracefully
