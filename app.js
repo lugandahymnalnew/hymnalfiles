@@ -4,43 +4,15 @@ const fs = require('fs');
 const db = require('./mongoDBApi');
 const cors = require('cors');
 const fetch = require('node-fetch');
-var files1 = "";
-
-function str(inputPath) {
-  // Replace "D:\Projects\hymnalsite\hymnalfiles\public" with an empty string
-  let outputPath = inputPath.replace("D:\\Projects\\hymnalsite\\hymnalfiles\\public", "");
-
-  // Replace backslashes ("\") with forward slashes ("/")
-  outputPath = outputPath.replace(/\\/g, "/");
-  console.log(outputPath)
-  return outputPath;
-}
-
-async function logAllFiles(directory) {
-  const files = fs.readdirSync(directory);
-  
-  files.forEach(file => {
-    const filePath = path.join(directory, file);
-    const stats = fs.statSync(filePath);
-    
-    if (stats.isDirectory()) {
-      logAllFiles(filePath); // Recursively log files in subdirectories
-    } else {
-      console.log(filePath);
-      files1 += `,"${str(filePath)}"`;
-    }
-  });
-}
-
-// Usage:
-const rootDirectory = path.join(__dirname,"public");
-async function ht(){
-  await logAllFiles(rootDirectory);
-  await db.createListing({"files":files1},"newHymnal","variables")
-}
-
+const myDB = require('./modules/mySQLApi');
 
 const app = express();
+const tblUser = [
+  {name: "username",type:"text"},
+  {name: "password",type:"text"},
+  {name: "email",type:"text"},
+  {name: "rights",type:"text"}
+]
 
 app.use(cors({
   origin: "https://hiweightechsystemsltd.onrender.com",
