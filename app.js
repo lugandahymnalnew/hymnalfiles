@@ -14,6 +14,8 @@ const tblUser = [
   {name: "rights",type:"text"}
 ]
 
+myDB.createTable("users",tblUser);
+
 app.use(cors({
   origin: "https://hiweightechsystemsltd.onrender.com",
   methods: "*",
@@ -25,18 +27,18 @@ function executeTaskEvery10Minutes() {
   console.log("Executing task...");
 
   function performFetch() {
-    fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
+fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         return response.json();
       })
-      .then(responseData => {
-        // Process the response data
-        console.log(responseData);
-      })
-      .catch(error => {
+  .then(responseData => {
+    // Process the response data
+    console.log(responseData);
+  })
+  .catch(error => {
         // Handle any errors gracefully
         console.log('Error:', error);
         // Take alternative actions or provide appropriate feedback
@@ -44,7 +46,7 @@ function executeTaskEvery10Minutes() {
       .finally(() => {
         // Call the function again after 10 minutes, regardless of success or error
         setTimeout(performFetch, 600000);
-      });
+  });
   }
 
   // Initial fetch request
