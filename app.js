@@ -4,17 +4,9 @@ const fs = require('fs');
 const db = require('./mongoDBApi');
 const cors = require('cors');
 const fetch = require('node-fetch');
-const myDB = require('./modules/mySQLApi');
+const myDB = require('./modules/mongoDBApi');
 
 const app = express();
-const tblUser = [
-  {name: "username",type:"text"},
-  {name: "password",type:"text"},
-  {name: "email",type:"text"},
-  {name: "rights",type:"text"}
-]
-
-myDB.createTable("users",tblUser);
 
 app.use(cors({
   origin: "https://hiweightechsystemsltd.onrender.com",

@@ -1,9 +1,9 @@
 {
     "mongoDB":{
-
+        "url":"mongodb+srv://kitaroghope:kitasrog@cluster0.9uort.mongodb.net/?retryWrites=true&w=majority"
     },
     "mySQL":{
-        "host": "sql311.infinityfree.com",
+        "host": "sql311.epizy.com",
         "user": "epiz_34259151",
         "password": "eZbstto3xgVPuTS",
         "database": "epiz_34259151_newlugandahymnal"
