@@ -24,23 +24,31 @@ function executeTaskEvery10Minutes() {
   // Task to execute
   console.log("Executing task...");
 
-  // Repeat the task every 10 minutes (600,000 milliseconds)
-  setInterval(function() {
+  function performFetch() {
+    fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(responseData => {
+        // Process the response data
+        console.log(responseData);
+      })
+      .catch(error => {
+        // Handle any errors gracefully
+        console.log('Error:', error);
+        // Take alternative actions or provide appropriate feedback
+      })
+      .finally(() => {
+        // Call the function again after 10 minutes, regardless of success or error
+        setTimeout(performFetch, 600000);
+      });
+  }
 
-fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
-  .then(response => console.log(response))
-  .then(responseData => {
-    // Process the response data
-    console.log(responseData);
-  })
-  .catch(error => {
-    // Handle any errors
-    console.error('Error:', error);
-    return executeTaskEvery10Minutes();
-  });
-    return executeTaskEvery10Minutes();
-    // Add your task logic here
-  }, 600000);
+  // Initial fetch request
+  performFetch();
 }
 
 // Call the function to start executing the task every 10 minutes
