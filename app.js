@@ -1,17 +1,9 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const cors = require('cors');
 const fetch = require('node-fetch');
 
 const app = express();
 const http = require('http').Server(app);
 
-app.use(cors({
-  origin: "https://hiweightechsystemsltd.onrender.com",
-  methods: "*",
-  allowedHeaders:"*"
-}));
 
 function executeTaskEvery10Minutes() {
   // Task to execute
@@ -47,14 +39,10 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
 // Call the function to start executing the task every 10 minutes
 executeTaskEvery10Minutes();
 
-
-app.get('/keepAlive', (req, res)=>{
-  console.log('Status checked, clear');
-  res.send("hlo");
-})
+const userRoute = require('./routes/userRoute');
+app.use("/",userRoute);
 
 // Serve all files in the "public" folder
-app.use(express.static(path.join(__dirname, 'public')));
 
 http.listen(3300, () => {
   console.log('Server connected at port 3300');
