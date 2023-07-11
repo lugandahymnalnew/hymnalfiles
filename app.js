@@ -4,6 +4,7 @@ const fs = require('fs');
 const db = require('./mongoDBApi');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const http = require('http');
 const myDB = require('./modules/mongoDBApi');
 
 const app = express();
@@ -57,6 +58,9 @@ app.get('/keepAlive', (req, res)=>{
 // Serve all files in the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(3300, () => {
+
+http.Server(app);
+
+http.listen(3300, () => {
   console.log('Server connected at port 3300');
 });
