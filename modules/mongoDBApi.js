@@ -106,14 +106,14 @@ async function readRow(nameOfRow, dbName,tName){
     try{
         const result = await client.db(dbName).collection(tName).findOne(nameOfRow);
         if(result){
-            return result;
+            return {"listing":result,"found":true,"err":false};
         }else{
-            console.log("null")
+            return {"listing":null,"found":false,"err":false};
         }
     }
     catch (err) {
-        console.log(`An error occurred: ${err.message}`);
-    }
+        return {"listing":err.message,"found":false,"err":true};
+    } 
 }
 
 // Reading one rows
@@ -122,7 +122,7 @@ async function readRow(nameOfRow, dbName,tName){
  * @param {Object} nameOfRow -eg{col1: value, col2: value} The object representing the search criteria.
  * @param {string} dbName - The name of the database.
  * @param {string} tName - The name of the collection/table.
- * @returns {Promise<Array<Object>|null>} A promise that resolves with the retrieved rows or null if not found.
+ * @returns {Promise<Array<Object>|null>} returns array of objects
  */
 async function readRows(nameOfRow,dbName,tName){ // nameOfRow is place holder for search criteria
     if(!await checkClient()){return;}
@@ -130,16 +130,14 @@ async function readRows(nameOfRow,dbName,tName){ // nameOfRow is place holder fo
         const cursor = client.db(dbName).collection(tName).find(nameOfRow);
         let result = await cursor.toArray();
         if(result){
-            console.log("From readRows: "+result)
-            return result;
+            return {"listings":result,"found":true,"err":false};
         }else{
-            console.log("null")
+            return {"listings":"No listings found","found":false,"err":false};
         }
         // await client.close(true);
     }
     catch(err) {
-        console.log(`An error occurred: ${err.message}`);
-        return null;
+        return {"listings":err.message,"found":false,"err":true};
     }
 }
 
@@ -157,9 +155,10 @@ async function updateRow(nameOfRow, upddateList,dbName,tName){
     try{
         const result = await client.db(dbName).collection(tName).updateOne(nameOfRow, {$set : upddateList});
         console.log(`updated ${result.modifiedCount} rows`);
+        return {"updated":result.modifiedCount,"err":false};
     }
     catch (err) {
-        console.log(`An error occurred: ${err.message}`);
+        return {"updated":err.message,"err":false};
     }
 }
 
@@ -182,9 +181,11 @@ async function updateRow2(nameOfRow, upddateList,dbName,tName){
         else{
             console.log(`updated ${result.modifiedCount} rows`);
         }
+        return {"updated":`Added ${result.upsertedCount} rows and updated ${result.modifiedCount} rows`,"err":false};
     }
     catch (err) {
         console.log(`An error occurred: ${err.message}`);
+        return {"updated":err.message,"err":false};
     }
 }
 
