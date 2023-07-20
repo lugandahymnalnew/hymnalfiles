@@ -8,5 +8,13 @@
 <body>
     Service is comming soon
     <a href="/download.html"><button>Back</button></a>
+    
+    <% if (typeof user !== 'undefined') { %>
+        <h1>Hello <%= user %></h1>
+    <a href="/logout"><button>Logout</button></a>
+    <% } else {%>
+        <h1>Hello, guest</h1>
+    <a href="/login">login</a>
+    <% } %>
 </body>
 </html>

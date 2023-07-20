@@ -21,13 +21,43 @@
         #imagePreview{
             min-height: 100px;
         }
+        #overl{
+          background: rgba(0, 0, 0, 0.164);
+          position: fixed;
+          width: 100%;
+          height: 100%;
+        }
+        .inf{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          padding: 5px;
+          background: white;
+          box-shadow: 0 0 2px 2px darkgrey;
+          border-radius: 5px;
+          max-width: 300px;
+          text-align: center;
+        }
     </style>
 </head>
 <body>
+        <% if (typeof message !== 'undefined') { %>
+          <div id="overl">
+            <div class="inf">
+              <p><%= message %></p>
+              <button class="btn btn-primary" onclick="document.getElementById('overl').remove()">Ok</button>
+              <% if (typeof login !== 'undefined') { %>
+               <a href="/login" class="btn btn-primary">Login</a>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
     <div class="container">
         <br>
         <h2>Register</h2>
         <br>
+         
         <form action="" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="name" class="form-label">Full Name</label>
@@ -40,19 +70,28 @@
             </div>
             <div class="mb-3">
               <label for="email" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
               <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" name="password" required>
+              <input type="password" class="form-control" id="password" onchange="checkpass()" name="password" required>
+            </div>
+            <div class="mb-3">
+              <label for="ppassword" class="form-label">Confirm Password</label>
+              <input type="password"  class="form-control" id="ppassword" onchange="checkpass()" required>
+              <p id="p"></p>
+            </div>
+            <div class="mb-3">
+              <label for="profile" class="form-label">Profile Image</label>
+              <input type="text" class="form-control" id="profile" name="profile" required disabled>
             </div>
             <div class="mb-3">
               <label for="image" class="form-label">Image (jpeg, jpg, png)</label>
               <div id="imagePreview" class="form-control">image preview here</div> <!-- Image preview container -->
-              <input name="image" class="form-control" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)">
+              <input name="image" class="form-control" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)" required>
             </div>
-            <input type="submit" value="Register" class="btn btn-primary">
+            <input type="submit" value="Register" class="btn btn-primary" id="btn-s">
           </form>
           
     </div>
@@ -65,6 +104,7 @@
         function previewImage(event) {
           const input = event.target;
           const imagePreview = document.getElementById("imagePreview");
+          const prof = document.getElementById('profile');
       
           if (input.files && input.files[0]) {
             const reader = new FileReader();
@@ -75,11 +115,31 @@
               imageElement.setAttribute("class", "preview-image");
               imagePreview.innerHTML = ""; // Clear previous preview
               imagePreview.appendChild(imageElement);
+
+              prof.value = input.files[0].name;
             };
       
             reader.readAsDataURL(input.files[0]);
           } else {
             imagePreview.innerHTML = ""; // Clear preview if no file selected
+            prof.value = "";
+          }
+        }
+        function checkpass(){
+          var pass = document.getElementById('password');
+          var pass1 = document.getElementById('ppassword');
+          var p = document.getElementById('p');
+          var b = document.getElementById('btn-s');
+
+          if(pass.value == pass1.value){
+            p.className = "text-success"
+            b.disabled = false;
+            p.innerText = "You have confirmed your password successfully";
+          }
+          else{
+            p.className = "text-danger"
+            p.innerText = "Passwords dont match";
+            b.disabled = true;
           }
         }
       </script>

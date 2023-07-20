@@ -10,7 +10,7 @@ const url = con.mongoDB.url; // Update this to your MongoUri [visit mongodb.com 
 // Define the MongoDB connection URL and database name
 
 var client;
-
+var counter = 0;
 async function createClient(){
     try {
         // client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -26,9 +26,14 @@ async function isClientConnected(client) {
   try {
     // Check if the client is connected by running a simple command
     await client.db('admin').command({ ping: 1 });
+    counter = 0;
     return true;
   } catch (err) {
     console.log("check connect error: "+err.message)
+    if(err.message == "Topology is closed"){
+        await createClient();
+    }
+    counter++;
     // Return false if there is an error (e.g. NetworkTimeout, ServerSelectionTimeoutError)
     return false;
   }
@@ -40,7 +45,11 @@ async function checkClient(){
     }
     else if(!await isClientConnected(client)){
         try {
-            console.log('reconnect is clear')
+            console.log(`Checking db Connection attempt ${counter}`);
+            if(counter >= 5){
+                counter = 0;
+                return false;
+            }
             return await checkClient();
         } catch (err) {
             console.log("Mongo error: "+err.message)
@@ -103,6 +112,7 @@ async function createListings(newLists, dbName,tName){ // newLists is an array o
  * @returns one row.
  */
 async function readRow(nameOfRow, dbName,tName){
+    if(!await checkClient()){return;}
     try{
         const result = await client.db(dbName).collection(tName).findOne(nameOfRow);
         if(result){
@@ -158,7 +168,7 @@ async function updateRow(nameOfRow, upddateList,dbName,tName){
         return {"updated":result.modifiedCount,"err":false};
     }
     catch (err) {
-        return {"updated":err.message,"err":false};
+        return {"updated":err.message,"err":true};
     }
 }
 
@@ -259,6 +269,7 @@ async function deleteRow(nameOfRow,dbName,tName){
  * @returns nothing.
  */
 async function deleteRows(nameOfRow,dbName,tName){
+    if(!await checkClient()){return;}
     const result = await client.db(dbName).collection(tName).deleteMany(nameOfRow);
     console.log(`deleted ${result.deletedCount} row(s)`);
 }

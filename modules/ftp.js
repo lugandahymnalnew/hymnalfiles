@@ -1,11 +1,17 @@
 const Client = require('ftp');
 const con = require('../config.json');
+const db = require('./mongoDBApi');
+
+async function renameFile(filename, newFilename) {
+  const ext = filename.slice(filename.lastIndexOf('.'));
+  return newFilename + ext;
+}
 
 async function uploadToFTP(req, res) {
   const files = req.files;
   if (!files || files.length === 0) {
     console.log('No files to upload');
-    return ;
+    return {file:[]};
   }
 
   const ftpClient = new Client();
@@ -19,24 +25,37 @@ async function uploadToFTP(req, res) {
   });
 
   // On successful FTP connection
-  ftpClient.on('ready',async () => {
+  ftpClient.on('ready', async () => {
     let uploadedCount = 0;
 
     // Upload each file to the FTP server
     await files.forEach(async (file) => {
-       ftpClient.put(file.path, file.originalname, (err) => {
+      const newFilename = await renameFile(file.originalname, "htdocs/uploads/"+file.originalname);
+      const remoteFilePath = newFilename;
+      const remoteDirectory = remoteFilePath.substring(0, remoteFilePath.lastIndexOf('/'));
+
+      // Create the subdirectory on the FTP server
+      ftpClient.mkdir(remoteDirectory, true, async (err) => {
         if (err) {
           console.log(err.message);
           return;
         }
 
-        uploadedCount++;
+        // Upload the file to the FTP server
+        ftpClient.put(file.path, remoteFilePath, async (err) => {
+          if (err) {
+            console.log(err.message);
+            return;
+          }
 
-        if (uploadedCount === files.length) {
-          console.log('All files uploaded successfully');
-          // Close the FTP connection
-          ftpClient.end();
-        }
+          uploadedCount++;
+
+          if (uploadedCount === files.length) {
+            console.log('All files uploaded successfully');
+            // Close the FTP connection
+            ftpClient.end();
+          }
+        });
       });
     });
   });
