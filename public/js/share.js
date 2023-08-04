@@ -3,10 +3,71 @@ function share(){
     var Song = $(".song").html().trim().replace('<b>', '*').replace('</b>','*').replace('<br>', '\n');
     var text = $("#txt").html().replace('<b>', '').replace('</b>','');
     var ktc="*No. "+No+ "\n\n" + Song + '\n\n' + text;
+	var toDB = $('#txt').html();
     var kit; 
     kit = ktc + "\n*Download New Luganda Hymnal from here* \n"
-    //console.log(ktc); 
-    if(trying("B4A.CallSub('ShareMessage', true ,kit);")){
+    // console.log(ktc); 
+	
+// 	const lines = toDB.trim().split('\n');
+
+
+
+// let jsonData = {};
+// let currentKey = "";
+// let currentStanza = [];
+// let counting = 0;
+
+//   jsonData['number'] = $('.No b').text();
+//   jsonData['EngNo'] = $('.No').html().split('<br>')[1].trim();
+
+//   jsonData['An'] = $('.an').text().trim();
+
+//   jsonData['signUp'] = $('.sign').html().split('<br>')[0].trim();
+//   jsonData['signDown'] = $('.sign').html().split('<br>')[1].trim();
+
+//   jsonData['song'] = $('.song b').text();
+//   jsonData['EngTit'] = $('.song').html().split('<br>')[1].trim();
+
+//   jsonData['doh'] = $('.comp b').text();
+//   jsonData['composer'] = $('.comp').html().split('<br>')[0].trim();
+
+  
+// jsonData['lyrics'] = {};
+
+// lines.forEach(line => {
+//   if(/^\s*$/.test(line)){
+//     jsonData['lyrics'][currentKey] = currentStanza;
+//     currentKey = "";
+//     currentStanza = [];
+//   }
+//   else{
+//     if(/^\d+\./.test(line)){
+//       if (!currentKey) {
+//         currentKey = "stanza "+ parseInt(line.match(/^\d+/));
+//       }
+//     }
+//     else{
+//       if(!currentKey) {
+//         if (counting > 0){
+//           currentKey = "chorus "+ (counting+1);
+//           counting++;
+//         }
+//         else{
+//           currentKey = "chorus 1";
+//           counting++;
+//         }
+//       }
+//     }
+//     currentStanza.push(line.replace(/\d+\./, "").trim());
+//   }
+// });
+
+// // Add the last stanza
+// jsonData['lyrics'][currentKey] = currentStanza;
+
+// console.log(JSON.stringify(jsonData, null, 2));
+	
+  if(trying("B4A.CallSub('ShareMessage', true ,kit);")){
 		return
 	}
 	else{
@@ -24,6 +85,37 @@ function share(){
 		  });
 	  }
 	}
+
+  // ... Code to populate jsonData ...
+  
+  // Convert jsonData to a JSON string
+  // const jsonDataString = JSON.stringify(jsonData);
+  
+  // // Define the URL of the server route
+  // const url = '/sendSong';  // Change this to the actual route URL
+  
+  // Make a POST request using the fetch API
+  // fetch(url, {
+  //     method: 'POST',
+  //     headers: {
+  //         'Content-Type': 'application/json'
+  //     },
+  //     body: jsonDataString
+  // })
+  // .then(response => {
+  //     if (response.ok) {
+  //         return response.json();
+  //     } else {
+  //         throw new Error('Failed to send JSON data.');
+  //     }
+  // })
+  // .then(data => {
+  //     console.log('Server response:', data);
+  // })
+  // .catch(error => {
+  //     console.error('Error:', error);
+  // });
+  
 }
 
 var player1 = `<section id="section3">

@@ -5,6 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 const con = require('./../config.json');
 const session = require('express-session');
+const db = require("../modules/mongoDBApi");
 
 const user_route = express();
 
@@ -28,6 +29,19 @@ user_route.use(session({
 user_route.set('view engine','ejs');
 user_route.set('views','./views');
 user_route.use(express.static(path.join(__dirname, '../public')));
+user_route.post('/sendSong',async (req, res) => {
+  try {
+    const receivedData = req.body;
+    await db.updateRow2(receivedData, receivedData, 'lugandaHymnal','luganda');
+    res.status(200).json({ message: 'JSON data received successfully!' });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+  
+  // Process the receivedData as needed
+
+  // Send a response
+});
 
 // const storage = multer.diskStorage({
 //   destination:function(req, file, cb){

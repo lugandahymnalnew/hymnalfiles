@@ -26,6 +26,7 @@ if(!loop){
 }
 //console.log(loop)
 $(document).ready(function(){
+    document.title = $('.song b').text();
 // creating the control buttons area
 var btn_cont = document.createElement('div');
 btn_cont.className = "btn_cont";
@@ -59,6 +60,13 @@ btn_err.className = "err";
 btn_err.innerHTML = 'Report Error';
 $(document).on('click','.err',function(){
     E_err();
+});
+
+var btn_nxt = document.createElement('button');
+btn_err.className = "nxt";
+btn_err.innerHTML = 'next';
+$(document).on('click','.nxt',function(){
+    window.location.href = nextR;
 });
 // puting buttons in place
 $('.tittle-1').after(btn_cont);
