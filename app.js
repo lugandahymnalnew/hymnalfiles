@@ -9,6 +9,26 @@ function executeTaskEvery10Minutes() {
   // Task to execute
   console.log("Executing task...");
 
+
+function keepChecker(){
+  fetch("https://audiorecorderfm.onrender.com")
+  .then(res=>{
+    if(!res.ok){
+      throw new Error ("failed - recorder");
+    }
+      return res;
+  }).then(res => {
+    console.log("connection clear - recorder")
+  }).catch(error => {
+    // Handle any errors gracefully
+    console.log('Error:', error);
+    // Take alternative actions or provide appropriate feedback
+  })
+  .finally(() => {
+    // Call the function again after 10 minutes, regardless of success or error
+    setTimeout(keepChecker, 600000);
+});
+}
   function performFetch() {
 fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
       .then(response => {
@@ -34,6 +54,7 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
 
   // Initial fetch request
   performFetch();
+  keepChecker();
 }
 
 // Call the function to start executing the task every 10 minutes
