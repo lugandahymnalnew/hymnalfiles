@@ -62,12 +62,12 @@ $(document).on('click','.err',function(){
     E_err();
 });
 
-var btn_nxt = document.createElement('button');
-btn_err.className = "nxt";
-btn_err.innerHTML = 'next';
-$(document).on('click','.nxt',function(){
-    window.location.href = nextR;
-});
+// var btn_nxt = document.createElement('button');
+// btn_err.className = "nxt";
+// btn_err.innerHTML = 'next';
+// $(document).on('click','.nxt',function(){
+//     window.location.href = nextR;
+// });
 // puting buttons in place
 $('.tittle-1').after(btn_cont);
 $('.tittle-1').after(play_cont);

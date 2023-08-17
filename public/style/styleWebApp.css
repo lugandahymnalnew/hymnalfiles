@@ -1,0 +1,56 @@
+
+    /* Reset some default styles */
+body, h1, p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Basic styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Style for audio player */
+audio {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+/* Style for buttons */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Center buttons */
+#recordButton, #stopRecordButton {
+  display: inline-block;
+}
+
+/* Center the whole content on the page */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
