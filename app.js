@@ -11,7 +11,7 @@ function executeTaskEvery10Minutes() {
 
 
 function keepChecker(){
-  fetch("https://audiorecorderfm.onrender.com")
+  fetch("https://audiorecorderfm.onrender.com/keepAlive")
   .then(res=>{
     if(!res.ok){
       throw new Error ("failed - recorder");
