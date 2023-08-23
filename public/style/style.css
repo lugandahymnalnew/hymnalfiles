@@ -486,7 +486,7 @@ pre b{
 }
 .btncn a{
     background: hsl(207, 88%, 20%);
-    color: blueviolet;
+    color: white;
     padding: 10px;
 }
 .btncn h2,.btncn p{
