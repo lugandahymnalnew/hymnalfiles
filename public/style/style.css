@@ -453,8 +453,8 @@ pre b{
         background: var(--secondary-color);
         color: black;
     }
-}
 
+}
 .btmm{
     position: fixed;
     top: calc(100% - (100% - 10px));
@@ -465,8 +465,218 @@ pre b{
     width: 60px;
     height: 60px;
     border-radius: 50% 0 0 50%;
-    color: white;
+    color: black;
     background: var(--secondary-color);
     overflow: hidden;
     border: 2px rgba(0, 0, 0, 0) solid;
+}.instruction{
+    width: 90%;
+    margin: 0 auto;
+}
+.instruction img{
+    max-width: 100%;
+}
+.contMain{
+    width: calc((6/7) * 100%);
+}
+.btncn{
+    max-width: 350px;
+    min-width: 200px;
+    margin: 0 auto;
+}
+.btncn a{
+    background: hsl(207, 88%, 20%);
+    color: white;
+    padding: 10px;
+}
+.btncn h2,.btncn p{
+    color: hsl(207, 88%, 20%);
+}
+.btncn details{
+    padding: 0;
+    color: white;padding: 10px;
+    border: hsl(207, 88%, 20%) 2px solid;
+}
+.btncn summary{
+    background: hsl(207, 88%, 20%);
+    padding: 10px;
+}
+.btncn button{
+    padding: 5px;
+    background-color:hsla(0, 100%, 100%, 0.87);
+    color:  #06375b;
+    border: none;
+    margin-left: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}.btmm{
+    position: fixed;
+    top: calc(100% - (100% - 30px));
+    left: calc(100% - 60px);
+    display: block;
+}
+.btmm button{
+    width: 60px;
+    height: 60px;
+    border-radius: 50% 0 0 50%;
+    color: white;
+    background: var(--secondary-color);
+    overflow: hidden;
+    box-shadow: 0 0 5px 2px black;
+    border: 2px rgba(0, 0, 0, 0) solid;
+}
+.sdaL{
+    background: hsl(207, 88%, 20%);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc((1/7) * 100%);
+    height: 100%;
+    border-left: 5px hsl(207, 68%, 77%) solid;
+}
+.sdaL img{
+    display: block;
+    width: calc(100% - 10px);
+    position: absolute;
+    left: 5px;
+    bottom: 40px;
+}
+
+#install-message {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  #install-message.show {
+    opacity: 1;
+  }
+
+  #file-message {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  #overlay {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.185);
+  }
+
+  .div1 {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    padding: 5px;
+    max-height: 90%;
+    overflow: auto;
+    width: calc(100% - 20px);
+    max-width: 350px;
+    box-shadow: 0 0 10px 1px black;
+  }
+
+  .div1 button {
+    display: block;
+    padding: 10px;
+    margin: 5px auto;
+  }
+
+  #ins {
+    display: none;
+    margin: 5px auto;
+    padding: 10px;
+  }
+
+  #spin {
+    display: none;
+    margin: 5px auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Custom player style */
+#section3 midi-player {
+display: block;
+width: inherit;
+margin: 4px;
+margin-bottom: 0;
+}
+#section3 midi-player::part(control-panel) {
+background: #ff5;
+border: 2px solid #000;
+border-radius: 10px 10px 0 0;
+}
+#section3 midi-player::part(play-button) {
+color: #353;
+border: 2px solid currentColor;
+background-color: #4d4;
+border-radius: 20px;
+transition: all 0.2s;
+content: 'hello';
+}
+#section3 midi-player::part(play-button):hover {
+color: #0a0;
+background-color: #5f5;
+border-radius: 10px;
+}
+#section3 midi-player::part(time) {
+font-family: monospace;
+}
+
+/* Custom visualizer style */
+#section3 midi-visualizer .piano-roll-visualizer {
+background: #ffd;
+border: 2px solid black;
+border-top: none;
+border-radius: 0 0 10px 10px;
+margin: 4px;
+margin-top: 0;
+overflow: auto;
+}
+#section3 midi-visualizer svg rect.note {
+opacity: 0.6;
+stroke-width: 2;
+}
+#section3 midi-visualizer svg rect.note[data-instrument="0"]{
+fill: #e22;
+stroke: #500;
+}
+#section3 midi-visualizer svg rect.note[data-instrument="2"]{
+fill: #2ee;
+stroke: #055;
+}
+#section3 midi-visualizer svg rect.note[data-is-drum="true"]{
+fill: #888;
+stroke: #888;
+}
+#section3 midi-visualizer svg rect.note.active {
+opacity: 0.9;
+stroke: #000;
 }
