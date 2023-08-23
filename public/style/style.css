@@ -486,7 +486,7 @@ pre b{
 }
 .btncn a{
     background: hsl(207, 88%, 20%);
-    color: white;
+    color: blueviolet;
     padding: 10px;
 }
 .btncn h2,.btncn p{
@@ -519,7 +519,7 @@ pre b{
     width: 60px;
     height: 60px;
     border-radius: 50% 0 0 50%;
-    color: white;
+    color: blueviolet;
     background: var(--secondary-color);
     overflow: hidden;
     box-shadow: 0 0 5px 2px black;
