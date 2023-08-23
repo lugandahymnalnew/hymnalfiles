@@ -1,6 +1,6 @@
 :root {
     --primary-color: hsl(207, 88%, 20%);
-    --secondary-color: hsl(207, 68%, 77%);
+    --secondary-color: hsl(26, 100%, 99%);
     --text-color: #333;
     --background-color: #FFF;
   }
@@ -15,7 +15,6 @@ body{
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
-    
 }
 .calc{
     width: calc(100vw - (100vw - 100%));
