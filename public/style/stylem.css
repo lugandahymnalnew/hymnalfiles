@@ -15,6 +15,7 @@ body{
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
+    
 }
 .calc{
     width: calc(100vw - (100vw - 100%));

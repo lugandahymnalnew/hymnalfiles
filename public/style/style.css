@@ -17,6 +17,7 @@ body:hover{
 }
 body::-webkit-scrollbar{
     display: none;
+    /* k  */
 }
 .container{
     background: white;

@@ -15,6 +15,7 @@ body{
 }
 body:hover{
     overflow: scroll;
+    /* k  */
 }
 body::-webkit-scrollbar{
     display: none;
