@@ -227,4 +227,19 @@ details{
       font-size: 14px; /* Adjust the font size as desired */
     }
   }
-  
+  .btmm{
+    position: fixed;
+    top: calc(100% - (100% - 30px));
+    left: calc(100% - 60px);
+    display: block;
+}
+.btmm button{
+    width: 60px;
+    height: 60px;
+    border-radius: 50% 0 0 50%;
+    color: blueviolet;
+    background: var(--secondary-color);
+    overflow: hidden;
+    box-shadow: 0 0 5px 2px black;
+    border: 2px rgba(0, 0, 0, 0) solid;
+}
