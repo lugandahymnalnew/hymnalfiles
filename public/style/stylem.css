@@ -217,7 +217,7 @@ body{
     width: 60px;
     height: 60px;
     border-radius: 50% 0 0 50%;
-    color: white;
+    color: blueviolet;
     background: var(--secondary-color);
     overflow: hidden;
     border: 2px rgba(0, 0, 0, 0) solid;
