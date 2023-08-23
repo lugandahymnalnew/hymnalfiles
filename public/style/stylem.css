@@ -1,6 +1,6 @@
 :root {
     --primary-color: hsl(207, 88%, 20%);
-    --secondary-color: hsl(207, 68%, 77%);
+    --secondary-color: hsl(26, 100%, 99%);
     --text-color: #333;
     --background-color: #FFF;
   }
@@ -142,7 +142,6 @@ body{
     left: 0;
     top: 0;
     display: none;
-    z-index: 10;
 }
 #alert_container .alert{
     width: 100%;
@@ -207,18 +206,4 @@ body{
     background: rgb(0, 1, 70);
     font-size: x-large;
 }
-.btmm{
-    position: fixed;
-    top: calc(100% - (100% - 10px));
-    right: 0;
-    display: block;
-}
-.btmm button{
-    width: 60px;
-    height: 60px;
-    border-radius: 50% 0 0 50%;
-    color: white;
-    background: var(--secondary-color);
-    overflow: hidden;
-    border: 2px rgba(0, 0, 0, 0) solid;
-}
+

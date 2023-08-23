@@ -1,9 +1,9 @@
 :root {
-  --primary-color: hsl(207, 88%, 20%);
-  --secondary-color: hsl(207, 68%, 77%);
-  --text-color: #333;
-  --background-color: #FFF;
-}
+    --primary-color: hsl(207, 88%, 20%);
+    --secondary-color: hsl(26, 100%, 99%);
+    --text-color: #333;
+    --background-color: #FFF;
+  }
 body{
     background: var(--secondary-color);
     overflow: scroll;
@@ -47,6 +47,7 @@ small{
     color: lightgray;
 }
 pre.txt{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 1.5rem;
     overflow-x: auto;
     white-space: pre-wrap;
