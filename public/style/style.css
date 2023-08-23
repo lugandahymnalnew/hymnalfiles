@@ -532,7 +532,7 @@ pre b{
     top: 0;
     width: calc((1/7) * 100%);
     height: 100%;
-    border-left: 5px hsl(207, 68%, 77%) solid;
+    border-left: 5px hsl(26, 100%, 99%) solid;
 }
 .sdaL img{
     display: block;
