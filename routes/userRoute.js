@@ -13,8 +13,15 @@ const bodyParser = require('body-parser');
 user_route.use(bodyParser.json());
 user_route.use(bodyParser.urlencoded({extended:true}));
 
+const corsAllow = ["https://hiweightechsystemsltd.onrender.com","https://lugandahymnalnew.github.io"];
 user_route.use(cors({
-    origin: "https://hiweightechsystemsltd.onrender.com",
+    origin: function (origin, cb){
+        if(corsAllow.indexOf(origin) !== -1 || !origin){
+            cb(null, true);;
+        } else {
+            cb(console.log("refused: "+origin));
+        }
+    },
     methods: "*",
     allowedHeaders:"*"
 }));
