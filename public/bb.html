@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible</title>
+</head>
+<body>
+    <script>
+        fetch('/getBible')
+        .then(async (res) => {
+            if(res.ok){
+                return res.json();
+            }
+            else{
+                B4A.CallSub("failed", true,"There was an Error")
+            }
+        })
+        .then(res1 => {
+            loadBooks(res1.tables);
+        })
+        .catch(err=>{
+            B4A.CallSub("failed", true,err.message)
+        })
+
+        async function loadBooks(books){
+            books.forEach(async (book) => {
+                fetch('/getBible/'+book)
+                .then(async (res)=> {
+                    if(res.ok){
+                        return res.json();
+                    }
+                    else{
+                        B4A.CallSub("failed", true,"Something went wrong on our side.")
+                    }
+                })
+                .then(async (res1)=>{
+                    console.log(res1.ver)
+                })
+                .catch(err => {
+                    B4A.CallSub("failed", true,err.message)
+                })
+            });
+        }
+        async function writeToDb (tbname, data){
+            B4A.CallSub("createTable",true,tbname,"bible.db")
+            data.forEach(chapter => {
+                B4A.CallSub("addDataToDb",true,tbname,data.chapter,JSON.stringify(data.verses))
+            });
+        }
+    </script>
+</body>
+</html>
