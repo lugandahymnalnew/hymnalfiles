@@ -13,15 +13,10 @@ const bodyParser = require('body-parser');
 user_route.use(bodyParser.json());
 user_route.use(bodyParser.urlencoded({extended:true}));
 
-const corsAllow = ["https://hiweightechsystemsltd.onrender.com","https://lugandahymnalnew.github.io"];
+
+
 user_route.use(cors({
-    origin: function (origin, cb){
-        if(corsAllow.indexOf(origin) !== -1 || !origin){
-            cb(null, true);;
-        } else {
-            cb(console.log("refused: "+origin));
-        }
-    },
+    origin: "https://hiweightechsystemsltd.onrender.com",
     methods: "*",
     allowedHeaders:"*"
 }));
@@ -98,5 +93,18 @@ user_route.get('/keepAlive', (req, res)=>{
   res.send("hlo");
 });
 
+user_route.get('/getBible',async (req, res)=>{
+  var list = await db.listTables("bible");
+  res.json({tables:list});
+})
+
+user_route.get('/getBible/:book',async (req, res)=>{
+  try {
+    var verses = await db.readRows({},"bible",req.params.book);
+    res.json({ver:verses.listings})
+  } catch (error) {
+    console.log(error.message)
+  }
+})
 
 module.exports = user_route;
