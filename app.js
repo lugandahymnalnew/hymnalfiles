@@ -7,11 +7,7 @@ const http = require('http').Server(app);
 
 function executeTaskEvery10Minutes() {
   // Task to execute
-  console.log("Executing task...");
-
-
-function keepChecker(){
-  fetch("https://audiorecorderfm.onrender.com/keepAlive")
+  fetch("https://audiorecordingfm.onrender.com/keepAlive")
   .then(res=>{
     if(!res.ok){
       throw new Error ("failed - recorder");
