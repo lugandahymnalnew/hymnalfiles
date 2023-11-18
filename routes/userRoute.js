@@ -16,7 +16,7 @@ user_route.use(bodyParser.urlencoded({extended:true}));
 
 
 user_route.use(cors({
-    origin: "https://hiweightechsystemsltd.onrender.com",
+    origin: "*",
     methods: "*",
     allowedHeaders:"*"
 }));
