@@ -7,6 +7,7 @@ const http = require('http').Server(app);
 
 function executeTaskEvery10Minutes() {
   // Task to execute
+  function keepChecker(){
   fetch("https://audiorecordingfm.onrender.com/keepAlive")
   .then(response=>{
     if(!response.ok){
