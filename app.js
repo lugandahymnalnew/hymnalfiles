@@ -8,11 +8,11 @@ const http = require('http').Server(app);
 function executeTaskEvery10Minutes() {
   // Task to execute
   fetch("https://audiorecordingfm.onrender.com/keepAlive")
-  .then(res=>{
-    if(!res.ok){
-      throw new Error ("failed - recorder");
+  .then(response=>{
+    if(!response.ok){
+      console.log("connection failed - recorder");
     }
-      return res;
+      return response;
   }).then(res => {
     console.log("connection clear - recorder")
   }).catch(error => {
@@ -29,7 +29,7 @@ function executeTaskEvery10Minutes() {
 fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          console.log('Network response was not ok');
         }
         return response;
       })
