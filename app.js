@@ -49,9 +49,10 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
   });
   }
 
-  // Initial fetch request
   performFetch();
   keepChecker();
+}
+  // Initial fetch request
 
 
 // Call the function to start executing the task every 10 minutes
@@ -65,7 +66,7 @@ app.get('/adverts',async (req, res)=>{
   } catch (error) {
     res.render('error',{error:error.message+"\nIts on our side don't worry."});
   }
-})
+});
 
 
 app.get('/emisi',async (req, res)=>{
@@ -74,7 +75,7 @@ app.get('/emisi',async (req, res)=>{
   } catch (error) {
     res.render('error',{error:error.message+"\nIts on our side don't worry."});
   }
-})
+});
 // Serve all files in the "public" folder
 
 http.listen(3300, () => {
