@@ -51,14 +51,29 @@ fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
   // Initial fetch request
   performFetch();
   keepChecker();
-}
+
 
 // Call the function to start executing the task every 10 minutes
 executeTaskEvery10Minutes();
 
 const userRoute = require('./routes/userRoute');
 app.use("/",userRoute);
+app.get('/adverts',async (req, res)=>{
+  try {
+    res.redirect('https://audiorecordingfm.onrender.com/');
+  } catch (error) {
+    res.render('error',{error:error.message+"\nIts on our side don't worry."});
+  }
+})
 
+
+app.get('/emisi',async (req, res)=>{
+  try {
+    res.redirect('https://audiorecordingfm.onrender.com/');
+  } catch (error) {
+    res.render('error',{error:error.message+"\nIts on our side don't worry."});
+  }
+})
 // Serve all files in the "public" folder
 
 http.listen(3300, () => {
