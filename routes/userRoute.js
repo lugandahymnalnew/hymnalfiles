@@ -105,6 +105,20 @@ user_route.get('/getBible/:book',async (req, res)=>{
   } catch (error) {
     console.log(error.message)
   }
-})
+});
+
+user_route.get('/engSongs', async (req, res)={
+    try{
+        var engSongs = await db.readRows({},"lugandaHymnal","english");
+        if(engSongs.error){
+            res.json({data:"Didn't get songs"});
+        } else {
+            res.json({data:engSongs.listings});
+        }
+    }
+    catch (error){
+        res.json({data:error.message})
+    }
+});
 
 module.exports = user_route;
