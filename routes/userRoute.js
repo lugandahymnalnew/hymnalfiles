@@ -107,7 +107,7 @@ user_route.get('/getBible/:book',async (req, res)=>{
   }
 });
 
-user_route.get('/engSongs', async (req, res)={
+user_route.get('/engSongs', async (req, res)=>{
     try{
         var engSongs = await db.readRows({},"lugandaHymnal","english");
         if(engSongs.error){
