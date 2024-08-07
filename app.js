@@ -79,7 +79,9 @@ app.get('/emisi',async (req, res)=>{
 
 app.get('/leson',async (req, res)=>{
   try {
-    res.redirect('https://audiorecordingfm.onrender.com/');
+    // res.render("addBook");
+    res.redirect("/addbook");
+    // res.redirect('https://audiorecordingfm.onrender.com/');
   } catch (error) {
     res.render('error',{error:error.message+"\nIts on our side don't worry."});
   }
