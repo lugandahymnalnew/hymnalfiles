@@ -152,7 +152,13 @@ user_route.get("/addBook",(req, res)=>{
 
 user_route.get("/books", async (req, res)=>{
   try {
-    res.render("ebyokuyiga", {books:allbooks.listings})
+    if(allbooks.hasOwnProperty("listings")){
+      res.render("ebyokuyiga", {books:allbooks.listings});
+    }
+    else{
+      allbooks = await db.readRows({},"books","books");
+      res.render("ebyokuyiga", {books:allbooks.listings});
+    }
   } catch (error) {
     res.send("There was an error. sorry")
   }
