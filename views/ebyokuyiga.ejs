@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .book-card {
+            margin-bottom: 20px;
+        }
+        .book-image {
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Books List</h1>
+        <div class="row">
+            <% books.forEach(book => { %>
+                <div class="col-md-4">
+                    <div class="card book-card">
+                        <img src="data:image/jpeg;base64,<%= book.base64Image %>" class="card-img-top book-image" alt="<%= book.bookName %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= book.bookName %></h5>
+                            <p class="card-text">Author: <%= book.author %></p>
+                            <button class="btn btn-primary" onclick='openUrl1("<%= book.link %>")'>Read book - Soma</button>
+                            <!-- <a href="<%= book.link %>" class="btn btn-primary" target="_blank">Read Book</a> -->
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openUrl1(url){
+            try {
+                B4A.CallSub('Open_web', true ,url)
+            } catch (error) {
+                window.open(url, "_blank");
+            }
+        }
+    </script>
+</body>
+</html>
