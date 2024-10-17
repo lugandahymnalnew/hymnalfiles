@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Luganda Hymnal</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <div class="container">
+            <!-- Use v-model to bind input to a data property -->
+            <input type="text" v-model="songId" placeholder="Enter Song ID">
+            <button @click="fetchSong(songId)">Load Song</button>
+          <h1>{{ song.title }} by {{ song.artist }}</h1>
+          <p><strong>English Title:</strong> {{ song.eng_title }}</p>
+          <p><strong>Doh:</strong> {{ song.doh }}</p>
+          
+          <div v-for="stanza in song.stanzas" :key="stanza.stanza_id" class="stanza">
+            <h3>({{ stanza.type === 0 ? 'Chorus' : 'Verse' }})</h3>
+            <p v-for="line in stanza.lines" :key="line">{{ line }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+      new Vue({
+        el: '#app',
+        data: {
+          db: null,  // SQL.js database
+          song: {}  // Song data will be stored here
+        },
+        created() {
+          this.initDB();
+        },
+        methods: {
+          async initDB() {
+            const SQL = await window.initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.wasm` });
+      
+            // Load or create the database
+            let db;
+            const savedDb = localStorage.getItem('songDB');
+            if (savedDb) {
+              // Load from localStorage
+              const uint8Array = new Uint8Array(JSON.parse(savedDb));
+              db = new SQL.Database(uint8Array);
+              console.log('kjkj')
+            this.deleteSavedDB();
+            } else {
+            //   Fetch the songs.db file and load it into SQL.js
+              const response = await fetch('db/songs.db');
+              console.log('jkjk')
+              const buffer = await response.arrayBuffer();
+              db = new SQL.Database(new Uint8Array(buffer));
+
+              // Save the loaded database to localStorage
+              this.saveDBToLocalStorage(db);
+            }
+      
+            this.db = db;
+            this.fetchSong('250'); // Fetch a sample song by ID
+          },
+      
+          saveDBToLocalStorage(db) {
+            // Save the SQLite DB to localStorage
+            const data = db.export();
+            const buffer = Array.from(data);
+            localStorage.setItem('songDB', JSON.stringify(buffer));
+          },
+
+          deleteSavedDB() {
+            // Delete the saved SQLite DB from localStorage
+            localStorage.removeItem('songDB');
+          },
+      
+          fetchSong(songId) {
+            // Query the song from the database
+            const songResult = this.db.exec(`SELECT * FROM song_table WHERE song_id = '${songId}';`);
+            if (songResult.length === 0) {
+              return console.error('Song not found');
+            }
+      
+            const song = songResult[0].values[0];
+            this.song = {
+              song_id: song[0],
+              title: song[1],
+              artist: song[2],
+              eng_title: song[3],
+              up: song[5],
+              down: song[6],
+              doh: song[7],
+              stanzas: []
+            };
+      
+            // Get the stanzas for this song
+            const stanzaResults = this.db.exec(`SELECT stanza_id, stanza_number, type FROM stanza_en_table WHERE song_id = '${songId}' ORDER BY stanza_number;`);
+            const stanzas = stanzaResults[0].values;
+      
+            stanzas.forEach(stanza => {
+              const stanzaId = stanza[0];
+              const stanzaNumber = stanza[1];
+              const stanzaType = stanza[2];
+      
+              // Get the lines for each stanza
+              const linesResult = this.db.exec(`SELECT line FROM lines_en_table WHERE stanza_id = ${stanzaId} ORDER BY line_id;`);
+              const lines = linesResult[0].values.map(lineRow => lineRow[0]);
+      
+              this.song.stanzas.push({
+                stanza_id: stanzaId,
+                stanza_number: stanzaNumber,
+                type: stanzaType,
+                lines: lines
+              });
+            });
+          }
+        }
+      });
+      </script>
+      
+</body>
+</html>
