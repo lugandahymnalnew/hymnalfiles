@@ -3,7 +3,7 @@ var pages = [1,2,3,4,5,6,7,8,9,10,11,12,'12a',13,14,15,16,17,18,19,20,21,22,23,2
 // Getting number of current song
 var path = window.location.pathname;
 var alink;
-	var page = path.split("/").pop().split('%5C').pop().split(".").slice(0, -1).join('.');
+	var page = path.split("/").pop().split('%5C').pop().split(".").slice(0, -1).join('.') || document.getElementById("number").innerText;
 	var Npg;
 	var song_midi='midi/'; 
 	//console.log("path: "+path)
@@ -12,6 +12,9 @@ var alink;
 	
 	var next;
 	var prev;
+	var nextR, prevL;
+function setPrevNext(page){
+	page = page.toString();
 //getting index of current page
 	if(pages.indexOf(page) != -1){
 		Npg = pages.indexOf(page);
@@ -41,11 +44,11 @@ var alink;
 	}
 
 // Fixing link for B4A New file system
-var nextR, prevL;
-nextR = next
-prevL = prev
-next = "pages%5C"+next
-prev = "pages%5C"+prev
+	nextR = next
+	prevL = prev
+	next = "pages%5C"+next
+	prev = "pages%5C"+prev
+}
 
 //console.log("midi: "+song_midi)
 var startingX , startingY , movingX , movingY, startTime, endTime, timeTaken;
@@ -69,11 +72,13 @@ tT /= 1000
 	else{
 		if(startingX+200 < movingX){
 			// console.log('right');
-			trying("B4A.CallSub('swipeRight', true)")
+			// trying("B4A.CallSub('swipeRight', true)")
+			prevSong();
 		} 
 		else if(startingX-200 > movingX){
 			// console.log('left');
-			trying("B4A.CallSub('swipeLeft', true)")
+			// trying("B4A.CallSub('swipeLeft', true)")
+			nextSong();
 		}
 		if(startingY+200 < movingY){
 			console.log('down');

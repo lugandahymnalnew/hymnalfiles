@@ -26,10 +26,10 @@ if(!loop){
 }
 //console.log(loop)
 $(document).ready(function(){
-    document.title = $('.song b').text();
+    // document.title = $('.song b').text();
 // creating the control buttons area
 var btn_cont = document.createElement('div');
-btn_cont.className = "btn_cont";
+btn_cont.className = "btn_cont hiden-1";
 
 var play_cont = document.createElement('div');
 play_cont.className = "play_cont";
@@ -62,6 +62,22 @@ $(document).on('click','.err',function(){
     E_err();
 });
 
+// Next button
+var btn_next = document.createElement('button');
+btn_next.className = "next";
+btn_next.innerHTML = 'next';
+$(document).on('click','.next',function(){
+    nextSong();
+});
+
+// Previous button
+var btn_prev = document.createElement('button');
+btn_prev.className = "prev";
+btn_prev.innerHTML = 'prev';
+$(document).on('click','.prev',function(){
+    prevSong()
+});
+
 // var btn_nxt = document.createElement('button');
 // btn_err.className = "nxt";
 // btn_err.innerHTML = 'next';
@@ -72,10 +88,12 @@ $(document).on('click','.err',function(){
 $('.tittle-1').after(btn_cont);
 $('.tittle-1').after(play_cont);
 //(btn_cont).after($('.tittle'))
+$(".btn_cont").append(btn_prev);
 $(".btn_cont").append(btn_play);
 $(".btn_cont").append(btn_stop);
 $(".btn_cont").append(btn_share);
 $(".btn_cont").append(btn_err);
+$(".btn_cont").append(btn_next);
 //console.log(btn_cont.className)
 $('.stop').css("display","none")
 });

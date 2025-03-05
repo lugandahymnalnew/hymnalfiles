@@ -127,6 +127,20 @@ user_route.get('/engSongs', async (req, res)=>{
     }
 });
 
+user_route.get('/lugSongs', async (req, res)=>{
+  try{
+      var engSongs = await db.readRows({},"lugandaHymnal","luganda");
+      if(engSongs.error){
+          res.json({data:"Didn't get songs"});
+      } else {
+          res.json({data:engSongs.listings});
+      }
+  }
+  catch (error){
+      res.json({data:error.message})
+  }
+});
+
 user_route.get("/oneSong/:table/:number", async(req, res)=>{
   try{
     console.log(`${req.params.number} ${req.params.table}`)

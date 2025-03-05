@@ -68,6 +68,7 @@ function share(){
 // console.log(JSON.stringify(jsonData, null, 2));
 	
   if(trying("B4A.CallSub('ShareMessage', true ,kit);")){
+    console.log('shared');
 		return
 	}
 	else{
@@ -84,6 +85,10 @@ function share(){
 			console.error('Error sharing kit:', error);
 		  });
 	  }
+    else {
+      console.log(kit)
+      alert('Your device does not support sharing.');
+    }
 	}
 
   // ... Code to populate jsonData ...
@@ -128,6 +133,19 @@ var player1 = `<section id="section3">
   src="${pages[Npg]}.mid">
 </midi-visualizer> -->
 </section>`
+
+function player1Update(){
+  player1 = `<section id="section3">
+  <!-- <h2>Custom player and visualizer style</h2> -->
+  <midi-player
+    src="../../midi/${pages[Npg]}.mid"
+    sound-font visualizer="#section3 midi-visualizer">
+  </midi-player>
+  <!-- <midi-visualizer
+    src="${pages[Npg]}.mid">
+  </midi-visualizer> -->
+  </section>`
+}
 
 function ussd(num){
     // console.log("hi")
