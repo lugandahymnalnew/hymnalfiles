@@ -697,7 +697,7 @@ stroke: #000;
     justify-content: center;
     flex-wrap: wrap;
 }
-  .spinner {
+  .spinner-1 {
     display: inline-block;
     position: absolute;
     top: 50%;
