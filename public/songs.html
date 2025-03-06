@@ -15,7 +15,7 @@
     <script src="js/newSwipe.js" defer></script>
 </head>
 <body>
-    <h1>Offline SQLite DB</h1>
+    <h1 style="display: none;">Offline SQLite DB</h1>
     
     <div style="display: none;">
         <button onclick="fetchAndStoreSongs()">Fetch & Store Luganda Songs</button>
@@ -26,19 +26,21 @@
 
     <hr style="display: none;">
 
-    <!-- Song Selection -->
-    <label for="songNumber">Enter Song Number:</label>
-    <input type="text" id="songNumber" min="1"  placeholder="e.g. 73" onkeydown="if (event.keyCode == 13) loadSong()">
-    
-    <label for="language">Select Language:</label>
-    <select id="language">
-        <option value="luganda">Luganda</option>
-        <option value="english">English</option>
-    </select>
-    
-    <button onclick="loadSong()">Load Song</button>
+    <div style="display: none;">
+            <!-- Song Selection -->
+        <label for="songNumber">Enter Song Number:</label>
+        <input type="text" id="songNumber" min="1"  placeholder="e.g. 73" onkeydown="if (event.keyCode == 13) loadSong()">
+        
+        <label for="language">Select Language:</label>
+        <select id="language">
+            <option value="luganda">Luganda</option>
+            <option value="english">English</option>
+        </select>
+        
+        <button onclick="loadSong()">Load Song</button>
+    </div>
 
-    <hr>
+    <hr style="display: none;">
 
     <!-- Display Song -->
     <div class="tittle-1 hiden-1" id="songDetails">
@@ -48,7 +50,7 @@
         <div class="song">
             <b id="song"></b><br><span id="EngTit"></span>
         </div>
-        <div class="An"></div>
+        <div class="An" id="An"></div>
         <div class="sign">
             <span id="signUp"></span><br><span id="signDown"></span>
         </div>
@@ -61,7 +63,7 @@
         <pre id="txt"></pre>
     </div>
 
-    <a href="/src/menu.html" class="hiden-1">
+    <a href="/src/menu.html">
         <div class="btn">Back to Menu<br>
             <small>&copy;KitaHope</small> 
         </div>
@@ -77,6 +79,8 @@
     </div>
     <script>
         let db;
+        const urlParams = new URLSearchParams(window.location.search);
+        let hymnal = urlParams.get('song');
 
         async function initDatabase() {
             const SQL = await window.initSqlJs({
@@ -108,6 +112,11 @@
                 await fetchAndStoreSongs();
                 await fetchAndStoreEnglishSongs();
             }
+            if(hymnal == null){
+                window.location.href = "/src/menu.html";
+            }
+            loadSong(hymnal);
+            oncSet();
             document.getElementById("spinnerHolder").classList.add("hide-div");        
         }
 
@@ -115,7 +124,7 @@
             try {
                 const response = await fetch("/lugSongs"); // Replace with your API
                 const songs = await response.json();
-                console.log(songs);
+                // console.log(songs);
                 songs.data.forEach(song => {
                     db.run(`INSERT OR IGNORE INTO songs (number, song, EngNo, EngTit, composer, doh, signUp, signDown, luganda_lyrics) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
@@ -147,10 +156,10 @@
         }
 
         function loadSong(dum = null) {
-            console.log(dum)
+            // console.log(dum)
             const songNumber = document.getElementById("songNumber").value;
 
-            const language = document.getElementById("language").value;
+            const language = localStorage.getItem("language") || "luganda";
             if (!songNumber && dum==null) {
                 alert("Please enter a song number.");
                 return;
@@ -181,10 +190,11 @@
             engNoElement.textContent = song.EngNo || "";
             songElement.textContent = song.song;
             document.title = song.song;
-            console.log(song.EngTit)
+            // console.log(song.EngTit)
             engTitElement.textContent = song.EngTit;
             // anElement.textContent =  song.An ||"";
             setPrevNext(song.number);
+            hymnal = song.number;
             player1Update();
 
             composerElement.textContent = song.composer || "Unknown";
@@ -194,21 +204,22 @@
 
             lyricsDisplay.innerHTML = language === "luganda" ? 
                 formatLyrics(JSON.parse(song.luganda_lyrics)) : formatLyrics(JSON.parse(song.english_lyrics));
-
+            lyricsDisplay.innerHTML += "\n\n";
             document.querySelectorAll('.hiden-1').forEach(element => {
                 element.style.display = 'flex';
             });
         }
 
         function formatLyrics(data) {
-            console.log(data);
+            // console.log(data);
             
             return Object.entries(data).map(([key, verses]) => key.includes("orus") ? `${verses.join("\n")}\n` : `${key}:\n${verses.join("\n")}\n`).join("\n");
         }
 
         function changeFontSize() {
-            const size = document.getElementById("siz").value;
-            document.getElementById("txt").style.fontSize = `${size}em`;
+            // const size = document.getElementById("siz").value;
+            // document.getElementById("txt").style.fontSize = `${size}em`;
+            onc(true);
         }
 
         function saveDatabase() {
