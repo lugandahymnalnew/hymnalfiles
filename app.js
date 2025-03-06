@@ -27,26 +27,26 @@ function executeTaskEvery10Minutes() {
 });
 }
   function performFetch() {
-fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
-      .then(response => {
-        if (!response.ok) {
-          console.log('Network response was not ok');
-        }
-        return response;
+    fetch("https://hiweightechsystemsltd.onrender.com/keepAlive")
+          .then(response => {
+            if (!response.ok) {
+              console.log('Network response was not ok');
+            }
+            return response;
+          })
+      .then(responseData => {
+        // Process the response data
+        console.log("Response clear");
       })
-  .then(responseData => {
-    // Process the response data
-    console.log("Response clear");
-  })
-  .catch(error => {
-        // Handle any errors gracefully
-        console.log('Error:', error);
-        // Take alternative actions or provide appropriate feedback
-      })
-      .finally(() => {
-        // Call the function again after 10 minutes, regardless of success or error
-        setTimeout(performFetch, 600000);
-  });
+      .catch(error => {
+            // Handle any errors gracefully
+            console.log('Error:', error);
+            // Take alternative actions or provide appropriate feedback
+          })
+          .finally(() => {
+            // Call the function again after 10 minutes, regardless of success or error
+            setTimeout(performFetch, 600000);
+      });
   }
 
   performFetch();
