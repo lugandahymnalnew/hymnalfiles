@@ -1,13 +1,25 @@
-function onc(){
+function onc(changed = false){
     var input = document.getElementById('siz');
-    var filter = input.value;
-    var f = (filter + "rem");
 	var sh = document.getElementById('txt')
+    let filter;
+    if (changed){
+        filter = input.value;
+        localStorage.setItem('size', filter);
+    }
+    else {
+        filter = localStorage.getItem('size') || 0.8;
+        input.value = filter;
+    }
+    var f = (filter + "rem");
     sh.style.fontSize = f
 }
-//console.log($('#txt').text().match(/\d+/))
+
+function oncSet(){
+    onc();
+}
+// console.log($('#txt').text().match(/\d+/))
 // sorting the text to be shared
-//console.log($('.No').html())
+// console.log($('.No').html())
 
 // making reference for number of stanzas
 var stanzas = ['9','8','7','6','5','4','3','2',];
@@ -26,10 +38,10 @@ if(!loop){
 }
 //console.log(loop)
 $(document).ready(function(){
-    document.title = $('.song b').text();
+    // document.title = $('.song b').text();
 // creating the control buttons area
 var btn_cont = document.createElement('div');
-btn_cont.className = "btn_cont";
+btn_cont.className = "btn_cont hiden-1";
 
 var play_cont = document.createElement('div');
 play_cont.className = "play_cont";
@@ -62,6 +74,30 @@ $(document).on('click','.err',function(){
     E_err();
 });
 
+// Next button
+var btn_next = document.createElement('button');
+btn_next.className = "next";
+btn_next.innerHTML = 'next ->';
+$(document).on('click','.next',function(){
+    nextSong();
+});
+
+// Previous button
+var btn_prev = document.createElement('button');
+btn_prev.className = "prev";
+btn_prev.innerHTML = '<- prev';
+$(document).on('click','.prev',function(){
+    prevSong()
+});
+
+// Language button
+var btn_lang = document.createElement('button');
+btn_lang.className = "lang";
+btn_lang.innerHTML = localStorage.getItem('language') == 'english' ? 'luganda' : 'english';
+$(document).on('click','.lang',function(){
+    changeLanguage();
+});
+
 // var btn_nxt = document.createElement('button');
 // btn_err.className = "nxt";
 // btn_err.innerHTML = 'next';
@@ -72,10 +108,13 @@ $(document).on('click','.err',function(){
 $('.tittle-1').after(btn_cont);
 $('.tittle-1').after(play_cont);
 //(btn_cont).after($('.tittle'))
+$(".btn_cont").append(btn_prev);
 $(".btn_cont").append(btn_play);
 $(".btn_cont").append(btn_stop);
 $(".btn_cont").append(btn_share);
+$(".btn_cont").append(btn_lang);
 $(".btn_cont").append(btn_err);
+$(".btn_cont").append(btn_next);
 //console.log(btn_cont.className)
 $('.stop').css("display","none")
 });
