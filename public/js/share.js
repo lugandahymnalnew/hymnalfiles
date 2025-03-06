@@ -1,11 +1,13 @@
 function share(){
-    var No = $(".No").html().trim().replace('<b>', '').replace('</b>','*').replace('<br>', '     ');
-    var Song = $(".song").html().trim().replace('<b>', '*').replace('</b>','*').replace('<br>', '\n');
+    // var No = $(".No").html().trim().replace('<b>', '').replace('</b>','*').replace('<br>', '     ');
+    var No = $('#number').text().trim()+"* \n"+$('#EngNo').text();
+    // var Song = $(".song").html().trim().replace('<b>', '*').replace('</b>','*').replace('<br>', '\n');
+    var Song = "*"+$('#song').text().trim()+"* \n"+$('#EngTit').text(); // $(".song").text();
     var text = $("#txt").html().replace('<b>', '').replace('</b>','');
-    var ktc="*No. "+No+ "\n\n" + Song + '\n\n' + text;
+    var ktc="*No. "+No+ "\n\n" + Song + '\n' + text;
 	var toDB = $('#txt').html();
     var kit; 
-    kit = ktc + "\n*Download New Luganda Hymnal from here* \n"
+    kit = ktc + "*Download New Luganda Hymnal from here* \n"
     // console.log(ktc); 
 	
 // 	const lines = toDB.trim().split('\n');
