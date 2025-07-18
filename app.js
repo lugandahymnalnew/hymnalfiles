@@ -21,7 +21,7 @@ function executeTaskEvery10Minutes() {
     console.log('Error:', error);
     // Take alternative actions or provide appropriate feedback
   })
-  .finally(() => {
+  .finally(async () => {
     try {
       const response = await fetch('https://darewell.onrender.com/ping');
       
