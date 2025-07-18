@@ -22,6 +22,18 @@ function executeTaskEvery10Minutes() {
     // Take alternative actions or provide appropriate feedback
   })
   .finally(() => {
+    try {
+      const response = await fetch('https://darewell.onrender.com/ping');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.text(); // or response.json() if expecting JSON
+      console.log('Fetch successful:', data);
+    } catch (error) {
+      console.error('Fetch failed:', error.message);
+    }
     // Call the function again after 10 minutes, regardless of success or error
     setTimeout(keepChecker, 600000);
 });
