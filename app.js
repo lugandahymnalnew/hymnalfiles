@@ -24,9 +24,13 @@ function executeTaskEvery10Minutes() {
   .finally(async () => {
     try {
       const response = await fetch('https://darewell.onrender.com/ping');
+      const response1 = await fetch('https://african-union-password-reset.onrender.com/ping');
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      if (!response1.ok){
+        throw new Error(`HTTP error! Status: ${response1.status}`);
       }
   
       const data = await response.text(); // or response.json() if expecting JSON
