@@ -14,12 +14,25 @@ user_route.use(bodyParser.json());
 user_route.use(bodyParser.urlencoded({extended:true}));
 
 
-let allbooks = db.readRows({},"books","books") || [{
-  base64Image:"",
-  bookName:"default",
-  author: "default",
-  link: "example.com"
-}];
+let allbooks = [];
+
+function updateBooks() {
+  allbooks = db.readRows({}, "books", "books") || [{
+    base64Image: "",
+    bookName: "default",
+    author: "default",
+    link: "https://example.com"
+  }];
+
+  console.log("Books updated:", allbooks);
+}
+
+// Run immediately once
+updateBooks();
+
+// Then update every 1 hour (3600000 milliseconds)
+setInterval(updateBooks, 3600000);
+
 
 user_route.use(cors({
     origin: "*",
@@ -189,4 +202,5 @@ user_route.post("/addBook", async(req, res)=>{
 })
 
 module.exports = user_route;
+
 
