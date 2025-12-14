@@ -23,18 +23,17 @@ function executeTaskEvery10Minutes() {
   })
   .finally(async () => {
     try {
-      const response = await fetch('https://darewell.onrender.com/ping');
-      const response1 = await fetch('https://african-union-password-reset.onrender.com/ping');
+      const response2 = await fetch('https://payment-gateway-0001.onrender.com/health');
+      const response = await fetch('https://darewell-civ1.onrender.com/ping');
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      if (!response1.ok){
+      if (!response2.ok){
         throw new Error(`HTTP error! Status: ${response1.status}`);
       }
   
-      const data = await response.text(); // or response.json() if expecting JSON
-      console.log('Fetch successful:', data);
+      console.log('Darewell and payment gateway awake');
     } catch (error) {
       console.error('Fetch failed:', error.message);
     }
