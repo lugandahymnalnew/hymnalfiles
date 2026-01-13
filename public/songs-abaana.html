@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Children Songs - Abaana</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="css/vue-transitions.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="js/jquery.js" defer></script>
+</head>
+<body>
+    <!-- Loading spinner (shown while database initializes) -->
+    <div id="spinnerHolder" class="spinner-overlay">
+        <div class="spinner-1"></div>
+        <p>Loading children songs...</p>
+    </div>
+
+    <!-- Vue App Container -->
+    <div id="vue-song-app" class="vue-song-container" v-show="!isLoading">
+        <!-- Hamburger Menu Button -->
+        <button class="nav-hamburger" @click="toggleDrawer" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- Header -->
+        <div class="song-page-header">
+            <div class="header-content">
+                <h1>Ennyimba Z'Abana</h1>
+                <p>{{ currentSongId }} / {{ totalSongs }}</p>
+            </div>
+            <div class="header-actions">
+                <button @click="changeFontSize(-0.2)" class="icon-btn">A-</button>
+                <button @click="changeFontSize(0.2)" class="icon-btn">A+</button>
+            </div>
+        </div>
+
+        <!-- Navigation Drawer -->
+        <transition name="drawer-slide">
+            <div v-if="isDrawerOpen" class="nav-drawer-overlay" @click="closeDrawer"></div>
+        </transition>
+
+        <transition name="drawer-slide">
+            <div v-if="isDrawerOpen" class="nav-drawer">
+                <div class="drawer-header">
+                    <h3>Ennyimba Z'Abana</h3>
+                    <button class="drawer-close" @click="closeDrawer">&times;</button>
+                </div>
+
+                <!-- Dialpad Section -->
+                <div class="dialpad-section">
+                    <div class="dialpad-display">{{ dialpadNumber || '_' }}</div>
+                    <div class="dialpad">
+                        <button class="dialpad-btn" @click="dialpadInput(1)">1</button>
+                        <button class="dialpad-btn" @click="dialpadInput(2)">2</button>
+                        <button class="dialpad-btn" @click="dialpadInput(3)">3</button>
+                        <button class="dialpad-btn" @click="dialpadInput(4)">4</button>
+                        <button class="dialpad-btn" @click="dialpadInput(5)">5</button>
+                        <button class="dialpad-btn" @click="dialpadInput(6)">6</button>
+                        <button class="dialpad-btn" @click="dialpadInput(7)">7</button>
+                        <button class="dialpad-btn" @click="dialpadInput(8)">8</button>
+                        <button class="dialpad-btn" @click="dialpadInput(9)">9</button>
+                        <button class="dialpad-btn del" @click="dialpadBackspace">Del</button>
+                        <button class="dialpad-btn" @click="dialpadInput(0)">0</button>
+                        <button class="dialpad-btn open" @click="dialpadOpen">Open</button>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation -->
+                <div class="drawer-nav-section">
+                    <h4>Navigate</h4>
+                    <a href="src/combined-index.html" class="drawer-link">📚 Song Index</a>
+                    <a href="src/menu.html" class="drawer-link">🔢 Main Dialpad</a>
+                    <a href="index.html" class="drawer-link">🏠 Home</a>
+                </div>
+
+                <!-- Settings -->
+                <div class="drawer-settings">
+                    <h4>Settings</h4>
+                    <div class="setting-row">
+                        <span>Font Size</span>
+                        <div class="font-controls">
+                            <button @click="changeFontSize(-0.2)">A-</button>
+                            <span>{{ fontSize.toFixed(1) }}</span>
+                            <button @click="changeFontSize(0.2)">A+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
+
+        <!-- Song Header -->
+        <transition name="fade">
+            <div class="song-title-bar" v-if="currentSong">
+                <div class="song-number-badge">
+                    <span class="big-number">{{ currentSongId }}</span>
+                    <span class="label">Abaana</span>
+                </div>
+                <div class="song-info">
+                    <h2>{{ currentSong.title }}</h2>
+                    <p v-if="currentSong.english_title">{{ currentSong.english_title }}</p>
+                    <span v-if="currentSong.doh" class="key-badge">Key: {{ currentSong.doh }}</span>
+                </div>
+            </div>
+        </transition>
+
+        <!-- Song Content -->
+        <transition name="fade">
+            <div class="song-lyrics-container" v-if="currentSong">
+                <pre id="txt" :style="{ fontSize: fontSize + 'rem' }" v-html="formattedLyrics"></pre>
+            </div>
+        </transition>
+
+        <!-- Navigation Controls -->
+        <div class="floating-nav-controls">
+            <button class="nav-fab" @click="navigateSong(-1)">‹</button>
+            <button class="nav-fab" @click="navigateSong(1)">›</button>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="bottom-nav-bar">
+            <a href="src/combined-index.html" class="bottom-nav-item">
+                <span class="nav-icon">📚</span>
+                <span>Index</span>
+            </a>
+            <button class="bottom-nav-item" @click="toggleDrawer">
+                <span class="nav-icon">🔢</span>
+                <span>Dialpad</span>
+            </button>
+            <a href="index.html" class="bottom-nav-item">
+                <span class="nav-icon">🏠</span>
+                <span>Home</span>
+            </a>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="song-progress" v-if="totalSongs > 0">
+            <div class="progress-text">{{ currentSongId }} of {{ totalSongs }}</div>
+            <div class="progress-bar">
+                <div class="progress-fill" :style="{ width: (currentSongId / totalSongs * 100) + '%' }"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load sql.js dynamically if not already loaded
+        async function loadSqlJs() {
+            if (window.initSqlJs) {
+                return window.initSqlJs;
+            }
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://sql.js.org/dist/sql-wasm.js';
+                script.onload = () => resolve(window.initSqlJs);
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        const { createApp, ref, computed, watch, onMounted } = Vue;
+
+        const VueSongApp = {
+            setup() {
+                // State
+                const db = ref(null);
+                const currentSongId = ref(1);
+                const totalSongs = ref(29);
+                const isLoading = ref(true);
+                const currentSong = ref(null);
+                const isDrawerOpen = ref(false);
+                const fontSize = ref(parseFloat(localStorage.getItem('fontSize')) || 2);
+                const dialpadNumber = ref('');
+
+                // Formatted lyrics
+                const formattedLyrics = computed(() => {
+                    if (!currentSong.value) return 'Loading...';
+
+                    const stanzas = currentSong.value.stanzas;
+                    if (!stanzas) return '';
+
+                    let content = '';
+
+                    stanzas.forEach(stanza => {
+                        if (stanza.type === 'chorus') {
+                            content += '<span class="chorus-label">CHORUS</span>\n';
+                        } else {
+                            content += '<span class="verse-label">Verse ' + stanza.number + '</span>\n';
+                        }
+
+                        stanza.lines.forEach(line => {
+                            content += line + '\n';
+                        });
+
+                        content += '\n';
+                    });
+
+                    return content;
+                });
+
+                // Initialize SQLite database
+                const initDatabase = async () => {
+                    const SQL = await loadSqlJs().then(fn => fn({
+                        locateFile: file => `https://sql.js.org/dist/${file}`
+                    }));
+
+                    const savedDb = localStorage.getItem("myDatabase");
+                    if (savedDb) {
+                        db.value = new SQL.Database(new Uint8Array(JSON.parse(savedDb)));
+                        console.log("Loaded database from localStorage");
+                    } else {
+                        db.value = new SQL.Database();
+                    }
+
+                    const result = db.value.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='children_songs'");
+                    if (result.length === 0) {
+                        await createChildrenTable();
+                    }
+
+                    loadSong(currentSongId.value);
+                    isLoading.value = false;
+                    document.getElementById("spinnerHolder").classList.add("hide-div");
+                };
+
+                // Create children songs table
+                const createChildrenTable = async () => {
+                    db.value.run(`CREATE TABLE IF NOT EXISTS children_songs (
+                        id INTEGER PRIMARY KEY,
+                        song_id INTEGER UNIQUE,
+                        title TEXT,
+                        english_title TEXT,
+                        doh TEXT,
+                        stanzas TEXT
+                    );`);
+
+                    await fetchAndStoreChildrenSongs();
+                    saveDatabase();
+                    console.log("Children songs table created and populated");
+                };
+
+                // Fetch and store children songs
+                const fetchAndStoreChildrenSongs = async () => {
+                    try {
+                        const response = await fetch("/allChildrenSongs");
+                        const result = await response.json();
+                        const songs = result.data;
+
+                        songs.forEach(song => {
+                            db.value.run(`INSERT OR IGNORE INTO children_songs (song_id, title, english_title, doh, stanzas)
+                                    VALUES (?, ?, ?, ?, ?);`,
+                                [song.id, song.title, song.english_title, song.doh, JSON.stringify(song.stanzas)]);
+                        });
+
+                        console.log("Fetched and stored Children songs successfully!");
+                    } catch (error) {
+                        console.error("Error fetching Children songs:", error);
+                    }
+                };
+
+                // Load a specific song
+                const loadSong = (songId) => {
+                    const stmt = db.value.prepare("SELECT * FROM children_songs WHERE song_id = ?");
+                    stmt.bind([songId]);
+
+                    if (!stmt.step()) {
+                        currentSong.value = { title: 'Song not found', stanzas: [] };
+                        stmt.free();
+                        return;
+                    }
+
+                    const song = stmt.getAsObject();
+                    currentSong.value = {
+                        ...song,
+                        stanzas: JSON.parse(song.stanzas)
+                    };
+                    stmt.free();
+
+                    const newUrl = `${window.location.pathname}?song=${songId}`;
+                    window.history.pushState({songId}, '', newUrl);
+                };
+
+                // Navigate to previous/next song
+                const navigateSong = (direction) => {
+                    currentSongId.value += direction;
+                    if (currentSongId.value > totalSongs.value) currentSongId.value = 1;
+                    if (currentSongId.value < 1) currentSongId.value = totalSongs.value;
+                    loadSong(currentSongId.value);
+                };
+
+                // Dialpad functions
+                const dialpadInput = (num) => {
+                    if (dialpadNumber.value.length < 2) {
+                        dialpadNumber.value += num;
+                    }
+                };
+
+                const dialpadBackspace = () => {
+                    dialpadNumber.value = dialpadNumber.value.slice(0, -1);
+                };
+
+                const dialpadOpen = () => {
+                    const num = parseInt(dialpadNumber.value);
+                    if (num >= 1 && num <= totalSongs.value) {
+                        currentSongId.value = num;
+                        loadSong(num);
+                        closeDrawer();
+                    }
+                    dialpadNumber.value = '';
+                };
+
+                // Toggle drawer
+                const toggleDrawer = () => {
+                    isDrawerOpen.value = !isDrawerOpen.value;
+                    if (!isDrawerOpen.value) {
+                        dialpadNumber.value = '';
+                    }
+                };
+
+                // Close drawer
+                const closeDrawer = () => {
+                    isDrawerOpen.value = false;
+                    dialpadNumber.value = '';
+                };
+
+                // Change font size
+                const changeFontSize = (delta) => {
+                    const newSize = Math.max(1, Math.min(5, fontSize.value + delta));
+                    fontSize.value = newSize;
+                    localStorage.setItem('fontSize', newSize);
+                };
+
+                // Save database
+                const saveDatabase = () => {
+                    const data = db.value.export();
+                    localStorage.setItem("myDatabase", JSON.stringify(Array.from(data)));
+                    console.log("Database saved to localStorage");
+                };
+
+                // Handle browser back/forward
+                const handlePopState = (event) => {
+                    if (event.state && event.state.songId) {
+                        currentSongId.value = event.state.songId;
+                        loadSong(currentSongId.value);
+                    }
+                };
+
+                // Get song ID from URL on mount
+                const getUrlSongId = () => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const songId = parseInt(urlParams.get('song')) || 1;
+                    if (songId >= 1 && songId <= totalSongs.value) {
+                        currentSongId.value = songId;
+                    }
+                };
+
+                onMounted(() => {
+                    getUrlSongId();
+                    initDatabase();
+                    window.addEventListener('popstate', handlePopState);
+                });
+
+                return {
+                    currentSongId,
+                    totalSongs,
+                    isLoading,
+                    currentSong,
+                    isDrawerOpen,
+                    fontSize,
+                    dialpadNumber,
+                    formattedLyrics,
+                    toggleDrawer,
+                    closeDrawer,
+                    navigateSong,
+                    dialpadInput,
+                    dialpadBackspace,
+                    dialpadOpen,
+                    changeFontSize
+                };
+            },
+            template: `
+                <div class="vue-song-container">
+                    <!-- Hamburger Menu Button -->
+                    <button class="nav-hamburger" @click="toggleDrawer" aria-label="Open menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <!-- Header -->
+                    <div class="song-page-header">
+                        <div class="header-content">
+                            <h1>Ennyimba Z'Abana</h1>
+                            <p>{{ currentSongId }} / {{ totalSongs }}</p>
+                        </div>
+                        <div class="header-actions">
+                            <button @click="changeFontSize(-0.2)" class="icon-btn">A-</button>
+                            <button @click="changeFontSize(0.2)" class="icon-btn">A+</button>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Drawer -->
+                    <transition name="drawer-slide">
+                        <div v-if="isDrawerOpen" class="nav-drawer-overlay" @click="closeDrawer"></div>
+                    </transition>
+
+                    <transition name="drawer-slide">
+                        <div v-if="isDrawerOpen" class="nav-drawer">
+                            <div class="drawer-header">
+                                <h3>Ennyimba Z'Abana</h3>
+                                <button class="drawer-close" @click="closeDrawer">&times;</button>
+                            </div>
+
+                            <!-- Dialpad Section -->
+                            <div class="dialpad-section">
+                                <div class="dialpad-display">{{ dialpadNumber || '_' }}</div>
+                                <div class="dialpad">
+                                    <button class="dialpad-btn" @click="dialpadInput(1)">1</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(2)">2</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(3)">3</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(4)">4</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(5)">5</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(6)">6</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(7)">7</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(8)">8</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(9)">9</button>
+                                    <button class="dialpad-btn del" @click="dialpadBackspace">Del</button>
+                                    <button class="dialpad-btn" @click="dialpadInput(0)">0</button>
+                                    <button class="dialpad-btn open" @click="dialpadOpen">Open</button>
+                                </div>
+                            </div>
+
+                            <!-- Quick Navigation -->
+                            <div class="drawer-nav-section">
+                                <h4>Navigate</h4>
+                                <a href="src/combined-index.html" class="drawer-link">📚 Song Index</a>
+                                <a href="src/menu.html" class="drawer-link">🔢 Main Dialpad</a>
+                                <a href="index.html" class="drawer-link">🏠 Home</a>
+                            </div>
+
+                            <!-- Settings -->
+                            <div class="drawer-settings">
+                                <h4>Settings</h4>
+                                <div class="setting-row">
+                                    <span>Font Size</span>
+                                    <div class="font-controls">
+                                        <button @click="changeFontSize(-0.2)">A-</button>
+                                        <span>{{ fontSize.toFixed(1) }}</span>
+                                        <button @click="changeFontSize(0.2)">A+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <!-- Song Title Bar -->
+                    <transition name="fade">
+                        <div class="song-title-bar" v-if="currentSong">
+                            <div class="song-number-badge">
+                                <span class="big-number">{{ currentSongId }}</span>
+                                <span class="label">Abaana</span>
+                            </div>
+                            <div class="song-info">
+                                <h2>{{ currentSong.title }}</h2>
+                                <p v-if="currentSong.english_title">{{ currentSong.english_title }}</p>
+                                <span v-if="currentSong.doh" class="key-badge">Key: {{ currentSong.doh }}</span>
+                            </div>
+                        </div>
+                    </transition>
+
+                    <!-- Song Lyrics -->
+                    <transition name="fade">
+                        <div class="song-lyrics-container" v-if="currentSong">
+                            <pre id="txt" :style="{ fontSize: fontSize + 'rem' }" v-html="formattedLyrics"></pre>
+                        </div>
+                    </transition>
+
+                    <!-- Floating Navigation Controls -->
+                    <div class="floating-nav-controls">
+                        <button class="nav-fab" @click="navigateSong(-1)">&#8249;</button>
+                        <button class="nav-fab" @click="navigateSong(1)">&#8250;</button>
+                    </div>
+
+                    <!-- Bottom Navigation Bar -->
+                    <div class="bottom-nav-bar">
+                        <a href="src/combined-index.html" class="bottom-nav-item">
+                            <span class="nav-icon">📚</span>
+                            <span>Index</span>
+                        </a>
+                        <button class="bottom-nav-item" @click="toggleDrawer">
+                            <span class="nav-icon">🔢</span>
+                            <span>Dialpad</span>
+                        </button>
+                        <a href="index.html" class="bottom-nav-item">
+                            <span class="nav-icon">🏠</span>
+                            <span>Home</span>
+                        </a>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    <div class="song-progress" v-if="totalSongs > 0">
+                        <div class="progress-text">{{ currentSongId }} of {{ totalSongs }}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" :style="{ width: (currentSongId / totalSongs * 100) + '%' }"></div>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        createApp(VueSongApp).mount('#vue-song-app');
+    </script>
+</body>
+</html>

@@ -723,3 +723,95 @@ stroke: #000;
 .hide-div{
     display: none;
 }
+
+/* ============================================
+   CHILDREN SONG STYLES - Combined Index
+   ============================================ */
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+.filter-tabs .filter-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-tabs .filter-btn:hover {
+    background: #e0e0e0;
+}
+
+.filter-tabs .filter-btn.active {
+    background: rgb(2, 3, 66);
+    color: white;
+}
+
+.filter-tabs .filter-btn.children-filter {
+    background: #f8bbd0;
+    color: #c2185b;
+}
+
+.filter-tabs .filter-btn.children-filter.active {
+    background: #e91e63;
+    color: white;
+}
+
+/* Results Count */
+.results-count {
+    padding: 8px 15px;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 13px;
+    border-bottom: 1px solid #ffcc80;
+}
+
+/* Children Song Styling - Main Distinction */
+.tittle.children-song {
+    border-left: 4px solid #e91e63 !important;
+    background: linear-gradient(90deg, #fce4ec 0%, #fff 25%, #fff 100%) !important;
+}
+
+.tittle.children-song:hover {
+    background: linear-gradient(90deg, #f8bbd0 0%, #fff 25%, #fff 100%) !important;
+}
+
+/* Children badge */
+.children-badge {
+    display: inline-block;
+    background: #e91e63;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+/* Children number styling */
+.tittle.children-song .No {
+    color: #e91e63;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .filter-tabs .filter-btn {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .results-count {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+}

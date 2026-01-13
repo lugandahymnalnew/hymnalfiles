@@ -16,22 +16,34 @@ async function initDatabase() {
     } else {
         db = new SQL.Database();
         db.run(`CREATE TABLE IF NOT EXISTS songs (
-            id INTEGER PRIMARY KEY, 
+            id INTEGER PRIMARY KEY,
             number TEXT UNIQUE,
-            song TEXT, 
+            song TEXT,
             EngNo TEXT,
             EngTit TEXT,
             composer TEXT,
             doh TEXT,
             signUp TEXT,
             signDown TEXT,
-            luganda_lyrics TEXT DEFAULT '{"none":["Luganda lyrics not found"]}', 
+            luganda_lyrics TEXT DEFAULT '{"none":["Luganda lyrics not found"]}',
             english_lyrics TEXT DEFAULT '{"none":["English lyrics not found"]}'
         );`);
+
+        // Create children songs table
+        db.run(`CREATE TABLE IF NOT EXISTS children_songs (
+            id INTEGER PRIMARY KEY,
+            song_id INTEGER UNIQUE,
+            title TEXT,
+            english_title TEXT,
+            doh TEXT,
+            stanzas TEXT
+        );`);
+
         saveDatabase();
         console.log("New database created");
         await fetchAndStoreSongs();
         await fetchAndStoreEnglishSongs();
+        await fetchAndStoreChildrenSongs();
     }
     if(hymnal == null){
         window.location.href = "/src/menu.html";
@@ -73,6 +85,25 @@ async function fetchAndStoreEnglishSongs() {
         console.log("Fetched and stored English songs successfully!");
     } catch (error) {
         console.error("Error fetching English songs:", error);
+    }
+}
+
+async function fetchAndStoreChildrenSongs() {
+    try {
+        const response = await fetch("/allChildrenSongs");
+        const result = await response.json();
+        const songs = result.data;
+
+        songs.forEach(song => {
+            db.run(`INSERT OR IGNORE INTO children_songs (song_id, title, english_title, doh, stanzas)
+                    VALUES (?, ?, ?, ?, ?);`,
+                [song.id, song.title, song.english_title, song.doh, JSON.stringify(song.stanzas)]);
+        });
+
+        saveDatabase();
+        console.log("Fetched and stored Children songs successfully!");
+    } catch (error) {
+        console.error("Error fetching Children songs:", error);
     }
 }
 

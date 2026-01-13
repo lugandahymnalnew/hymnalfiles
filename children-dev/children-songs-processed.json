@@ -1,0 +1,1141 @@
+{
+  "category": "children_songs",
+  "total_songs": 29,
+  "songs": [
+    {
+      "id": 1,
+      "title": "Yesu ye Anjagala",
+      "english_title": "Jesus Loves Me!",
+      "doh": "C",
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Yesu ye anjagala, bwatyo bwe yayogera;",
+            "Abaan(a) abato nga babe, beyawa omukisa gwe."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Anjagala nze, anjagala nze;",
+            "Anjagala nze, yayogera bw'atyo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Yesu ye anjagala, bwe mbeer(a) omunak(u) ennyo;",
+            "Era alingabira, byonna bye nnetaaga nze."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Yesu fenn(a) atwagala, yaf(a) okutununula;",
+            "Yaggulawo oluggi, atusonyiw(e) ebibi."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Enkya Nanaabye Engalo",
+      "english_title": "Little feet, be careful",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Enkya nanaaby(e) engalo, ne nzitukuza nnyo;",
+            "Nenziwaay(o) eri Yesu, okumukolera."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Ggwe (e)bigere byange, wegendereze;",
+            "Ebya Yesu byokka, by onkozesanga."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Era n'amatu gange, gawulire byonna;",
+            "Buli ebisaanira, ndyoke mbikolenga."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Era n'amaaso gange, galab(e) amazima;",
+            "Netaag(a) okugafuga, okumuweereza."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Nolulimi njagal(a) okuluwa Mukama;",
+            "Okwoger(a) ebituufu, ebikusanyusa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 6,
+          "lines": [
+            "Naatunuuliranga Ye, mu buli kve nkola;",
+            "Mpone ebibi byonna, mu linnya lya Yesu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Yesu Alaba Ennyonyi",
+      "english_title": "God sees the Little Sparrow Fall",
+      "doh": "F",
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Yesu alaba ennyonyi nga zigwa ku ttaka,",
+            "Oba ng(a) azaagala bwatyo, Nange anjagala."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Anjagala, mmanyi nga'njagala;",
+            "Obang(a) ayagal(a) ennyonyi, nange anjagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Ayambaza amalanga, erang(i) ennung(i) ennyo,",
+            "Nga bwayagal(a) ebimuli, Nange anjagala"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Ebitono ne'binene, byonna yabitonda",
+            "Anajjukirang(a) babe, anaabaagalanga."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Ensimbi Ezigwa Oziwulira?",
+      "english_title": "I Hear the Shillings Dropping",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ensimbi ezigwa oziwulira?",
+            "Zigwa mu nsawo, tuziwa Yesu."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "zigwa mu nsawo, wulira zigwa,",
+            "Tuziwa Mukama, atwale zonna."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Bulijo tumuwe, fenna abato;",
+            "Kano ke kalabo, kaffe abato."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Yesu ffe abaana, tuleese buno;",
+            "Naye nga tukuze, tulisinzaawo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Tulina buno, tukwagala nnyo;",
+            "Ye saddaaka yaffe, olwekisa kyo."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Omutambuze Nze",
+      "english_title": null,
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Omutambuze nze, omugeny(i) era;",
+            "Eby'omusi bingi, bijj(a) okunnumba."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Yesu Atwal(a) abato, alibakulembera,",
+            "N'abatuusa ewuwe, mu maka ge Ye."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Ensi eyo nnungi, temuli kabi;",
+            "N'ennaku temuli, tebituukayo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Olugendo olwo, alutambula;",
+            "Asab(a) eri Yesu, obutalemwa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Yesu onnongoose, onjigirize;",
+            "Onnun'gamye nkwate, erijja gyoli."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Awo Yesu Bwe Yatambula",
+      "english_title": null,
+      "doh": "F",
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Awo Yesu bwe yatambula, edda mu nsi entukuvu;",
+            "(A)bakyala Abayudaaya, baamusemberera."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Bajja nga bamuleetera, abaana baabwe abato;",
+            "(A)bateeke mu mikono gye, baweebw(e) omukisa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Naye abayigirizwa, ne babagobera ddala;",
+            "Nti temumuteganya nnyo, tubeegayiridde."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Bwe yabalaba abato, Yesu yalagira bajje;",
+            "Yayogera neggonjebwa, “(A)bato bajje gyendi\""
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Yesu Mulokozi Wange",
+      "english_title": null,
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Yesu Mulokozi wange; leero nze wuwo wekka,",
+            "Omusaayi gwo gunnaazizza, Yesu Mwana gwendiga."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Tukutendereza Yesu, Yesu Mwana gwendiga,",
+            "Omusaayi gwo gunnaazizza, nkwebaz(a) Omulokozi."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Edda nafuba bufubi, okufun(a) emirembe,",
+            "Leero mmaliridde ddala, okweyabiza Yesu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Nnaabuliraang(a) abantu, obulokozi bwonna;",
+            "Obutali bwa kitundu, obulamb(a) obwobuwa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Nnaategeezang(a) ebya Yesu, nobuvumu ne sitya;",
+            "Eyanzija mu busibe, nokuwony(a) eyamponya."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 6,
+          "lines": [
+            "Nneebaz(a) eyanunula nze, eyamponya wakisa!",
+            "Yes(u) ankuum(a) ansanyus(a) era, bulijjo, Yebazibwe"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Yesu Bwabeera mu Maka",
+      "english_title": "Happy, Happy Home",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Yesu bw'abeera mu maka, gaba ga ssanyu,",
+            "Gaba ga ssanyu, ssanyu lingi nnyo;",
+            "Yesu bw'abeera mu maka, gaba ga ssanyu,",
+            "Ssanyu lingi nnyo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Yesu bw'abeera ne taata, aba wa ssanyu,",
+            "Aba wa ssanyu, ssanyu lingi nnyo;",
+            "Yesu bw'abeera ne taata, aba wa ssanyu,",
+            "Ssanyu lingi nnyo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Yesu bw'abeera ne maama, aba wa ssanyu,",
+            "Aba wa ssanyu, ssanyu lingi nnyo.",
+            "Yesu bwabeera ne maama, aba wa ssanyu,",
+            "Ssanyu lingi nnyo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Bw'abeera mu mutima gwo, guba gwa ssanyu,",
+            "Guba gwa ssanyu, ssanyu lingi nnyo.",
+            "Bw'abeera mu mutima gwo, guba gwa ssanyu,",
+            "Ssanyu lingi nnyo."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Ensimbi Zaffe Mugende",
+      "english_title": "Go Little Pennies",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ensimbi zaffe mugende, mutwaall(e) obubaka bonne",
+            "Eri abaana abato, nabo balokoke."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Ensimbi zaffe mugende, mugende mu baabuulire",
+            "Yesu Mukama wa kisa, wagazi wabantu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Mugende mubabuulire, byonna bye tukola wano;",
+            "Nabo balyoke bayige, nga ffe bwetuyiga."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Newankubadde nga ntono, Mukama zimusanyusa;",
+            "Okukol(a) omulimu gwe, zibuulir(e) abaana."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Nyambala Engule Yange",
+      "english_title": "I will Wear a Crown",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ndyambala engule yange mu ggulu;",
+            "Yange mu ggulu, yange muggulu;",
+            "Ndyambala engule yange muggulu;",
+            "Walibaawo (e)ssanyu, (e)ssanyu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Ndikuba ennanga yange mu ggulu,",
+            "Yange mu ggulu, yange muggulu,",
+            "Ndikuba ennanga yange muggulu,",
+            "Walibaawo (e)ssanyu, (e)ssanyu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Ndyambala busuuti yange muggulu,",
+            "Yange mu ggulu, yange muggulu;",
+            "Ndyamabala busuuti yange muggulu,",
+            "Walibaawo (e)ssanyu, (e)ssanyu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Waggulu mu Bbanga",
+      "english_title": "Up, Up in the sky",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Waggulu mu bbanga, ennyonyi zibuuka,",
+            "Neziwummulira wansi mu bisu;",
+            "Ekiwawa kya kkono, nekiwawa ekya ddyo,",
+            "Leka ennyonyi zeebake ekiro."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Enjuba evaayo, (o)musana guyaka,",
+            "Otyanno wanjuba, enyony(i) zibuuza;",
+            "(E)bimuli birungi, (e)miti gisanyusa,",
+            "Twebaza Kitaffe olw'obutonzi!"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Mu Mutima, Mu Mutima",
+      "english_title": "Into my Heart",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Mu mutima, mu mutima, jjangu mu mutima gwange;",
+            "Jjangu leero, oyingire, jangu mu mutima gwange."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Omusana, omusana, gwake mu mutima gwange;",
+            "Yesu Musana gwobulamu, gwake mu mutima gwange."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Katonda Tukwebaza",
+      "english_title": "Thank You for the World so Sweet",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Katonda tukwebaza, olw'emmere gyetulya;",
+            "Nengoye zetwambala, nolwennyony(i) eziyimba."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Tukwebaz(a) olw'amaka, era nolwo'omusana;",
+            "N'olweggul(o) olulungi, nolwabyonna by otuwa."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Sabanga Mpola Mu Makya.",
+      "english_title": "Whisper a Prayer in the Morning",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Sabanga mpola mu makya, sabanga neggulo",
+            "Sabanga nakawungeezi, kiyamba omutima."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Yesu addam(u) okusaba, olunaku lwonna;",
+            "Yesu addam(u) okusaba, okutusanyusa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Ayinza okujja ku nkya, oba olw'eggulo;",
+            "Oba anajja mu ttumbi, gumanga omwoyo."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Ffe Tuli Ggye kya Mukama.",
+      "english_title": null,
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ffe tuli ggye lya Mukama, ff(e) abatono abanafu;",
+            "Kyokka ffe twagala Yesu, tumukolere bingi."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Ffe tuli ggye lya Mukama, Ggye lya Mukama, ggye lya Mukama;",
+            "Ffe tuli ggye lya Mukama, tumukolere."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Waliwo abato bangi, ewala mu bizinga;",
+            "Tebannamanya ku Yesu, basinza bifaananyi."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Tutumey(o) abasomesa, bayig(e) okusabanga;",
+            "Mukama omulokozi, asonyiwa ebibi."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Yesu yajja ku nsi kuno, okufa ku lwa bonna;",
+            "Bwe balimutegeera Ye, alibawa essanyu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Ekimuli Ekito Mbuulira",
+      "english_title": "The Reason",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "(E)kimuli ekito mbuulira, Katonda akukolera ki?",
+            "\"Ampa enkuba nomusana gwe, kye nava nkula bwe nti.\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "(A) kanyonyi akato mbuulira, Katonda akukolera ki?",
+            "\"Ampa emmere n'aw okusula, kye nva mmuyimbir(a) ennyo\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "(O)bwana mmwe obuto mwogere, Katonda abakolera ki?",
+            "\"Bulijjo atuwa essanyu lye, kye tuva tusek(a) ennyo\""
+          ]
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Buli Nnaku Omukaaga",
+      "english_title": "The Seventh is for Jesus",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Buli nnaku omukaaga, tukol(a) era tuzannya;",
+            "Olwomusanvu Yesu, (o)lunaku lutukuvu."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Emu, bbiri, satu, nnya, ttaano, omukaaga zaffe;",
+            "Nay(e) olwomusanvu lulwe, Sabbiiti ya Mukama."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Bye tunaayogera leero, ne byonna bye tukola;",
+            "Ka tumugoberere nga, abaana ba Katonda."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Ka tugende mu ssomero, lya Ssabiiti tusabe;",
+            "Era tuyige ku Yesu, nokwagala kw(e) okungi."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Ndibafuula Abavubi B'abantu",
+      "english_title": "I will Make you Fishiers of Men",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ndibafuula abavubi, abavubi ab'abantu;",
+            "Ndibafuula abavubi, mmwe mujje gyendi."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Mmwe mujje gyendi, muyite nange;",
+            "Ndibafuula abavubi, mmwe mujje gyendi."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Wulira Yesu ayita, jjangu gy'endi,",
+            "jjangu gy'endi Wulira Yesu ayita, akuwummuze."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Yesu Kristo ajja kudda, Ajja mangu,",
+            "Ajja mangu; Yesu Kristo Ajja mangu, okututwala."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Abaana ba Katonda Mmwenna",
+      "english_title": "Always be Cheerful",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "(A)baana ba katonda mmwenna, muwulire bw'atulagira;",
+            "Agamba, \"Beera mu ssanyu,\" Kabaka atwagala."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Mu mutima tulin(a) essanyu, tugoberer(a) omulokozi,",
+            "Atuweerez(a) essanyu lingi, bulijj(o) atusanyusa."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Tukulemberwa Katonda, mu lugendo atukuuma nnyo;",
+            "Atusuubiz(a) omukisa, tayinza kutuleka."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Abato be n'abakulu, katubeere nobunyiikivu;",
+            "Tetukoowa amang(u) ago, mu kulokol(a) abantu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Buli lwe tuggwam(u) amaanyi, ekibi kituteganya nnyo;",
+            "Ettima eryomulabe, limalawo essanyu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Omusana Gwange",
+      "english_title": "This Little Light of Mine",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Omusana gwaange, nze nnaaguyasanga;",
+            "Omusana gwaange, nze nnaaguyasanga; [Gwakenga] x3"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Siguvuniikirenga, nze nnaaguyasanga,",
+            "Siguvuniikirenga, nze nnaaguyasanga; [Gwakenga] x3"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Setaani tayinze, nze nnaaguyasanga,",
+            "Setaani tayinze, nze nnaaguyasanga; [Gwakenga] x3"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Yesu ajja kujjja, nze nnaaguyasanga,",
+            "Yesu ajja kujjja, nze nnaaguyasanga, [Gwakenga] x3"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Baliranwa bange, nze nnaaguyasanga,",
+            "Baliranwa bange, nze nnaaguyasanga; [Gwakenga] x3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Emiti Gyewuuba Mpola",
+      "english_title": "The Trees are Gently Swaying",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "(E)miti gyewuuba wuuba, mpola, mpola;",
+            "(E)miti gyewuuba mpola, Katonda kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "(E)biwojjolo bibuuka, mpola, mpola;",
+            "(E)biwojjola bibuuka, Katonda kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Nnyonyi zibuuka buuka, mpola, mpola;",
+            "Nyonyi zibuuka mpola, Katonda kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Ebimuli byewuuba, mpola, mpola;",
+            "Ebimuli nyewuuba, Katonda kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Naffe twewuuba wuuba, mpola, mpola;",
+            "Naffe ywewuuba mpola, Katonda kwagala."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Nze Ndi Mmunyenye Entono",
+      "english_title": "I'm a little Star for Jesus",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Nze ndi mmunyenye entono, eyak(a) ekiro kyonna;",
+            "Nze ndi mmunyenye ya Yesu. Eyaka omusana."
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Nze ndi mmunyeny(e) entono ey'essanyu;",
+            "(Nze ndi mmunyenye ya Yesu.) x2"
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Nze nsi mmunyenye ya Yesu, eyak(a) etezikira;",
+            "Nze ndi mmunyenye ya Yesu, nja kwakanga bulijjo."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Nze ndi mmunyenye ya Yesu, mu nsi en(o) eyekibi;",
+            "Nja kwakanga kulwa Yesu, okutuusa lw'alijja."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Yesu Ayagala Abaana",
+      "english_title": "Jesus Loves the Little Children",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Yesu ayagala (a)baana, abaana bonna mu nsi:",
+            "Tayinza kubagobera bweru, yagaan(a) okubagoba.",
+            "Era tabeerabira; nobwana obukafiri obwewala"
+          ]
+        },
+        {
+          "type": "chorus",
+          "number": 2,
+          "lines": [
+            "Yesu ayagala (a)baana, abaana bonna mu nsi;",
+            "Abeeru nabakyenvu, nafle abaddugavu;",
+            "Yesu ayagala (a)baana bomunsi."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Nkumi na nkumi bafa, eyo mu ns(i) ezewala;",
+            "Tebamanyi na kwagala kwa Yesu, tusab(e) era tugabe;",
+            "Balyoke bategeere, ekitiibwa ekibalindiridde."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Ka tubuulire wonna, obulungi bwa Yesu;",
+            "Enjiri ebune mu nnimi zonna, tuyimb(e) era tusuute,",
+            "Omulokozi waffe; n'abantu bonna bamutendereze."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Tumusinze Katonda Kitaffe",
+      "english_title": "Praise Him! Little Children",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Tumusinze Katonda Kitaffe, mwagazi, mwagazi;",
+            "Abaana be tumutendereze, Ktonda, kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Mwe abaan(a) abato n'abakulu, mwagazi, mwagazi;",
+            "Ka twagalenga Mukama waffe; Katonda kwagala."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Bulijo ka tumuweerezenga, mwagazi, mwagazi;",
+            "Bulijjo ka tube bawombeefu; Katonda kwagala."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Katonda ye Yantonda",
+      "english_title": "God Made Me",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Enkya ennungi egamba, \"Katonda yankola bulungi nnyo!\"",
+            "Enkya ennungi egamba, \"Yantonda (ku) Iwa kusooka."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Ebire byonna bigamba, \"yankola bulungi nnyo!\"",
+            "Ebire byonna bigamba, \"Yantonda (ku) Iwa kubiri\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "(E)bimuli byonn(a) ebirungi bigamba \"Yankola bulungi nnyo!\"",
+            "(E)bimuli byonna bigamba, \"Yankola (ku) Iwa kusatu\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 4,
+          "lines": [
+            "Mmunyeny(e) ezimasaamasa zigamba, \"yatukola balungi nnyo!\"",
+            "Mmunyenye zonna zigamba, \"Yantonda (ku) lwa kuna\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 5,
+          "lines": [
+            "Nnyabo wankoko agamba \"Katonda yankola bulungi nnyo!\"",
+            "Nnyabo wankoko agamba \"Yantonda ku lwa kutaano\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 6,
+          "lines": [
+            "Omusajja nomukazi bagamba, \"yatukola bulungi nnyo!\"",
+            "Mu kifaananyi kya Katonda ddala, \"Ku lwa mukaaga\""
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 7,
+          "lines": [
+            "Olunaku lwa Sabbiiti lugamba, \"yantonda bulungi nnyo!\"",
+            "Omukisa nekitiibwa yabimpa, \"Ku lwa musanvu\""
+          ]
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Mpa Amafuta mu Tabaaza Yange",
+      "english_title": "Give me Oil in My Lamp",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Mp(a) amafuta mu ttabaaza yange:",
+            "Mp(a) amafuta ge nkusaba;",
+            "Mp(a) amafuta mu ttabaaza yange,",
+            "Njakenga okutuusa enkya,",
+            "[Yimb(a) ozaana, yimb(a) ozaana,",
+            "Yimb(a) ozaana Katonda afuga.] x2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Tukwebaza Yesu",
+      "english_title": "We Thank Thee",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Tukwebaza Yesu, olwokwagala;",
+            "Nomikisa emingi gyotuwa ffe."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 2,
+          "lines": [
+            "Okutukuuma n'okutwambaza;",
+            "N'obulamu ne tuzannya n'essanyu."
+          ]
+        },
+        {
+          "type": "verse",
+          "number": 3,
+          "lines": [
+            "Mu maka gaffe, nabatuzaala;",
+            "Byetwagala tukwabaze ggwe Yesu."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Ebitundu By'ekkumi",
+      "english_title": "Bring Ye all the Tithes",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Ebitundu byekkumi bireetebwe,",
+            "Munkeme naby(o) olwa leero;",
+            "Nnaabafukira emikisa,",
+            "Newatabaawo na bbanga, kugyaawo."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "title": "Mweraba",
+      "english_title": "Goodbye song",
+      "doh": null,
+      "stanzas": [
+        {
+          "type": "verse",
+          "number": 1,
+          "lines": [
+            "Tumaze okusoma, tuddayo ewaffe,",
+            "Mweraba, mweraba, mubeere besigwa;",
+            "Mweraba, mweraba, Katond(a) abakuume."
+          ]
+        }
+      ]
+    }
+  ],
+  "processed": true,
+  "processed_at": "2026-01-12T15:27:38.374Z"
+}

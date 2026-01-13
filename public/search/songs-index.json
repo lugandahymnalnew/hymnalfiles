@@ -1,0 +1,2709 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "description": "Complete song index - Main Hymns and Children Songs",
+    "generated": "2026-01-12T16:46:52.662Z",
+    "counts": {
+      "main_hymns": 249,
+      "children_songs": 29,
+      "total": 278
+    }
+  },
+  "main": [
+    {
+      "id": "1",
+      "number": "1",
+      "ch": "CH 73",
+      "title": "Gw'oli Mutukuvu",
+      "eng_title": "Holy, Holy, Holy",
+      "composer": "John B.Dykes",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "2",
+      "number": "2",
+      "ch": "CS 396",
+      "title": "Ka Tukusuute",
+      "eng_title": "We Praise Thee O God",
+      "composer": "J.J.Husband",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "3",
+      "number": "3",
+      "ch": "CH 647",
+      "title": "Aweebwe Ekitiibwa",
+      "eng_title": "To God be the Glory",
+      "composer": "W.H.Doane",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "4",
+      "number": "4",
+      "ch": "CH 156",
+      "title": "Tusinza Nnyo Erinnya Lye",
+      "eng_title": "All Hail the Power of Jesus' Name",
+      "composer": "Oliver Holden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "5",
+      "number": "5",
+      "ch": "CH 75",
+      "title": "Ka Tumusinze Mukama Waffe",
+      "eng_title": "O Worship the King",
+      "composer": "J.M.Haydn",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "6",
+      "number": "6",
+      "ch": "CH 1",
+      "title": "Mwe Amawanga Ag'oku Nsi",
+      "eng_title": "Before Jehovah's Awful Throne",
+      "composer": "John Hatton",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "7",
+      "number": "7",
+      "ch": "CH 81",
+      "title": "Mukama Gwe Ekifo Kyaffe",
+      "eng_title": "O God Our Help",
+      "composer": "John Hatton",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "8",
+      "number": "8",
+      "ch": "CS 31",
+      "title": "Okukaaba Kwange Owulire",
+      "eng_title": "O Hear My Cry",
+      "composer": "H.Doane",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "9",
+      "number": "9",
+      "ch": "CH 71",
+      "title": "Ggwe Eyannunula",
+      "eng_title": "My Maker and My King",
+      "composer": "Unknown",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "10",
+      "number": "10",
+      "ch": "CH 291",
+      "title": "Jjangu Yesu Obe Mu Nze",
+      "eng_title": "Come Thou Fount",
+      "composer": "A.Nettleton",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "11",
+      "number": "11",
+      "ch": "CS 288",
+      "title": "Bonna Basuute Mukama",
+      "eng_title": "Blessed Be the Name",
+      "composer": "Robert Lown",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "12",
+      "number": "12",
+      "ch": "CH 683",
+      "title": "Twebaza Ggwe Omuva Byonna",
+      "eng_title": "Praise God from Whom",
+      "composer": "Louis Bourgeouis",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "12a",
+      "number": "12a",
+      "ch": "CH 25",
+      "title": "Emirimu Tugirese",
+      "eng_title": "Again Our Earthly Cares We Leave",
+      "composer": "Arr. by Henry W.Greatorex",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "13",
+      "number": "13",
+      "ch": "CH 602",
+      "title": "Yesu Wasuubiza",
+      "eng_title": "Jesus Thou Hast Promised",
+      "composer": "W.O.Perkins",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "14",
+      "number": "14",
+      "ch": "CH 395",
+      "title": "Ka Ntambule Naawe",
+      "eng_title": "O Let Me Walk with Thee",
+      "composer": "Edwin Barnes",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "15",
+      "number": "15",
+      "ch": "NAH 190",
+      "title": "Yesu Alifuga Wonna",
+      "eng_title": "Jesus Shall Reign",
+      "composer": "Edwin Barnes",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "16",
+      "number": "16",
+      "ch": "CH 578",
+      "title": "Nkwetaaga Ayi Mukama",
+      "eng_title": "Blessed Lord How I Need Thee",
+      "composer": "E.E.Belden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "17",
+      "number": "17",
+      "ch": "CH 271",
+      "title": "Sinze Naye Kristo",
+      "eng_title": "Not I but Christ",
+      "composer": "E.E.Belden",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "18",
+      "number": "18",
+      "ch": "CH 394",
+      "title": "Omulokozi ng'Omusumba",
+      "eng_title": "Saviour Like a Shepherd",
+      "composer": "Win.B.Bradbury",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "19",
+      "number": "19",
+      "ch": "CS 300",
+      "title": "Ku Musalaba Yanfiirira",
+      "eng_title": "Down at the Cross",
+      "composer": "J.H.Stockton",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "20",
+      "number": "20",
+      "ch": "CH 585",
+      "title": "Mukama Lwe Lwazi Lwaffe",
+      "eng_title": "The Lord's Our Rock",
+      "composer": "E.E.Belden",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "21",
+      "number": "21",
+      "ch": "CH 599",
+      "title": "Yesu Tuzze Eri Ggwe",
+      "eng_title": "Father, We Come to Thee",
+      "composer": "W.J.Bostwick",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "22",
+      "number": "22",
+      "ch": "CH 559",
+      "title": "Tompitako Omulokozi",
+      "eng_title": "Pass Me Not, O Gentle Saviour",
+      "composer": "W.H.Doane",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "23",
+      "number": "23",
+      "ch": "CH 154",
+      "title": "Yesu Gw'oli Ssanyu Lyaffe",
+      "eng_title": "Jesus Thou of Loving Hearts",
+      "composer": "L.Mason",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "24",
+      "number": "24",
+      "ch": "CH 150",
+      "title": "Erinnya Lya Yesu Ddungi",
+      "eng_title": "How Sweet the Name of Jesus Sounds",
+      "composer": "A.R.Reinnagle",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "25",
+      "number": "25",
+      "ch": "CH 162",
+      "title": "Atikkirwe Engule",
+      "eng_title": "Crown Him with with Many Crowns",
+      "composer": "George J.Elvery",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "26",
+      "number": "26",
+      "ch": "CH 33",
+      "title": "Katonda Tusiibule",
+      "eng_title": "Lord Dismiss Us with Thy Blessing",
+      "composer": "S.Melody",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "27",
+      "number": "27",
+      "ch": "NAH 325",
+      "title": "Ayi MUkama Otuwulire",
+      "eng_title": "Saviour Again to Thy Dear Name",
+      "composer": "Edward J.Hopkins",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "28",
+      "number": "28",
+      "ch": "CH 523",
+      "title": "Twalanga Erinnya lya Yesu",
+      "eng_title": "Take the Name of Jesus With You",
+      "composer": "William H.Doane",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "29",
+      "number": "29",
+      "ch": "CH 276",
+      "title": "Ggwe Yesu Omulokozi",
+      "eng_title": "My Jesus I Love Thee",
+      "composer": "Adoniram J.Gordon",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "30",
+      "number": "30",
+      "ch": "CH 401",
+      "title": "Yesu Gwe Eyanjagala",
+      "eng_title": "Jesus Lover of My Soul",
+      "composer": "Simeon B.Match",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "31",
+      "number": "31",
+      "ch": "CH 529",
+      "title": "Ka Nnyimbe ku Kwagala",
+      "eng_title": "I Will Sing of Jesus' Love",
+      "composer": "E.E.Belden",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "32",
+      "number": "32",
+      "ch": "CH 638",
+      "title": "Nsanyukira Nnyo Okuyimba",
+      "eng_title": "I Have a Song I Love to Sing",
+      "composer": "E.O.EXCEL",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "33",
+      "number": "33",
+      "ch": "CH 390",
+      "title": "Onsembeze Ayi Mukama",
+      "eng_title": "Nearer Still Nearer",
+      "composer": "Mrs. M.C.Morris",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "34",
+      "number": "34",
+      "ch": "CH 534",
+      "title": "Ontegeeze ku bya Yesu",
+      "eng_title": "Tell Me the Story of Jesus",
+      "composer": "J.R.Sweney",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "35",
+      "number": "35",
+      "ch": "CH 635",
+      "title": "Nsanyuka Okuyimba",
+      "eng_title": "Redeemed! How I Love to",
+      "composer": "J.R.Sweney",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "36",
+      "number": "36",
+      "ch": "CH 310",
+      "title": "Nalyoka Ne Nkusenga",
+      "eng_title": "O Happy Day",
+      "composer": "E.F.Rimbault",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "37",
+      "number": "37",
+      "ch": "CH 142",
+      "title": "Okwagala Kwo Gwe",
+      "eng_title": "Love Devine",
+      "composer": "John Zundel",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "38",
+      "number": "38",
+      "ch": "CH 93",
+      "title": "Ka Nnyimbe Ku Buyinza",
+      "eng_title": "I Sing the Mighty Power",
+      "composer": "G.F.ROOT",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "39",
+      "number": "39",
+      "ch": "CH 208",
+      "title": "Emikisa Gyo Mukama",
+      "eng_title": "Lord I Hear of Showers",
+      "composer": "G.F.ROOT",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "40",
+      "number": "40",
+      "ch": "CH 212",
+      "title": "Jangu Ggwe Omwoyo",
+      "eng_title": "Hover O'er, Holy Spirit",
+      "composer": "JNO.R.SWENEY",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "41",
+      "number": "41",
+      "ch": "CH 211",
+      "title": "Omwoyo Omutukuvu",
+      "eng_title": "Holy Spirit, Faithful Guide",
+      "composer": "M M WELLS",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "42",
+      "number": "42",
+      "ch": "CH 213",
+      "title": "Omwoyo Owa Katonda",
+      "eng_title": "Spirit Divine, Attend Our Prayer",
+      "composer": "Geo.G.Hugg",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "44",
+      "number": "44",
+      "ch": "CS 57",
+      "title": "Tewali Wa Mukwano",
+      "eng_title": "There's Not a Friend",
+      "composer": "M.T.Haughey",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "46",
+      "number": "46",
+      "ch": "CH 618",
+      "title": "Bwe Ntuula Awali Ebigere",
+      "eng_title": "Sitting at the Feet of Jesus",
+      "composer": "Arranged",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "47",
+      "number": "47",
+      "ch": "CH 432",
+      "title": "Balina Omukisa",
+      "eng_title": "Blest Be the Tie",
+      "composer": "Arr by L.Mason",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "48",
+      "number": "48",
+      "ch": "CS 301",
+      "title": "Nkwagala Ggwe Ayi Yesu",
+      "eng_title": "I Love Thee Better, Lord",
+      "composer": "R E Hudson",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "49",
+      "number": "49",
+      "ch": "CH 531",
+      "title": "Nzuddeyo Ow'omukwano",
+      "eng_title": "I've Found a Friend",
+      "composer": "George C Stebbins",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "50",
+      "number": "50",
+      "ch": "CH 35",
+      "title": "Katonda Abeerenga Naawe",
+      "eng_title": "God Be With You",
+      "composer": "William G Tomer",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "51",
+      "number": "51",
+      "ch": "CH 608",
+      "title": "Ggwe Yesu Oli Wange",
+      "eng_title": "Blessed Assurance",
+      "composer": "Mrs Joseph F Knapp",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "52",
+      "number": "52",
+      "ch": "CH 655",
+      "title": "Mpa Ekitabo Ekitukuvu",
+      "eng_title": "Give Me the Bible",
+      "composer": "E S Lorenz",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "53",
+      "number": "53",
+      "ch": "CH 518",
+      "title": "Nsanyuka Okwogera",
+      "eng_title": "I Love to Tell the Story",
+      "composer": "William G Fischer",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "54",
+      "number": "54",
+      "ch": "CS 525",
+      "title": "Ontegeeze Ebya Yesu",
+      "eng_title": "More About Jesus",
+      "composer": "Jno R Sweney",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "55",
+      "number": "55",
+      "ch": "CH 621",
+      "title": "Kaakano Tusiga",
+      "eng_title": "Sowing in the Morning",
+      "composer": "George A Minor",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "56",
+      "number": "56",
+      "ch": "CH 623",
+      "title": "Wonya Bonna",
+      "eng_title": "Rescue the Perishing",
+      "composer": "George A Minor",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "57",
+      "number": "57",
+      "ch": "CS 513",
+      "title": "Tewewolereza",
+      "eng_title": "Ask Not to Be Excused",
+      "composer": "E E Belden",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "58",
+      "number": "58",
+      "ch": "CH 626",
+      "title": "Nze Ndowooza ku Nsi",
+      "eng_title": "I am Thinking Today",
+      "composer": "John R Sweney",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "59",
+      "number": "59",
+      "ch": "CH 446",
+      "title": "Yesu Mukama Wange",
+      "eng_title": "Work for the Night is Coming",
+      "composer": "Lowell Mason",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "60",
+      "number": "60",
+      "ch": "CH 445",
+      "title": "Mugende Mu Nsi Zonna",
+      "eng_title": "For My Sake and the Gospel Go",
+      "composer": "Lowell Mason",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "61",
+      "number": "61",
+      "ch": "CH 532",
+      "title": "Nina Mukwano Gwange",
+      "eng_title": "I Have a Friend So Precious",
+      "composer": "Hubert P Main",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "62",
+      "number": "62",
+      "ch": "CH 256",
+      "title": "Nkwesiga Yesu Mukama",
+      "eng_title": "I am Trusting Thee",
+      "composer": "Ethlbert W Bullinger",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "63",
+      "number": "63",
+      "ch": "CH 120",
+      "title": "Bwendowooza Omusalaba",
+      "eng_title": "When I Survey the Wondrous Cross",
+      "composer": "E S Widdemer",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "64",
+      "number": "64",
+      "ch": "CH 619",
+      "title": "Laya Eng'ma Omukuumi",
+      "eng_title": "Watchman, Blow the Gospel Trumpet",
+      "composer": "William J Kirkpatrick",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "65",
+      "number": "65",
+      "ch": "CH 360",
+      "title": "Kale Eggye Yesu",
+      "eng_title": "Onward, Christian Soldiers",
+      "composer": "Arthur S Sullivan",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "66",
+      "number": "66",
+      "ch": "CH 355",
+      "title": "Zuukuka Ggwe Mwoyo",
+      "eng_title": "Wake My Soul",
+      "composer": "Thomas Arne",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "67",
+      "number": "67",
+      "ch": "CH 358",
+      "title": "Wekuume Bulijjo",
+      "eng_title": "My Soul, Be On Thy Guard",
+      "composer": "Lowell Mason",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "68",
+      "number": "68",
+      "ch": "CS 509",
+      "title": "Nywereranga ku Katonda",
+      "eng_title": "Firmly Stand for God",
+      "composer": "W H Doane",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "69",
+      "number": "69",
+      "ch": "CH 581",
+      "title": "Essuubi Lyange Lizimbiddwa",
+      "eng_title": "My Hope is Built On Nothing Less",
+      "composer": "W B Bradbury",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "70",
+      "number": "70",
+      "ch": "CH 640",
+      "title": "Ffe Abaagala Yesu",
+      "eng_title": "Come Ye That Love the Lord",
+      "composer": "Robert Lowery",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "71",
+      "number": "71",
+      "ch": "CS 555",
+      "title": "Ggwe Omukukristaayo Tunula",
+      "eng_title": "Watch for the Time is Short",
+      "composer": "Robert Lowry",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "72",
+      "number": "72",
+      "ch": "CH 579",
+      "title": "Tunaazimba ku Lwaki Kristo",
+      "eng_title": "We'll Build on the Rock",
+      "composer": "E E Belden",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "73",
+      "number": "73",
+      "ch": "CH 18",
+      "title": "Yesu Kino Kyenjagala",
+      "eng_title": "O For a Heart to Praise My God",
+      "composer": "H Wilson",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "74",
+      "number": "74",
+      "ch": "CH 180",
+      "title": "Ggwe Omukuumi Mbuulira",
+      "eng_title": "Watchman, Tell Me",
+      "composer": "W M Bradbury",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "75",
+      "number": "75",
+      "ch": "CH 255",
+      "title": "Omusingi Gwaffe Munywevu",
+      "eng_title": "How firm a Foundation",
+      "composer": "J Reading",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "76",
+      "number": "76",
+      "ch": "CH 185",
+      "title": "Ggwe Omwana wa Yesu",
+      "eng_title": "Heir of the Kingdom",
+      "composer": "J Reading",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "77",
+      "number": "77",
+      "ch": "CH 184",
+      "title": "Mwe Abakuumi Ba Sayuuni",
+      "eng_title": "Watchmen on the Walls of Zion",
+      "composer": "Thomas Hastings",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "78",
+      "number": "78",
+      "ch": "CH 354",
+      "title": "Olijja Ddi Mukama?",
+      "eng_title": "How Long, O Lord our Savior?",
+      "composer": "George J Webb",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "79",
+      "number": "79",
+      "ch": "CH 245",
+      "title": "Mpa Okukkiriza Okunene",
+      "eng_title": "O For a Faith",
+      "composer": "Jeremiah Ingalls",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "80",
+      "number": "80",
+      "ch": "CH 10",
+      "title": "Tuwe Omuliro Ogwo",
+      "eng_title": "O For that Flame of Living Fire",
+      "composer": "Samuel Dyer",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "81",
+      "number": "81",
+      "ch": "CH 456",
+      "title": "Ennaku Endala Ziwedde",
+      "eng_title": "Another Six Days Work",
+      "composer": "L Mason",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "82",
+      "number": "82",
+      "ch": "CH 463",
+      "title": "Olunaku Olw'essanyu",
+      "eng_title": "O Day os Rest and Gladness",
+      "composer": "Lowell Mason",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "83",
+      "number": "83",
+      "ch": "CS",
+      "title": "Tuba n'Essanyu mu Mwoyo",
+      "eng_title": "Sweet Sabbath School",
+      "composer": "W H Doane",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "84",
+      "number": "84",
+      "ch": "CS 653",
+      "title": "Jjukira Olunaku",
+      "eng_title": "Don't Forget the Sabbath",
+      "composer": "W M Bradbury",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "85",
+      "number": "85",
+      "ch": "CH 462",
+      "title": "Yesu Atutuusizza",
+      "eng_title": "Safely Through Another Week",
+      "composer": "L Mason",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "86",
+      "number": "86",
+      "ch": "CH 459",
+      "title": "Twaniriza Sabbiiti",
+      "eng_title": "Welcome, Welcome Day of Rest",
+      "composer": "Ignance Fleyel",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "87",
+      "number": "87",
+      "ch": "CH 458",
+      "title": "Nga Kya Ssanyu ku Sabbiiti",
+      "eng_title": "How Sweet Upon this Sacred Day",
+      "composer": "G Kingaly",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "88",
+      "number": "88",
+      "ch": "CH 42",
+      "title": "Webale Okutukuuma",
+      "eng_title": "New Every Morning",
+      "composer": "Samuel Webbe",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "89",
+      "number": "89",
+      "ch": "CH 39",
+      "title": "Yesu Mukama Wulira",
+      "eng_title": "Lord in the morning",
+      "composer": "Aaron William",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "90",
+      "number": "90",
+      "ch": "CH 253",
+      "title": "Omukemi Ya'ngamba",
+      "eng_title": "The Tempter to My Soul",
+      "composer": "",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "91",
+      "number": "91",
+      "ch": "CH 50",
+      "title": "Beera Nange",
+      "eng_title": "Abide with Me",
+      "composer": "William H Monk",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "92",
+      "number": "92",
+      "ch": "CH 51",
+      "title": "Nga Ffe Tutunuulira",
+      "eng_title": "Day is Dying in the West",
+      "composer": "W F Sherwin",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "93",
+      "number": "93",
+      "ch": "CH 321",
+      "title": "Enjuba y'Omwoyo Gwange",
+      "eng_title": "Sun of My Soul",
+      "composer": "Peter Ritter",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "94",
+      "number": "94",
+      "ch": "CH 448",
+      "title": "Ennimiro Zo Zengedde",
+      "eng_title": "Far and Near the Fields",
+      "composer": "J B A Clenumm",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "95",
+      "number": "95",
+      "ch": "NAH 333",
+      "title": "Bye Tukuwa Biva Gy'oli",
+      "eng_title": "We Give Thee But Thine Own",
+      "composer": "",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "96",
+      "number": "96",
+      "ch": "CH 456",
+      "title": "Kiki Ekintukuza?",
+      "eng_title": "What Can Wash Away My Sin?",
+      "composer": "Robert Lowry",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "97",
+      "number": "97",
+      "ch": "CH 230",
+      "title": "Nwaayo Obulamu",
+      "eng_title": "I Gave My LIfe for Thee",
+      "composer": "J E White",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "98",
+      "number": "98",
+      "ch": "",
+      "title": "Mujje Eri Yesu Temulwawo",
+      "eng_title": "Come to the Saviour Make No Delay",
+      "composer": "",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "99",
+      "number": "99",
+      "ch": "CH 33",
+      "title": "Mujje Mwenna Abakooye",
+      "eng_title": "Come, Ye Sinners, Poor and Wretched",
+      "composer": "Sicilian Melody",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "100",
+      "number": "100",
+      "ch": "CH 354",
+      "title": "Yimirira ne Yesu",
+      "eng_title": "Stand Up! Stand Up for Jesus",
+      "composer": "George J Webb",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "101",
+      "number": "101",
+      "ch": "CH 569",
+      "title": "Yesu Akuyita Okugenda",
+      "eng_title": "Jesus is Tenderly Calling Today",
+      "composer": "George C Stebbins",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "102",
+      "number": "102",
+      "ch": "CH 566",
+      "title": "Yesu Ali Ku Luggi",
+      "eng_title": "There's a Stranger at the Door",
+      "composer": "George C Stebbins",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "103",
+      "number": "103",
+      "ch": "CH 563",
+      "title": "Yesu Atuyita N'ekisa Ekingi",
+      "eng_title": "Softly and Tenderly",
+      "composer": "Will L Thompson",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "104",
+      "number": "104",
+      "ch": "CH 226",
+      "title": "Yesu Wange Ya'ngamba",
+      "eng_title": "I Hear the Voice of Jesus Say",
+      "composer": "Louis Spohr",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "105",
+      "number": "105",
+      "ch": "CH 572",
+      "title": "Omusumba Omulungi",
+      "eng_title": "Jesus the Loving Shepherd",
+      "composer": "W A Ogden",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "106",
+      "number": "106",
+      "ch": "CH 228",
+      "title": "Waliwo Omwoyo Ogugamba",
+      "eng_title": "Almost Persuaded",
+      "composer": "P P Bliss",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "107",
+      "number": "107",
+      "ch": "CH 447",
+      "title": "Yesu Atuyita Ffenna",
+      "eng_title": "Hark! the Voice of Jesus Calling",
+      "composer": "F E Belden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "108",
+      "number": "108",
+      "ch": "CH 637",
+      "title": "Wulira Eky'essanyu",
+      "eng_title": "We Have Heard a Joyful Sound",
+      "composer": "F E Belden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "109",
+      "number": "109",
+      "ch": "CH 571",
+      "title": "Buli Muntu Yenna Awulire",
+      "eng_title": "Whosoever Heareth",
+      "composer": "P P Bliss",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "110",
+      "number": "110",
+      "ch": "CH 561",
+      "title": "Waliwo Oluggi Oluggule",
+      "eng_title": "There is a Gate That Stands Ajar",
+      "composer": "S J Vail",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "111",
+      "number": "111",
+      "ch": "CH 530",
+      "title": "Omusawo ali Kumpi",
+      "eng_title": "The Great Physician Now Is Near",
+      "composer": "Arr by J H Stockton",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "112",
+      "number": "112",
+      "ch": "CH 341",
+      "title": "Ggwe Okkoye Onafuwadde",
+      "eng_title": "Art Thou Weary, Art Thou Languid?",
+      "composer": "Henry W Baker",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "113",
+      "number": "113",
+      "ch": "CH 530",
+      "title": "Waliwo Ensulo Ey'omusaayi",
+      "eng_title": "There is a Fountain Filled with Blood",
+      "composer": "Lowell Mason",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "114",
+      "number": "114",
+      "ch": "CH 592",
+      "title": "Mukama Netaaga Okuba",
+      "eng_title": "Lord Jesus, I Long to be Perfectly Whole",
+      "composer": "Win G Fischer",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "115",
+      "number": "115",
+      "ch": "CH 600",
+      "title": "Njija Ku Musaalaba",
+      "eng_title": "I am Coming to the Cross",
+      "composer": "Win G Fischer",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "116",
+      "number": "116",
+      "ch": "CH 634",
+      "title": "Mukama Kino Kyensaba",
+      "eng_title": "One Thing I of the Lord Desire",
+      "composer": "Fred H Byshe",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "117",
+      "number": "117",
+      "ch": "CS 88",
+      "title": "Wanaazibwa Mu Musaayi?",
+      "eng_title": "Have You Been to Jesus?",
+      "composer": "E A Offman",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "118",
+      "number": "118",
+      "ch": "CH 560",
+      "title": "Nakyama Okuva ku Yesu",
+      "eng_title": "I've Wandered Far Away From God",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "119",
+      "number": "119",
+      "ch": "CH 527",
+      "title": "Yesu Ang'amba",
+      "eng_title": "I Hear the Saviour Say",
+      "composer": "John T Grape",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "120",
+      "number": "120",
+      "ch": "CH 595",
+      "title": "Awo Ku Musaaalaba",
+      "eng_title": "Jesus, Keep Me Near the Cross",
+      "composer": "Wm H Doane",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "121",
+      "number": "121",
+      "ch": "CH 238",
+      "title": "Nze Omwonoonyi Lukulwe",
+      "eng_title": "Chief of Sinners",
+      "composer": "Arr by Benjamin Carr",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "122",
+      "number": "122",
+      "ch": "CH 573",
+      "title": "Newaddeyo Gy'oli Yesu",
+      "eng_title": "All to Jesus I Surrender",
+      "composer": "W S Weeden",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "123",
+      "number": "123",
+      "ch": "CH 246",
+      "title": "Olwo'okukkiriza Nnyinza",
+      "eng_title": "My Faith Looks Up to Thee",
+      "composer": "Lowell Mason",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "124",
+      "number": "124",
+      "ch": "SP 118",
+      "title": "Okkoye Nnyo?",
+      "eng_title": "Are You Weary [Tell It to Jesus]",
+      "composer": "E S Lorenz",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "125",
+      "number": "125",
+      "ch": "CH 3",
+      "title": "Kabaka We Ggulu",
+      "eng_title": "Come, Thou Almighty King",
+      "composer": "Felice De Glardini",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "126",
+      "number": "126",
+      "ch": "NAH 709",
+      "title": "Nkwetaaga Bulijjo",
+      "eng_title": "I Need Thee Every Hour",
+      "composer": "R Lowry",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "127",
+      "number": "127",
+      "ch": "SDAH 530",
+      "title": "Bwenfuna Eddembe",
+      "eng_title": "When Peace Like  river",
+      "composer": "P P Bliss",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "128",
+      "number": "128",
+      "ch": "CH 582",
+      "title": "Bwe Tuba Ne Yesu",
+      "eng_title": "When We Walk with the Lord",
+      "composer": "D B Towner",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "129",
+      "number": "129",
+      "ch": "CH 588",
+      "title": "Kirungi Okwesiga Yesu",
+      "eng_title": "'Tis so Sweet to Trust in Jesus'",
+      "composer": "Won J Kirkpatrick",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "130",
+      "number": "130",
+      "ch": "CH 320",
+      "title": "Tulina Mukwano Gwaffe",
+      "eng_title": "What a Friend we have in Jesus",
+      "composer": "C C Converse",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "131",
+      "number": "131",
+      "ch": "CH 332",
+      "title": "Ayi Yesu Amaaso Gange",
+      "eng_title": "Jesus, These Eyes Have Never Seen",
+      "composer": "Thomas Tallis",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "132",
+      "number": "132",
+      "ch": "CH 405",
+      "title": "Mukama Ye Musumba",
+      "eng_title": "The Lord is My Shepherd",
+      "composer": "German",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "133",
+      "number": "133",
+      "ch": "CH 589",
+      "title": "BUli Wantu Wonna",
+      "eng_title": "Anywhere With Jesus",
+      "composer": "D B TOwner",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "134",
+      "number": "134",
+      "ch": "CH 603",
+      "title": "Waayo Ekiseera",
+      "eng_title": "Take Time to Be Holy",
+      "composer": "George C Stebbins",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "135",
+      "number": "135",
+      "ch": "CH 316",
+      "title": "Kye Kiseera Ky'okusaba",
+      "eng_title": "Sweet Hour Of Prayer",
+      "composer": "W B Bradbury",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "136",
+      "number": "136",
+      "ch": "CH 416",
+      "title": "Kwata Omukono Gwange",
+      "eng_title": "Hold Thou My Hand",
+      "composer": "",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "137",
+      "number": "137",
+      "ch": "CH 324",
+      "title": "Kye KIseera Ekirungi",
+      "eng_title": "'Tis the Blessed Hour of Prayer'",
+      "composer": "W H Doane",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "138",
+      "number": "138",
+      "ch": "CH 266",
+      "title": "Nnakugoberera Yesu",
+      "eng_title": "I Will Follow Thee",
+      "composer": "James Lawson",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "139",
+      "number": "139",
+      "ch": "CS 234",
+      "title": "Omununuzi Wange",
+      "eng_title": "O Jesus My Redeemer",
+      "composer": "D S Hakes",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "140",
+      "number": "140",
+      "ch": "CH 222",
+      "title": "Mukama Nze Nnina Ebibi",
+      "eng_title": "Just as I Am",
+      "composer": "W B Bradbury",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "141",
+      "number": "141",
+      "ch": "CH 280",
+      "title": "Wansi W'omusalaba",
+      "eng_title": "Beneath the Cross of Jesus",
+      "composer": "Frederick C Maker",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "142",
+      "number": "142",
+      "ch": "CH 224",
+      "title": "Ompise Mukama",
+      "eng_title": "I Hear Thy Welcome Voice",
+      "composer": "Frederick C Maker",
+      "doh": "Eb ",
+      "category": "main"
+    },
+    {
+      "id": "143",
+      "number": "143",
+      "ch": "CH 670",
+      "title": "Kitange Nze Nkukowoola",
+      "eng_title": "Father' I Stretch My Hands",
+      "composer": "Arranged",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "144",
+      "number": "144",
+      "ch": "CH 594",
+      "title": "Ompise Yesu",
+      "eng_title": "I am Thine, O Lord",
+      "composer": "W H Doane",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "145",
+      "number": "145",
+      "ch": "CH 596",
+      "title": "Twala Ensi, Ompe Yesu",
+      "eng_title": "Take the World but Give Me Jesus",
+      "composer": "John R Sweney",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "146",
+      "number": "146",
+      "ch": "CH 601",
+      "title": "Sirika, Sirika",
+      "eng_title": "Be Silent, Be Silent",
+      "composer": "W H Doane",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "147",
+      "number": "147",
+      "ch": "CH 279",
+      "title": "Fuga Obulamu Bwange",
+      "eng_title": "Live Out Thy Life Within Me",
+      "composer": "Samuel Wesley",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "148",
+      "number": "148",
+      "ch": "CH 632",
+      "title": "Mukama Onsembeze Gy'oli",
+      "eng_title": "Closer to Thee, My Father, Draw Me",
+      "composer": "J H Tenney",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "149",
+      "number": "149",
+      "ch": "CS 58",
+      "title": "Oyagala aaobe Wa Yesu?",
+      "eng_title": "Would You Live for Jesus?",
+      "composer": "J H Tenney",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "150",
+      "number": "150",
+      "ch": "CS 581",
+      "title": "Buli Kigambo Ekibi",
+      "eng_title": "Angry Words, Oh, Let Them Never",
+      "composer": "J H Tenney",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "151",
+      "number": "151",
+      "ch": "CH 393",
+      "title": "Annung'amya Kya Ssanyu",
+      "eng_title": "He Leadeth",
+      "composer": "Wm B Bradbury",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "152",
+      "number": "152",
+      "ch": "CH 382",
+      "title": "Ka Nkusemberere",
+      "eng_title": "Nearer, My God to Thee",
+      "composer": "Lowell Mason",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "153",
+      "number": "153",
+      "ch": "CS 882",
+      "title": "Kye Ndowooza Kyokka",
+      "eng_title": "One Sweetly Solemn Thought",
+      "composer": "Philip Philips",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "154",
+      "number": "154",
+      "ch": "CS 541",
+      "title": "Netaaga Omulokozi",
+      "eng_title": "I Must Have the Saviour With Me",
+      "composer": "Jno R Sweney",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "155",
+      "number": "155",
+      "ch": "CH 259",
+      "title": "Mu Lugendo Lwange",
+      "eng_title": "All the Way My Saviour Leads Me",
+      "composer": "Robert Lowry",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "156",
+      "number": "156",
+      "ch": "SDAH 538",
+      "title": "Katonda Omutukuvu",
+      "eng_title": "Guide Me. O Thou Great Jehovah",
+      "composer": "John Hughes",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "157",
+      "number": "157",
+      "ch": "CH 546",
+      "title": "Kabaka Ali Ku Luggi",
+      "eng_title": "The Coming King",
+      "composer": "E E Belden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "158",
+      "number": "158",
+      "ch": "CH 665",
+      "title": "Kiseera Ki Ekisigadde?",
+      "eng_title": "How Far From Home?",
+      "composer": "Arranged",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "159",
+      "number": "159",
+      "ch": "CH 669",
+      "title": "Kya Ssanyu Omutambuze",
+      "eng_title": "How Sweet Are the Tidings",
+      "composer": "Arranged",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "160",
+      "number": "160",
+      "ch": "CH 549",
+      "title": "Abatukuvu Mulabe",
+      "eng_title": "Watch Ye Saints",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "161",
+      "number": "161",
+      "ch": "CH 541",
+      "title": "Laya Eng'oma, Tegeeza",
+      "eng_title": "Lift Up the Trumpet",
+      "composer": "George E Lee",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "162",
+      "number": "162",
+      "ch": "CH 379",
+      "title": "Essuubi Lya Ssanyu",
+      "eng_title": "There Is a Blessed Hope",
+      "composer": "Arr Lowell Mason",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "163",
+      "number": "163",
+      "ch": "CH 536",
+      "title": "Oba Ekiseera Kirituuka",
+      "eng_title": "It May Be at Morn",
+      "composer": "James MacGranahan",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "164",
+      "number": "164",
+      "ch": "CH 547",
+      "title": "Olunaku Olulungi Lujja",
+      "eng_title": "The Golden Morning",
+      "composer": "S J Graham",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "165",
+      "number": "165",
+      "ch": "CH 548",
+      "title": "Yesu Yasuubiza Abaana Be",
+      "eng_title": "Sweet Promise Is Given",
+      "composer": "E E Belden",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "166",
+      "number": "166",
+      "ch": "CH 189",
+      "title": "Tusanyuke Yesu Ajja",
+      "eng_title": "Joy to The World",
+      "composer": "Arr Lowell Mason",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "167",
+      "number": "167",
+      "ch": "RS 115",
+      "title": "Yesu Mukama Omulokozi",
+      "eng_title": "Jesus My Saviour to Bethelehem Came",
+      "composer": "Arr by R E Hasty",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "168",
+      "number": "168",
+      "ch": "CS 865",
+      "title": "Nga Bayita Amanya Gaffe",
+      "eng_title": "When the Trumpet of the Lord",
+      "composer": "J M Black",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "169",
+      "number": "169",
+      "ch": "CH 538",
+      "title": "Yesu Alikungaanya Abantu",
+      "eng_title": "When Jesus Shall Gather the Nations",
+      "composer": "Frank M Davis",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "170",
+      "number": "170",
+      "ch": "CH 617",
+      "title": "Sitwalibwa Bugagga",
+      "eng_title": "Lord I Care Not for Riches",
+      "composer": "Frank M Davis",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "171",
+      "number": "171",
+      "ch": "CH 482",
+      "title": "Ekiseera Ky'omusango",
+      "eng_title": "The Judgement Has Set",
+      "composer": "E E Belden",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "172",
+      "number": "172",
+      "ch": "CH 537",
+      "title": "Ffe Twayitibwa Ku Mbaga",
+      "eng_title": "Called to the Feast",
+      "composer": "E S Lorenz",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "173",
+      "number": "173",
+      "ch": "CH 540",
+      "title": "Tetumanyi Ssaawa",
+      "eng_title": "We Know Not the Hour",
+      "composer": "E E Belden",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "174",
+      "number": "174",
+      "ch": "CH 542",
+      "title": "Tetumanyi Ssaawa Lw'alijja",
+      "eng_title": "We Know Not the Time",
+      "composer": "Will H Pontius",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "175",
+      "number": "175",
+      "ch": "CH 545",
+      "title": "Omulokozi Ndimulaba",
+      "eng_title": "Face to Face",
+      "composer": "Grant Colfax Tullar",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "176",
+      "number": "176",
+      "ch": "CH 555",
+      "title": "Mu Kibuga Kya Katonda",
+      "eng_title": "Shall We Gather at the River",
+      "composer": "Grant Colfax Tullar",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "177",
+      "number": "177",
+      "ch": "CS 849",
+      "title": "Bwe Ndimala Omulimu",
+      "eng_title": "When My Lifework is Ended",
+      "composer": "John R Sweney",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "178",
+      "number": "178",
+      "ch": "CH 553",
+      "title": "Bwe Mbeera Ku Yoludaani",
+      "eng_title": "On Jordan's Stormy Banks",
+      "composer": "T C O'kane",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "179",
+      "number": "179",
+      "ch": "CS 863",
+      "title": "Nga Tumaze Omulimu",
+      "eng_title": "O There'll Be Joy",
+      "composer": "E E Belden",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "180",
+      "number": "180",
+      "ch": "CH 551",
+      "title": "Waliwo Ensi Ennungi",
+      "eng_title": "There's a Land That Is Fairer",
+      "composer": "J E Webster",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "181",
+      "number": "181",
+      "ch": "CS 206",
+      "title": "Ndibeera Ku Mugga",
+      "eng_title": "We'll Tarry by the Living Waters",
+      "composer": "E E Belden",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "182",
+      "number": "182",
+      "ch": "CH 558",
+      "title": "Mu Nsi Ey'obutangaavu",
+      "eng_title": "In the Land of Fadeless Day",
+      "composer": "H P Danks",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "183",
+      "number": "183",
+      "ch": "CS 854",
+      "title": "Essanyu n'Eddembe",
+      "eng_title": "There'll Be No Dark Valley",
+      "composer": "Ira D Sankey",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "184",
+      "number": "184",
+      "ch": "CS 580",
+      "title": "Okwagala Mu Maka",
+      "eng_title": "Love At Home",
+      "composer": "Arr from J H M McNaughton",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "185",
+      "number": "185",
+      "ch": "CH 416",
+      "title": "Ggwe Okwagala Okunene",
+      "eng_title": "O Perfect Love",
+      "composer": "Joseph Barnby",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "186",
+      "number": "186",
+      "ch": "CH 214",
+      "title": "Mujje Nga Mweterereka",
+      "eng_title": "(tune-Our Blessed Redeemer) Rest in the Lord",
+      "composer": "J B Dykes",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "187",
+      "number": "187",
+      "ch": "CS 866",
+      "title": "Tetulyawukana",
+      "eng_title": "We'll Never say Good-by",
+      "composer": "J H Tenney",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "188",
+      "number": "188",
+      "ch": "CH 489",
+      "title": "Abeebakira Mu Yesu",
+      "eng_title": "Asleep in Jesus",
+      "composer": "Wim B Bradbury",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "189",
+      "number": "189",
+      "ch": "CH 598",
+      "title": "Olw'ekisa Kyo Nnengera",
+      "eng_title": "O Now I See the Crimson Wave",
+      "composer": "Mrs Joseph F Knapp",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "190",
+      "number": "190",
+      "ch": "CH 525",
+      "title": "Tubatize Buggya",
+      "eng_title": "Baptize Us Anew",
+      "composer": "W A Ogden",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "191",
+      "number": "191",
+      "ch": "CH 378",
+      "title": "Ka Mpummulirenga Wano",
+      "eng_title": "Forever My Rest Shall Be",
+      "composer": "W A Ogden",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "192",
+      "number": "192",
+      "ch": "CH 218",
+      "title": "Mmenyera Omugaati",
+      "eng_title": "Break Thou the Bread of Life",
+      "composer": "Wm F Sherwin",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "193",
+      "number": "193",
+      "ch": "CH 474",
+      "title": "Olwazi Olw'edda N'edda",
+      "eng_title": "Rock of Ages",
+      "composer": "Thomas Hastings",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "194",
+      "number": "194",
+      "ch": "CH 625",
+      "title": "Wulira Omusumba",
+      "eng_title": "Hark! 'Tis the Shepherd's Voice",
+      "composer": "W A Ogden",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "195",
+      "number": "195",
+      "ch": "CH 433",
+      "title": "Omusingi Gw'ekkanisa",
+      "eng_title": "The Church Has One Foundation",
+      "composer": "Samuel S Wesley",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "196",
+      "number": "196",
+      "ch": "CH 418",
+      "title": "Bwalijja Mukama Waffe",
+      "eng_title": "When He Cometh",
+      "composer": "George E Root",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "197",
+      "number": "197",
+      "ch": "AH 574",
+      "title": "Ai Katonda Atutuusizza",
+      "eng_title": "O Thou Whose Hand",
+      "composer": "Laussane Psalter",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "198",
+      "number": "198",
+      "ch": "CS 27",
+      "title": "Waliwo omusaayi Ogw'amaanyi",
+      "eng_title": "There's Power in the Blood",
+      "composer": "E E Jones",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "199",
+      "number": "199",
+      "ch": "CS 567",
+      "title": "Tukola Lwa Kwagala",
+      "eng_title": "'Tis Love that Makes Us Happy'",
+      "composer": "Wm F Sherwin",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "200",
+      "number": "200",
+      "ch": "CH 423",
+      "title": "Nsanyukira Ekigambo Kino",
+      "eng_title": "I Am So Glad That Our Father",
+      "composer": "P P Bliss",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "201",
+      "number": "201",
+      "ch": "SP 168",
+      "title": "Katonda Afaayo",
+      "eng_title": "God Will Take Care of You",
+      "composer": "W S Martin",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "202",
+      "number": "202",
+      "ch": "SDAH 628",
+      "title": "Tunaatera Okutuuka Eka",
+      "eng_title": "In a Little While",
+      "composer": "E E Hewitt",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "203",
+      "number": "203",
+      "ch": "CH 671",
+      "title": "Noonya Obubonero",
+      "eng_title": "Look For the Waymarks",
+      "composer": "E E Belden",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "204",
+      "number": "204",
+      "ch": "GS 44",
+      "title": "Okuva Lweyajja Mu Nze",
+      "eng_title": "Since Jesus Came Into My Heart",
+      "composer": "Wm F Sherwin",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "205",
+      "number": "205",
+      "ch": "SDAH 249",
+      "title": "Mumutende Yesu Omununuzi",
+      "eng_title": "Praise Him, Praise Him",
+      "composer": "Chester G Allen",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "206",
+      "number": "206",
+      "ch": "SOP 37",
+      "title": "Baibuli Ebikukkulirwe Ensi",
+      "eng_title": "An Open Bible for the World",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "207",
+      "number": "207",
+      "ch": "CH 681",
+      "title": "Okumpi Ne Katonda",
+      "eng_title": "There Is a Place of Quiet Rest",
+      "composer": "C B McAfee",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "208",
+      "number": "208",
+      "ch": "CH 597",
+      "title": "Mbe Wuwo Nzenna",
+      "eng_title": "Wholly Thine",
+      "composer": "F E Belden",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "209",
+      "number": "209",
+      "ch": "RS 466",
+      "title": "Nga Ntuuse Eka",
+      "eng_title": "When I get Home",
+      "composer": "C Austin Miles",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "210",
+      "number": "210",
+      "ch": "SDAH 366",
+      "title": "Abakunguzi Banaava Wa?",
+      "eng_title": "Where Are the Reapers",
+      "composer": "George F Root",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "211",
+      "number": "211",
+      "ch": "RS 285",
+      "title": "Eyazaawa Azaawuse",
+      "eng_title": "Ring the Bells of Heaven",
+      "composer": "George F Root",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "212",
+      "number": "212",
+      "ch": "SP 246",
+      "title": "Engoye Enjeru",
+      "eng_title": "Beautiful Robes",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "213",
+      "number": "213",
+      "ch": "SP 249",
+      "title": "Mu Ggulu",
+      "eng_title": "Heaven  at Last",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "214",
+      "number": "214",
+      "ch": "SP 241",
+      "title": "Ndimulaba Kabaka",
+      "eng_title": "I Shall See the King",
+      "composer": "B D Ackley",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "215",
+      "number": "215",
+      "ch": "SDAH 109",
+      "title": "Esisa Ekyewuunyisa",
+      "eng_title": "Marvelous Grace",
+      "composer": "Daniel B Towner",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "216",
+      "number": "216",
+      "ch": "CS 26",
+      "title": "Muzaalibwe Buggya",
+      "eng_title": "Ye Must be Born Again",
+      "composer": "Geo C Stebbins",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "217",
+      "number": "217",
+      "ch": "CS 65",
+      "title": "Tunula Obe Mulamu",
+      "eng_title": "Life In a Look",
+      "composer": "F E Belden",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "218",
+      "number": "218",
+      "ch": "CH 631",
+      "title": "Nnyigiriza Okutuuka",
+      "eng_title": "Higher Ground",
+      "composer": "Chas H Gabriel",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "219",
+      "number": "219",
+      "ch": "CH 615",
+      "title": "Mu Mikono Gye Yesu",
+      "eng_title": "Safe In the Arms of Jesus",
+      "composer": "W H Doane",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "220",
+      "number": "220",
+      "ch": "CS 55",
+      "title": "Ba Mukisa",
+      "eng_title": "Blessed Are They that Do",
+      "composer": "P P Bliss",
+      "doh": "A ",
+      "category": "main"
+    },
+    {
+      "id": "221",
+      "number": "221",
+      "ch": "SDAH 511",
+      "title": "Mmanyi Gwenakkiriza",
+      "eng_title": "I Know Whom I have Believed",
+      "composer": "James Macgranaham",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "222",
+      "number": "222",
+      "ch": "CH 485",
+      "title": "Ka Ng'ambe Yesu",
+      "eng_title": "I Must Tell Jesus",
+      "composer": "Elisha A Hoffman",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "223",
+      "number": "223",
+      "ch": "CH 677",
+      "title": "Mukama Omuyaga Mungi",
+      "eng_title": "Master the Tempest Is Raging",
+      "composer": "Haratio R Palmer",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "224",
+      "number": "224",
+      "ch": "SDAH 100",
+      "title": "Obwesigwa Bwo Bungi",
+      "eng_title": "Great Is Thy Faithfulness",
+      "composer": "William M Runyan",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "225",
+      "number": "225",
+      "ch": "CSM 60",
+      "title": "Lya Kitibwa Erinya Lyo",
+      "eng_title": "Glorious Is Thy Name",
+      "composer": "B B McKiney",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "226",
+      "number": "226",
+      "ch": "SDAH 250",
+      "title": "Mukama Omulokozi",
+      "eng_title": "He Hideth My Soul",
+      "composer": "Wm J Kirkpatrick",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "227",
+      "number": "227",
+      "ch": "SDAH 330",
+      "title": "Twala Obulamu Bwange",
+      "eng_title": "Take My Life and Let It Be",
+      "composer": "H A Cesar Malan",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "228",
+      "number": "228",
+      "ch": "CS 532",
+      "title": "Anoonya N'ekisa",
+      "eng_title": "Seeking the Lost",
+      "composer": "W A Oglen",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "229",
+      "number": "229",
+      "ch": "CS 566",
+      "title": "Nnaagenda Gy'oyagala",
+      "eng_title": "I'll Go Where You Want Me",
+      "composer": "Carrie Rounsefell",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "230",
+      "number": "230",
+      "ch": "CS 554",
+      "title": "Yogera Nange Yesu",
+      "eng_title": "Speak to My Soul Dear Jesus",
+      "composer": "Adopted by L L Picket",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "231",
+      "number": "231",
+      "ch": "CS 1",
+      "title": "Kristo Oba Balabba",
+      "eng_title": "Christ or Barabas?",
+      "composer": "F E Belden",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "232",
+      "number": "232",
+      "ch": "SDAH 286",
+      "title": "Netaaga Okuwulira",
+      "eng_title": "Sing them Over Again",
+      "composer": "P P Bliss",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "233",
+      "number": "233",
+      "ch": "CH 343",
+      "title": "Nkwagala, Nkwagala",
+      "eng_title": "I Love Thee",
+      "composer": "Jer Ingalls",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "234",
+      "number": "234",
+      "ch": "CH 650",
+      "title": "Mu Ssanyu N'okumwebaza",
+      "eng_title": "",
+      "composer": "Wm F Sherwin",
+      "doh": "C",
+      "category": "main"
+    },
+    {
+      "id": "235",
+      "number": "235",
+      "ch": "RS 367",
+      "title": "Nsembeza, Nsembeza",
+      "eng_title": "Close to Thee",
+      "composer": "S J Vail",
+      "doh": "G",
+      "category": "main"
+    },
+    {
+      "id": "236",
+      "number": "236",
+      "ch": "CH 183",
+      "title": "Ettabaaza Zammwe Zaake",
+      "eng_title": "Let Every Lamp Be Burning Bright",
+      "composer": "F E Belden",
+      "doh": "E",
+      "category": "main"
+    },
+    {
+      "id": "237",
+      "number": "237",
+      "ch": "SP 180",
+      "title": "Tulina Obubaka",
+      "eng_title": "We've Story to Tell to the Nations",
+      "composer": "H Ernest Nichol",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "238",
+      "number": "238",
+      "ch": "SDAH 692",
+      "title": "Mukama Ali Mu Yekaalu",
+      "eng_title": "The Lord Is In Holy Temple",
+      "composer": "George F Root",
+      "doh": "Db",
+      "category": "main"
+    },
+    {
+      "id": "239",
+      "number": "239",
+      "ch": "FS 307",
+      "title": "Ekisa Ekyandokola",
+      "eng_title": "Amazing Grace",
+      "composer": "Wm Walker",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "240",
+      "number": "240",
+      "ch": "SDAH 552",
+      "title": "Katonda Musumba Wange",
+      "eng_title": "The Lord's My Shepherd",
+      "composer": "Jessie S Jrvine",
+      "doh": "F",
+      "category": "main"
+    },
+    {
+      "id": "241",
+      "number": "241",
+      "ch": "RS 402",
+      "title": "Akimanyi",
+      "eng_title": "He Knows",
+      "composer": "P P Bliss",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "242",
+      "number": "242",
+      "ch": "CH 91",
+      "title": "Waggulu Mu Bwengula",
+      "eng_title": "The Spacious Firmament",
+      "composer": "Arr from F J Haydn",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "243",
+      "number": "243",
+      "ch": "RS 922",
+      "title": "Bwetulituuka Mu Ggulu",
+      "eng_title": "The Other Shore",
+      "composer": "Powell G Pithian",
+      "doh": "A",
+      "category": "main"
+    },
+    {
+      "id": "244",
+      "number": "244",
+      "ch": "CH 218",
+      "title": "Ku Lunaku Olw'emirembe",
+      "eng_title": "Hail, Peaceful Day!",
+      "composer": "Arr by Lowell Mason",
+      "doh": "Eb",
+      "category": "main"
+    },
+    {
+      "id": "245",
+      "number": "245",
+      "ch": "CH 652",
+      "title": "Emikisa Emingi",
+      "eng_title": "Showers of Blessing",
+      "composer": "James McGranaham",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "246",
+      "number": "246",
+      "ch": "CS 540",
+      "title": "Tambulira Mu Musana",
+      "eng_title": "Walk in the Light",
+      "composer": "Geo C Hugg",
+      "doh": "D",
+      "category": "main"
+    },
+    {
+      "id": "247",
+      "number": "247",
+      "ch": "SDAH 202",
+      "title": "Katumusuute Yesu",
+      "eng_title": "Hail Him The King of Glory",
+      "composer": "Henry de Fluiter",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "248",
+      "number": "248",
+      "ch": "SDAH 614",
+      "title": "Yita Abalwanyi",
+      "eng_title": "Sound the Battle Cry",
+      "composer": "Wm F Sherwin",
+      "doh": "Bb",
+      "category": "main"
+    },
+    {
+      "id": "249",
+      "number": "249",
+      "ch": "SP 70",
+      "title": "Omusalaba Lye Kkubo",
+      "eng_title": "The Way of the Cross Leads Home",
+      "composer": "Wm F Sherwin",
+      "doh": "Ab",
+      "category": "main"
+    },
+    {
+      "id": "250",
+      "number": "250",
+      "ch": "SP 100",
+      "title": "Ye Yanzigya Mu Ttosi ",
+      "eng_title": "He Brought Me Out",
+      "composer": "H I Gilmour",
+      "doh": "Eb",
+      "category": "main"
+    }
+  ],
+  "children": [
+    {
+      "id": "abaana_1",
+      "number": 1,
+      "title": "Yesu ye Anjagala",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_2",
+      "number": 2,
+      "title": "Enkya Nanaabye Engalo",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_3",
+      "number": 3,
+      "title": "Yesu Alaba Ennyonyi",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_4",
+      "number": 4,
+      "title": "Ensimbi Ezigwa Oziwulira?",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_5",
+      "number": 5,
+      "title": "Omutambuze Nze",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_6",
+      "number": 6,
+      "title": "Awo Yesu Bwe Yatambula",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_7",
+      "number": 7,
+      "title": "Yesu Mulokozi Wange",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_7",
+      "number": 7,
+      "title": "Yesu Bwabeera mu Maka",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_8",
+      "number": 8,
+      "title": "Ensimbi Zaffe Mugende",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_9",
+      "number": 9,
+      "title": "Nyambala Engule Yange",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_10",
+      "number": 10,
+      "title": "Waggulu mu Bbanga",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_11",
+      "number": 11,
+      "title": "Mu Mutima, Mu Mutima",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_12",
+      "number": 12,
+      "title": "Katonda Tukwebaza",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_13",
+      "number": 13,
+      "title": "Sabanga Mpola Mu Makya.",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_14",
+      "number": 14,
+      "title": "Ffe Tuli Ggye kya Mukama.",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_15",
+      "number": 15,
+      "title": "Ekimuli Ekito Mbuulira",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_16",
+      "number": 16,
+      "title": "Buli Nnaku Omukaaga",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_17",
+      "number": 17,
+      "title": "Ndibafuula Abavubi B'abantu",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_18",
+      "number": 18,
+      "title": "Abaana ba Katonda Mmwenna",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_19",
+      "number": 19,
+      "title": "Omusana Gwange",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_20",
+      "number": 20,
+      "title": "Emiti Gyewuuba Mpola",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_21",
+      "number": 21,
+      "title": "Nze Ndi Mmunyenye Entono",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_22",
+      "number": 22,
+      "title": "Yesu Ayagala Abaana",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_23",
+      "number": 23,
+      "title": "Tumusinze Katonda Kitaffe",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_23",
+      "number": 23,
+      "title": "Katonda ye Yantonda",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_24",
+      "number": 24,
+      "title": "Mpa Amafuta mu Tabaaza Yange",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_25",
+      "number": 25,
+      "title": "Tukwebaza Yesu",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_26",
+      "number": 26,
+      "title": "Ebitundu By'ekkumi",
+      "eng_title": null,
+      "category": "children"
+    },
+    {
+      "id": "abaana_27",
+      "number": 27,
+      "title": "Mweraba",
+      "eng_title": null,
+      "category": "children"
+    }
+  ]
+}

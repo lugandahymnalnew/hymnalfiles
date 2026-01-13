@@ -1,0 +1,1142 @@
+/* Vue.js Transitions and Animations - Matching App Color Scheme */
+
+/* ============================================
+   Dialpad Component
+   ============================================ */
+.dialpad-section {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.dialpad-display {
+    background: var(--navy-blue);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: monospace;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+}
+
+.dialpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.dialpad-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #f5f5f5;
+    color: var(--text-dark);
+}
+
+.dialpad-btn:hover {
+    background: var(--chocolate);
+    color: white;
+    transform: scale(1.05);
+}
+
+.dialpad-btn:active {
+    transform: scale(0.95);
+}
+
+.dialpad-btn.del {
+    background: #ffebee;
+    color: #c62828;
+    font-size: 0.9rem;
+}
+
+.dialpad-btn.del:hover {
+    background: #c62828;
+    color: white;
+}
+
+.dialpad-btn.open {
+    background: var(--primary-blue);
+    color: white;
+    grid-column: span 1;
+}
+
+.dialpad-btn.open:hover {
+    background: #0d47a1;
+}
+
+.dialpad-btn.abaana {
+    grid-column: span 3;
+    background: linear-gradient(135deg, var(--chocolate) 0%, #e91e63 100%);
+    color: white;
+    font-size: 0.9rem;
+}
+
+.dialpad-btn.abaana:hover {
+    background: linear-gradient(135deg, #b8690e 0%, #c2185b 100%);
+}
+
+.dialpad-row {
+    display: contents;
+}
+
+/* ============================================
+   Enhanced Drawer Layout
+   ============================================ */
+
+/* Song Page Header */
+.song-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--navy-blue) 100%);
+    color: white;
+    padding: 12px 60px 12px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.song-page-header .header-content h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.song-page-header .header-content p {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.song-page-header .header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Song Title Bar */
+.song-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 80px 15px 15px 15px;
+    background: linear-gradient(180deg, var(--secondary-cream) 0%, white 100%);
+}
+
+.song-number-badge {
+    background: linear-gradient(135deg, var(--chocolate) 0%, #e91e63 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 60px;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+.song-number-badge .big-number {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.song-number-badge .label {
+    display: block;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    opacity: 0.9;
+}
+
+.song-info {
+    flex: 1;
+}
+
+.song-info h2 {
+    margin: 0;
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+}
+
+.song-info p {
+    margin: 5px 0 0 0;
+    color: #666;
+    font-style: italic;
+}
+
+.key-badge {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--navy-blue);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+/* Song Lyrics Container */
+.song-lyrics-container {
+    padding: 15px;
+    margin-bottom: 80px;
+}
+
+/* Floating Navigation Controls */
+.floating-nav-controls {
+    position: fixed;
+    bottom: 100px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 50;
+}
+
+.nav-fab {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--chocolate) 0%, #e91e63 100%);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-fab:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.5);
+}
+
+.nav-fab:active {
+    transform: scale(0.95);
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: #666;
+    padding: 5px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item:active {
+    color: var(--chocolate);
+    background: #fff3e0;
+}
+
+.bottom-nav-item .nav-icon {
+    font-size: 1.3rem;
+}
+
+.bottom-nav-item span:last-child {
+    font-size: 0.75rem;
+}
+
+/* Progress Text */
+.progress-text {
+    text-align: center;
+    margin-bottom: 5px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Search Bar Wrapper */
+.search-bar-wrapper {
+    position: relative;
+    padding: 70px 15px 10px 50px;
+    background: var(--secondary-cream);
+}
+
+.search-bar {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-bar:focus {
+    outline: none;
+    border-color: var(--chocolate);
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
+}
+
+.clear-search {
+    position: absolute;
+    right: 25px;
+    top: calc(70px + 12px + 10px);
+    background: #ccc;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.clear-search:hover {
+    background: var(--chocolate);
+}
+
+/* Enhanced Song List */
+.vue-song-list {
+    padding: 10px 15px 80px 50px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--secondary-cream);
+    min-height: calc(100vh - 150px);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 600px) {
+    .song-page-header {
+        padding: 10px 55px 10px 55px;
+    }
+
+    .song-page-header .header-content h1 {
+        font-size: 1rem;
+    }
+
+    .song-title-bar {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 75px;
+    }
+
+    .song-number-badge {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .song-number-badge .big-number {
+        font-size: 1.5rem;
+    }
+
+    .bottom-nav-bar {
+        padding: 8px 0;
+    }
+
+    .bottom-nav-item {
+        padding: 5px 10px;
+    }
+
+    .floating-nav-controls {
+        bottom: 90px;
+    }
+
+    .nav-fab {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+}
+
+:root {
+    --primary-blue: hsl(207, 88%, 20%);
+    --secondary-cream: hsl(26, 100%, 99%);
+    --navy-blue: rgb(2, 3, 66);
+    --chocolate: chocolate;
+    --text-dark: #333;
+    --background-white: #fff;
+}
+
+/* ============================================
+   Navigation Drawer Transitions
+   ============================================ */
+
+/* Hamburger Menu Button */
+.nav-hamburger {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    width: 40px;
+    height: 40px;
+    background: var(--chocolate);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.nav-hamburger:hover {
+    transform: scale(1.1);
+    background: #b8690e;
+}
+
+.nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-hamburger:active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-hamburger:active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-hamburger:active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Drawer Overlay */
+.nav-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    backdrop-filter: blur(3px);
+    animation: fadeIn 0.3s ease;
+}
+
+/* Drawer Panel */
+.nav-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background: var(--background-white);
+    z-index: 1002;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-header {
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #0d47a1 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.drawer-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.drawer-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.drawer-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Drawer Search */
+.drawer-search {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.drawer-search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.drawer-search-input:focus {
+    outline: none;
+    border-color: var(--chocolate);
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
+}
+
+/* Drawer Categories */
+.drawer-categories {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.category-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.category-btn:hover {
+    background: #e8e8e8;
+    transform: translateX(5px);
+}
+
+.category-btn.active {
+    background: var(--navy-blue);
+    color: white;
+}
+
+.cat-icon {
+    font-size: 1.3rem;
+}
+
+.cat-count {
+    margin-left: auto;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 2px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+.category-btn.active .cat-count {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Drawer Navigation Sections */
+.drawer-nav-section {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.drawer-nav-section h4 {
+    margin: 0 0 12px 0;
+    color: #666;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.drawer-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.drawer-link:hover {
+    background: #f5f5f5;
+    transform: translateX(5px);
+}
+
+/* Quick Jump */
+.quick-jump-input {
+    width: 70px;
+    padding: 8px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-right: 8px;
+}
+
+.quick-jump-input:focus {
+    outline: none;
+    border-color: var(--chocolate);
+}
+
+.quick-jump-btn {
+    padding: 8px 16px;
+    background: var(--chocolate);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-jump-btn:hover {
+    background: #b8690e;
+    transform: scale(1.05);
+}
+
+/* Drawer Settings */
+.drawer-settings {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.drawer-settings h4 {
+    margin: 0 0 12px 0;
+    color: #666;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.lang-toggle-btn {
+    padding: 8px 16px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lang-toggle-btn:hover {
+    background: #0d47a1;
+}
+
+.font-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.font-controls button {
+    width: 36px;
+    height: 36px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: var(--text-dark);
+}
+
+.font-controls button:hover {
+    border-color: var(--chocolate);
+    color: var(--chocolate);
+}
+
+.font-controls span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Drawer Links */
+.drawer-links {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.drawer-links a {
+    padding: 10px 12px;
+    color: #666;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.drawer-links a:hover {
+    background: #f5f5f5;
+    color: var(--chocolate);
+}
+
+/* ============================================
+   Song List Transitions
+   ============================================ */
+
+.vue-nav-container {
+    padding-top: 70px;
+    background: var(--secondary-cream);
+}
+
+/* Header */
+.vue-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--background-white);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-title p {
+    margin: 0;
+    color: var(--primary-blue);
+    font-family: cursive;
+}
+
+.header-search {
+    flex: 1;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--chocolate);
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
+}
+
+.header-menu a {
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
+.header-menu button {
+    background: var(--chocolate);
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.header-menu button:hover {
+    background: #b8690e;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: none;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn:hover {
+    background: #e0e0e0;
+}
+
+.filter-btn.active {
+    background: var(--navy-blue);
+    color: white;
+}
+
+/* Results Count */
+.results-count {
+    text-align: center;
+    padding: 8px 15px;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 13px;
+    border-bottom: 1px solid #ffcc80;
+}
+
+/* Song List */
+.vue-song-list {
+    padding: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.song-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.tittle {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.tittle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.tittle.children-song {
+    border-left: 4px solid var(--chocolate);
+    background: linear-gradient(90deg, #fff3e0 0%, #fff 25%, #fff 100%);
+}
+
+.children-badge {
+    background: var(--chocolate);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    margin-left: auto;
+}
+
+.tittle .No {
+    min-width: 80px;
+    font-size: 0.9rem;
+}
+
+.tittle .song {
+    flex: 1;
+    padding: 0 15px;
+}
+
+.tittle .song b {
+    color: var(--text-dark);
+}
+
+.tittle .sign {
+    min-width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+.tittle .comp {
+    min-width: 100px;
+    text-align: right;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* ============================================
+   Vue Transition Animations
+   ============================================ */
+
+/* Drawer Slide Transition */
+.drawer-slide-enter-active,
+.drawer-slide-leave-active {
+    transition: all 0.3s ease;
+}
+
+.drawer-slide-enter-from,
+.drawer-slide-leave-to {
+    opacity: 0;
+}
+
+.drawer-slide-enter-from .nav-drawer,
+.drawer-slide-leave-to .nav-drawer {
+    transform: translateX(-100%);
+}
+
+.drawer-slide-enter-active .nav-drawer,
+.drawer-slide-leave-active .nav-drawer {
+    transition: transform 0.3s ease;
+}
+
+/* Fade Transition */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Song List Transition Group */
+.song-list-enter-active,
+.song-list-leave-active {
+    transition: all 0.4s ease;
+}
+
+.song-list-enter-from {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.song-list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.song-list-move {
+    transition: transform 0.4s ease;
+}
+
+/* Loading Spinner */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.spinner-1 {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--navy-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner-overlay p {
+    margin-top: 20px;
+    color: #666;
+}
+
+.hide-div {
+    display: none !important;
+}
+
+/* Vue Loading */
+.vue-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+/* Song Progress */
+.song-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 10px 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.song-progress span {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--navy-blue) 0%, var(--primary-blue) 100%);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* Chorus and Verse Labels */
+.chorus-label {
+    color: var(--chocolate);
+    font-weight: bold;
+}
+
+.verse-label {
+    color: var(--text-dark);
+    font-weight: bold;
+}
+
+/* Navigation Controls */
+.nav-controls {
+    margin-top: 20px;
+}
+
+.nav-controls button {
+    background: var(--navy-blue);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 2px 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-controls button:hover {
+    background: var(--primary-blue);
+}
+
+/* Font Slider */
+.font-slider {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.font-slider label {
+    color: #666;
+    white-space: nowrap;
+}
+
+.font-slider input[type="range"] {
+    flex: 1;
+    accent-color: var(--chocolate);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 600px) {
+    .nav-drawer {
+        width: 85%;
+    }
+
+    .vue-header {
+        padding: 8px 10px;
+    }
+
+    .header-title p {
+        font-size: 0.9rem;
+    }
+
+    .tittle {
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+
+    .tittle .No {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .tittle .song {
+        padding: 0 10px;
+    }
+
+    .tittle .comp {
+        display: none;
+    }
+
+    .filter-tabs {
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .filter-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+}
