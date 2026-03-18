@@ -111,6 +111,10 @@ function loadSong(dum = null) {
     engNoElement.textContent = song.EngNo || "";
     songElement.textContent = song.song;
     document.title = song.song;
+    const navTitle = document.getElementById("songNavTitle");
+    if (navTitle) {
+        navTitle.textContent = `${song.number}. ${song.song}`;
+    }
     // console.log(song.EngTit)
     engTitElement.textContent = song.EngTit;
     // anElement.textContent =  song.An ||"";

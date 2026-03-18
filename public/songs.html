@@ -16,6 +16,14 @@
 </head>
 <body>
     <h1 style="display: none;">Offline SQLite DB</h1>
+    <header class="ios-nav">
+        <a class="ios-nav__back" href="/src/menu.html" aria-label="Back to menu">
+            <span class="ios-nav__chevron" aria-hidden="true">&#8249;</span>
+            <span>Menu</span>
+        </a>
+        <div class="ios-nav__title" id="songNavTitle">Ennyimba Za Kristo</div>
+        <div class="ios-nav__spacer" aria-hidden="true"></div>
+    </header>
     
     <div style="display: none;">
         <button onclick="fetchAndStoreSongs()">Fetch & Store Luganda Songs</button>
@@ -62,12 +70,6 @@
     <div class="hymn hiden-1">
         <pre id="txt"></pre>
     </div>
-
-    <a href="/src/menu.html">
-        <div class="btn">Back to Menu<br>
-            <small>&copy;KitaHope</small> 
-        </div>
-    </a>
 
     <div class="slid hiden-1">
         <input type="range" min="1" max="5" id="siz" value="2" step="0.1" onmousemove="changeFontSize()" onchange="changeFontSize()">
