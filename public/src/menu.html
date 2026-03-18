@@ -30,6 +30,14 @@
 </head>
 <body>
     <div class="calc">
+        <header class="menu-appbar">
+            <a class="menu-appbar__link" href="../index.html" aria-label="Go to main menu">
+                <span class="menu-appbar__chevron" aria-hidden="true">&#8249;</span>
+                <span>Main menu</span>
+            </a>
+            <div class="menu-appbar__title">Jump to Hymn</div>
+            <a class="menu-appbar__link menu-appbar__link--secondary" href="index.html">Index</a>
+        </header>
         <div class="form">
             <div class="txtview" id="txt">
                 <p>New Luganda Hymnal</p>
@@ -38,31 +46,31 @@
                 <div><input id="num" readonly></div>
             </div>
         </div>
-        <table id="tbl">
-            <tr>
-                <td><input class="btni" type="button" value="1" onclick="inser(1)"></td>
-                <td><input class="btni" type="button" value="2" onclick="inser(2)"></td>
-                <td><input class="btni" type="button" value="3" onclick="inser(3)"></td>
-            </tr>
-            <tr>
-                <td><input class="btni" type="button" value="4" onclick="inser(4)"></td>
-                <td><input class="btni" type="button" value="5" onclick="inser(5)"></td>
-                <td><input class="btni" type="button" value="6" onclick="inser(6)"></td>
-            </tr>
-            <tr>
-                <td><input class="btni" type="button" value="7" onclick="inser(7)"></td>
-                <td><input class="btni" type="button" value="8" onclick="inser(8)"></td>
-                <td><input class="btni" type="button" value="9" onclick="inser(9)"></td>
-            </tr>
-            <tr>
-                <td><button class="a" type="button" onclick="backSpace()">Del</button></td>
-                <td><input class="btni" type="button" value="0" onclick="inser(0)"></td>
-                <td><a id="hym" onclick="go()"><button>Open</button></a></td>
-            </tr>
-            <tr>
-                <td colspan="3"><a class="go_to" href="index.html"><button style="font-size: large;">Index <br> <small>&copy;KitaRogHope</small></button></a></td>
-            </tr>
-        </table>
+        <div id="tbl" class="keypad">
+            <div class="keypad__row">
+                <input class="btni" type="button" value="1" onclick="inser(1)">
+                <input class="btni" type="button" value="2" onclick="inser(2)">
+                <input class="btni" type="button" value="3" onclick="inser(3)">
+            </div>
+            <div class="keypad__row">
+                <input class="btni" type="button" value="4" onclick="inser(4)">
+                <input class="btni" type="button" value="5" onclick="inser(5)">
+                <input class="btni" type="button" value="6" onclick="inser(6)">
+            </div>
+            <div class="keypad__row">
+                <input class="btni" type="button" value="7" onclick="inser(7)">
+                <input class="btni" type="button" value="8" onclick="inser(8)">
+                <input class="btni" type="button" value="9" onclick="inser(9)">
+            </div>
+            <div class="keypad__row keypad__row--actions">
+                <button class="a" type="button" onclick="backSpace()">Del</button>
+                <input class="btni" type="button" value="0" onclick="inser(0)">
+                <a id="hym" onclick="go()"><button>Open</button></a>
+            </div>
+            <div class="keypad__row keypad__row--full">
+                <a class="go_to" href="index.html"><button>Index <br> <small>&copy;KitaRogHope</small></button></a>
+            </div>
+        </div>
     </div>
 		<div id="alert_container" onclick="style.display='none'">
 			<div class="alert">
@@ -70,9 +78,8 @@
                     <span class="closebtn" onclick="document.getElementById('alert_container').style.display='none';">&times;</span> 
                     <strong>Nedda!</strong> Enyimba zivva ku namba 1 paka ku 250. Bwoba oyagala z'abaana, ddayo emabega olabe "Enyimba Z'abaana"
                 </div>
-			</div>
+            </div>
 		</div>
-        <a class="btmm" href="../index.html"><button>Main menu</button></a>
 	<script>
 		backSpace = function (){
 			var str= document.getElementById("num").value;

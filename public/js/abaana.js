@@ -1,4 +1,19 @@
 $(document).ready(function(){
+    const details = document.querySelectorAll('details');
+    details.forEach((detail, index) => {
+        detail.id = `child-song-${index + 1}`;
+    });
+
+    if (window.location.hash) {
+        const target = document.getElementById(window.location.hash.slice(1));
+        if (target) {
+            target.open = true;
+            setTimeout(() => {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    }
+
     var share_div = document.createElement('div');
     share_div.className = 'shareD';
     var share_btn = document.createElement('button');

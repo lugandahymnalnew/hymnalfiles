@@ -11,27 +11,69 @@
 }
 body{
     background: var(--secondary-color);
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
+    min-height: 100dvh;
 }
 .calc{
-    width: calc(100vw - (100vw - 100%));
-    height: calc(100vh - 6px);
+    width: min(100%, 32rem);
+    height: 100dvh;
     background: var(--secondary-color);
-    min-height: 455px;
     overflow: hidden;
-    min-width: 310px;
-    min-height: 445px;
+    min-width: 0;
     border-top: 5px solid rgb(242, 239, 255);
+    margin: 0 auto;
+    padding: 12px;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 10px;
+}
+.menu-appbar{
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    min-height: 50px;
+    padding: 0 10px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #f7f7f7 0%, #e6e6e6 52%, #d4d4d4 100%);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+.menu-appbar__title{
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    color: #222;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.menu-appbar__link{
+    width: auto;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: #1f5fae;
+    font-size: 0.98rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+.menu-appbar__link--secondary{
+    justify-self: end;
+}
+.menu-appbar__chevron{
+    font-size: 1.9rem;
+    line-height: 1;
+    margin-top: -2px;
 }
 
-
 .form{
-    width: 98%;
-    height: 26%;
-    min-height: 137px;
+    width: 100%;
     border: 2%;
     display: block;
     text-align: center;
@@ -40,8 +82,7 @@ body{
 }
 .txtview{
     width: 100%;
-    height: 50%;
-    min-height: 91px;
+    min-height: 64px;
     text-align: center;
     display: table;
     vertical-align: middle;
@@ -55,18 +96,17 @@ body{
 .txtview p{
     display: table-cell;
     vertical-align: middle;
-    font-size: x-large;
+    font-size: 1.4rem;
 }
 .input{
     width: 100%;
-    height: 50%;
-    min-height: 68px;
+    min-height: 56px;
     text-align: center;
     display: table;
     font-size: x-large;
     box-sizing: border-box;
-    border: 5px rgba(106, 98, 139, 0) solid;
-    margin: 0 auto;
+    border: 8px rgba(106, 98, 139, 0) solid;
+    margin: 4px auto 0;
 }
 .input div{
     display: table-cell;
@@ -76,39 +116,44 @@ body{
 }
 .input div #num{
     text-align: center;
-    height: 100%;
+    height: 50px;
     width: 100%;
     border-radius: 30px;
     user-select: none;
-    font-size: 2rem;
+    font-size: 1.75rem;
+    border: 1px solid rgba(0, 1, 70, 0.18);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
 
 /* all button sets start here */
 #tbl{
-    height: 70%;
-    min-height: 300px;
-    width: 86%;
+    width: 100%;
     background: var(--secondary-color);
-    margin: 2% auto;
-
+    margin: 0 auto;
+    align-self: stretch;
+    display: grid;
+    grid-template-rows: repeat(5, minmax(0, 1fr));
+    gap: 8px;
 }
-#tbl tr{
-    height: 20%;
-    min-height: 91px;
+.keypad__row{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    min-height: 0;
 }
-
-#tbl tr td{
-    width: 30%;
-    min-height: 91px;
+.keypad__row--full{
+    grid-template-columns: 1fr;
 }
 .btni{
     width: 100%;
     height: 100%;
     background: var(--primary-color);
-    border-radius: 10px;
+    border-radius: 16px;
     color: white;
-    font-size: 2rem;
+    font-size: 1.6rem;
+    border: none;
+    box-shadow: 0 8px 18px rgba(6, 55, 91, 0.18);
 }
 .btni:hover, .btni:active{
     animation: press_key 0.3s linear;
@@ -181,15 +226,16 @@ body{
     height: 100%;
     color: white;
     background: rgb(0, 1, 70);
-    font-size: x-large;
+    font-size: 1.05rem;
+    border: none;
 }
 .a{
-    border-radius: 10px;
+    border-radius: 16px;
 }
 #hym, #hym button{
     text-align: center;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 16px;
 }
 .go_to{
     text-align: center;
@@ -202,23 +248,52 @@ body{
     display: block;
     height: 100%;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 16px;
     color: white;
     background: rgb(0, 1, 70);
-    font-size: x-large;
+    font-size: 1rem;
+    border: none;
+    line-height: 1.2;
+    padding: 8px 10px;
 }
-.btmm{
-    position: fixed;
-    top: calc(100% - (100% - 10px));
-    right: 0;
-    display: block;
-}
-.btmm button{
-    width: 60px;
-    height: 60px;
-    border-radius: 50% 0 0 50%;
-    color: blueviolet;
-    background: var(--secondary-color);
-    overflow: hidden;
-    border: 2px rgba(0, 0, 0, 0) solid;
+@media (max-width: 420px) {
+    .calc{
+        padding: 10px;
+        gap: 8px;
+    }
+    .menu-appbar{
+        min-height: 46px;
+        padding: 0 8px;
+    }
+    .menu-appbar__title{
+        font-size: 0.92rem;
+    }
+    .menu-appbar__link{
+        font-size: 0.88rem;
+    }
+    .txtview{
+        min-height: 58px;
+    }
+    .txtview p{
+        font-size: 1.22rem;
+    }
+    .input div #num{
+        height: 46px;
+        font-size: 1.55rem;
+    }
+    #tbl{
+        gap: 6px;
+    }
+    .keypad__row{
+        gap: 6px;
+    }
+    .btni{
+        font-size: 1.4rem;
+    }
+    .a, #hym, #hym button{
+        font-size: 0.98rem;
+    }
+    .go_to button{
+        font-size: 0.92rem;
+    }
 }

@@ -21,11 +21,13 @@ const ki = [
   "/js/all.js",
   "/js/jquery.js",
   "/js/js.js",
+  "/js/index-page.js",
   "/js/print.js",
   "/js/serFunction.js",
   "/js/share.js",
   "/js/swipe.js",
   "/js/try.js",
+  "/data/children-songs.json",
   "/midi/min-midi-player.js",
   "/midi/Play all.html",
   "/sidelogo.png",
@@ -45,7 +47,7 @@ const ki = [
   "/style/stylepay.css"
 ];
 
-const CACHE_NAME = 'my-website-cache-v1';
+const CACHE_NAME = 'my-website-cache-v2';
 const urlsToCache = ki;
 
 self.addEventListener('install', function(event) {
