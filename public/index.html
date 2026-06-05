@@ -13,6 +13,136 @@
     <link rel="shortcut icon" href="src/images/app.png" type="image/x-icon">
 </head>
 <body>
+    <!-- Adverts Section -->
+    <div id="advertsSection" style="display: none; margin: 10px;">
+        <div id="advertsCarousel" style="position: relative;"></div>
+    </div>
+    <script>
+        (function() {
+            var currentIndex = 0;
+            var adverts = [];
+            var intervalId = null;
+            var trackedViews = {};
+
+            function loadAdverts() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '/api/adverts?placement=home', true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        try {
+                            var result = JSON.parse(xhr.responseText);
+                            if (result.success && result.data) {
+                                adverts = result.data;
+                                if (adverts.length > 0) {
+                                    showAdverts();
+                                }
+                            }
+                        } catch (e) {}
+                    }
+                };
+                xhr.send();
+            }
+
+            function showAdverts() {
+                var section = document.getElementById('advertsSection');
+                var carousel = document.getElementById('advertsCarousel');
+                section.style.display = 'block';
+                carousel.innerHTML = '';
+                showAdvert(0);
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+                intervalId = setInterval(nextAdvert, 10000);
+            }
+
+            function trackAdvert(url) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send('{}');
+            }
+
+            function showAdvert(index) {
+                if (adverts.length === 0) return;
+                var advert = adverts[index];
+                var carousel = document.getElementById('advertsCarousel');
+                var images = advert.images || [];
+                if (images.length === 0) return;
+
+                if (!trackedViews[advert._id]) {
+                    trackedViews[advert._id] = true;
+                    trackAdvert('/api/adverts/' + advert._id + '/view');
+                }
+
+                var card = document.createElement('div');
+                card.style.background = '#ffffff';
+                card.style.borderRadius = '14px';
+                card.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                card.style.overflow = 'hidden';
+                card.style.cursor = 'pointer';
+
+                var img = document.createElement('img');
+                img.src = images[0];
+                img.style.width = '100%';
+                img.style.maxHeight = '210px';
+                img.style.objectFit = 'cover';
+                img.alt = advert.title || 'Advert';
+
+                var body = document.createElement('div');
+                body.style.padding = '14px';
+
+                var title = document.createElement('div');
+                title.textContent = advert.title || 'Sponsored';
+                title.style.fontSize = '16px';
+                title.style.fontWeight = '700';
+                title.style.color = '#1f2937';
+
+                var meta = document.createElement('div');
+                meta.textContent = advert.link ? 'Tap to open link' : 'Tap to view details';
+                meta.style.marginTop = '6px';
+                meta.style.fontSize = '13px';
+                meta.style.color = '#6b7280';
+
+                var cta = document.createElement('div');
+                cta.textContent = advert.link ? 'Learn more' : 'View advert';
+                cta.style.marginTop = '10px';
+                cta.style.display = 'inline-block';
+                cta.style.padding = '8px 12px';
+                cta.style.borderRadius = '999px';
+                cta.style.background = '#0f766e';
+                cta.style.color = '#ffffff';
+                cta.style.fontSize = '12px';
+                cta.style.fontWeight = '600';
+
+                body.appendChild(title);
+                body.appendChild(meta);
+                body.appendChild(cta);
+                card.appendChild(img);
+                card.appendChild(body);
+
+                card.onclick = function() {
+                    trackAdvert('/api/adverts/' + advert._id + '/click');
+                    if (advert.link) {
+                        window.open(advert.link, '_blank', 'noopener');
+                        return;
+                    }
+
+                    window.location.href = '/advert-details?id=' + advert._id;
+                };
+
+                carousel.innerHTML = '';
+                carousel.appendChild(card);
+                currentIndex = index;
+            }
+
+            function nextAdvert() {
+                var nextIndex = (currentIndex + 1) % adverts.length;
+                showAdvert(nextIndex);
+            }
+
+            loadAdverts();
+        })();
+    </script>
     <div class="contMain">
       <br><br>
       <div class="btncn">

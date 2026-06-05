@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="../style/stylem.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+        .toolbar h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: #007AFF;
+            color: white;
+        }
+        .btn-secondary {
+            background: #8E8E93;
+            color: white;
+        }
+        .btn-success {
+            background: #34C759;
+            color: white;
+        }
+        .btn-danger {
+            background: #FF3B30;
+            color: white;
+        }
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .user-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            color: #666;
+            font-size: 13px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge.pending {
+            background: #FFF3CD;
+            color: #7A5D00;
+        }
+        .badge.approved {
+            background: #D4EDDA;
+            color: #1F6F3D;
+        }
+        .badge.disabled {
+            background: #F8D7DA;
+            color: #7F1D1D;
+        }
+        .badge.role {
+            background: #E7F0FF;
+            color: #0B57D0;
+        }
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .empty-state,
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8E8E93;
+        }
+    </style>
+</head>
+<body>
+    <header class="menu-appbar">
+        <a class="menu-appbar__link" href="/adverts" aria-label="Go to adverts">
+            <span class="menu-appbar__chevron" aria-hidden="true">&#8249;</span>
+            <span>Adverts</span>
+        </a>
+        <div class="menu-appbar__title">Manage Users</div>
+        <a class="menu-appbar__link menu-appbar__link--secondary" href="../index.html">Home</a>
+    </header>
+
+    <div class="container">
+        <div class="toolbar">
+            <h1>Users</h1>
+            <div class="toolbar-actions">
+                <button class="btn btn-secondary" id="refreshBtn" type="button">Refresh</button>
+                <button class="btn btn-danger" id="logoutBtn" type="button">Logout</button>
+            </div>
+        </div>
+        <div id="usersList">
+            <div class="loading">Loading users...</div>
+        </div>
+    </div>
+
+    <script>
+        var accessToken = localStorage.getItem('authToken') || '';
+
+        function redirectToLogin() {
+            window.location.href = '/login';
+        }
+
+        function request(method, url, body, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+            if (body) {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+            }
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 401 || xhr.status === 403) {
+                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('authUser');
+                        redirectToLogin();
+                        return;
+                    }
+                    callback(xhr);
+                }
+            };
+            xhr.send(body ? JSON.stringify(body) : null);
+        }
+
+        function formatDate(value) {
+            if (!value) return 'N/A';
+            var date = new Date(value);
+            if (isNaN(date.getTime())) return 'N/A';
+            return date.toLocaleString();
+        }
+
+        function buildButton(label, className, onClick) {
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn ' + className + ' btn-small';
+            button.textContent = label;
+            button.onclick = onClick;
+            return button;
+        }
+
+        function loadUsers() {
+            var container = document.getElementById('usersList');
+            container.innerHTML = '<div class="loading">Loading users...</div>';
+
+            request('GET', '/api/admin/users', null, function(xhr) {
+                if (xhr.status !== 200) {
+                    container.innerHTML = '<div class="empty-state">Failed to load users</div>';
+                    return;
+                }
+
+                var result = JSON.parse(xhr.responseText);
+                var users = result.data || [];
+                if (users.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No users found</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                users.forEach(function(user) {
+                    var card = document.createElement('div');
+                    card.className = 'user-card';
+
+                    var title = document.createElement('h3');
+                    title.textContent = user.fullName || user.userName || user.email;
+                    card.appendChild(title);
+
+                    var secondary = document.createElement('div');
+                    secondary.className = 'user-meta';
+                    secondary.innerHTML = '<span>@' + (user.userName || '-') + '</span><span>' + (user.email || '-') + '</span>';
+                    card.appendChild(secondary);
+
+                    var badges = document.createElement('div');
+                    badges.className = 'actions';
+
+                    var statusBadge = document.createElement('span');
+                    statusBadge.className = 'badge ' + (user.status || 'pending');
+                    statusBadge.textContent = 'Status: ' + (user.status || 'pending');
+                    badges.appendChild(statusBadge);
+
+                    var roleBadge = document.createElement('span');
+                    roleBadge.className = 'badge role';
+                    roleBadge.textContent = 'Role: ' + (user.role || 'user');
+                    badges.appendChild(roleBadge);
+
+                    card.appendChild(badges);
+
+                    var dates = document.createElement('div');
+                    dates.className = 'user-meta';
+                    dates.innerHTML = '<span>Created: ' + formatDate(user.createdAt) + '</span><span>Approved: ' + formatDate(user.approvedAt) + '</span><span>Last login: ' + formatDate(user.lastLoginAt) + '</span>';
+                    card.appendChild(dates);
+
+                    var actions = document.createElement('div');
+                    actions.className = 'actions';
+
+                    actions.appendChild(buildButton('Approve', 'btn-success', function() {
+                        updateUser(user._id, { status: 'approved' });
+                    }));
+                    actions.appendChild(buildButton('Set Pending', 'btn-secondary', function() {
+                        updateUser(user._id, { status: 'pending' });
+                    }));
+                    actions.appendChild(buildButton('Disable', 'btn-danger', function() {
+                        updateUser(user._id, { status: 'disabled' });
+                    }));
+                    actions.appendChild(buildButton(user.role === 'admin' ? 'Make User' : 'Make Admin', 'btn-primary', function() {
+                        updateUser(user._id, { role: user.role === 'admin' ? 'user' : 'admin' });
+                    }));
+
+                    card.appendChild(actions);
+                    container.appendChild(card);
+                });
+            });
+        }
+
+        function updateUser(id, payload) {
+            request('PATCH', '/api/admin/users/' + id, payload, function(xhr) {
+                if (xhr.status !== 200) {
+                    alert('Failed to update user');
+                    return;
+                }
+
+                loadUsers();
+            });
+        }
+
+        document.getElementById('refreshBtn').onclick = loadUsers;
+        document.getElementById('logoutBtn').onclick = function() {
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('authUser');
+            redirectToLogin();
+        };
+
+        if (!accessToken) {
+            redirectToLogin();
+        } else {
+            loadUsers();
+        }
+    </script>
+</body>
+</html>

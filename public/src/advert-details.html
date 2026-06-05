@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advert Details - Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="../style/stylem.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .advert-detail {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .advert-image {
+            width: 100%;
+            display: block;
+        }
+        .advert-info {
+            padding: 20px;
+        }
+        .advert-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            color: #333;
+        }
+        .advert-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #007AFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .advert-link:hover {
+            background: #0056b3;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8E8E93;
+        }
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #FF3B30;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #007AFF;
+            text-decoration: none;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .back-link span {
+            font-size: 24px;
+            margin-right: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header class="menu-appbar">
+        <a class="menu-appbar__link" href="../index.html" aria-label="Go to main menu">
+            <span class="menu-appbar__chevron" aria-hidden="true">&#8249;</span>
+            <span>Main menu</span>
+        </a>
+        <div class="menu-appbar__title">Advert Details</div>
+        <a class="menu-appbar__link menu-appbar__link--secondary" href="/adverts">Manage</a>
+    </header>
+
+    <div class="container">
+        <a class="back-link" href="javascript:history.back()">
+            <span>&#8249;</span> Back
+        </a>
+        <div id="advertContent">
+            <div class="loading">Loading advert...</div>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParam(name) {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function loadAdvert() {
+            var advertId = getQueryParam('id');
+            var container = document.getElementById('advertContent');
+
+            if (!advertId) {
+                container.innerHTML = '<div class="error">No advert ID provided</div>';
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/adverts/' + advertId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        try {
+                            var result = JSON.parse(xhr.responseText);
+                            if (result.success && result.data) {
+                                renderAdvert(result.data);
+                                var trackXhr = new XMLHttpRequest();
+                                trackXhr.open('POST', '/api/adverts/' + advertId + '/view', true);
+                                trackXhr.setRequestHeader('Content-Type', 'application/json');
+                                trackXhr.send('{}');
+                            } else {
+                                container.innerHTML = '<div class="error">Advert not found</div>';
+                            }
+                        } catch (e) {
+                            container.innerHTML = '<div class="error">Error loading advert</div>';
+                        }
+                    } else {
+                        container.innerHTML = '<div class="error">Error: ' + xhr.status + '</div>';
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function renderAdvert(advert) {
+            var container = document.getElementById('advertContent');
+            var images = advert.images || [];
+
+            if (images.length === 0) {
+                container.innerHTML = '<div class="error">No images in this advert</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            var detail = document.createElement('div');
+            detail.className = 'advert-detail';
+
+            for (var i = 0; i < images.length; i++) {
+                var imageEl = document.createElement('img');
+                imageEl.className = 'advert-image';
+                imageEl.src = images[i];
+                imageEl.alt = advert.title || 'Advert';
+                detail.appendChild(imageEl);
+            }
+
+            var info = document.createElement('div');
+            info.className = 'advert-info';
+
+            var title = document.createElement('h1');
+            title.className = 'advert-title';
+            title.textContent = advert.title || 'Advert';
+            info.appendChild(title);
+
+            if (advert.link) {
+                var link = document.createElement('a');
+                link.href = advert.link;
+                link.className = 'advert-link';
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = 'Open Link';
+                link.onclick = function() {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/api/adverts/' + advert._id + '/click', true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send('{}');
+                };
+                info.appendChild(link);
+            }
+
+            detail.appendChild(info);
+            container.appendChild(detail);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAdvert);
+    </script>
+</body>
+</html>

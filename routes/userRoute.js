@@ -4,14 +4,14 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const con = require('./../config.json');
-const session = require('express-session');
+const { ObjectId } = require('mongodb');
 const db = require("../modules/mongoDBApi");
 
 const user_route = express();
 
 const bodyParser = require('body-parser');
-user_route.use(bodyParser.json());
-user_route.use(bodyParser.urlencoded({extended:true}));
+user_route.use(bodyParser.json({ limit: '50mb' }));
+user_route.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 
 let allbooks = [];
@@ -38,13 +38,6 @@ user_route.use(cors({
     origin: "*",
     methods: "*",
     allowedHeaders:"*"
-}));
-
-user_route.use(session({
-  secret: con.sessionSecret,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } // Note: Change to 'true' if using HTTPS
 }));
 
 user_route.set('view engine','ejs');
@@ -92,6 +85,148 @@ const upload = multer({storage:storage});
 const userController = require('../controllers/userController');
 const auth = require('./../middleWares/auth');
 
+function isValidObjectId(id) {
+  return ObjectId.isValid(id);
+}
+
+function normalizeAdvertText(value, maxLength = 200) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value.trim().slice(0, maxLength);
+}
+
+function normalizeAdvertLink(value) {
+  if (typeof value !== 'string' || value.trim() === '') {
+    return '';
+  }
+
+  try {
+    const parsedUrl = new URL(value.trim());
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return '';
+    }
+    return parsedUrl.toString();
+  } catch (_error) {
+    return '';
+  }
+}
+
+function normalizeAdvertImages(images) {
+  if (!Array.isArray(images)) {
+    return [];
+  }
+
+  return images
+    .filter((image) => typeof image === 'string' && image.startsWith('data:image/'))
+    .slice(0, 5);
+}
+
+function normalizePlacement(value) {
+  if (value === 'home' || value === 'details') {
+    return value;
+  }
+
+  return 'home';
+}
+
+function normalizePriority(value) {
+  const parsedValue = Number(value);
+  if (!Number.isFinite(parsedValue)) {
+    return 0;
+  }
+
+  return Math.max(0, Math.min(100, Math.round(parsedValue)));
+}
+
+function normalizeOptionalDate(value) {
+  if (!value) {
+    return null;
+  }
+
+  const parsedDate = new Date(value);
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null;
+  }
+
+  return parsedDate;
+}
+
+function serializeAdvert(advert) {
+  return {
+    ...advert,
+    startsAt: advert.startsAt || null,
+    endsAt: advert.endsAt || null,
+    priority: typeof advert.priority === 'number' ? advert.priority : 0,
+    placement: advert.placement || 'home',
+    views: typeof advert.views === 'number' ? advert.views : 0,
+    clicks: typeof advert.clicks === 'number' ? advert.clicks : 0
+  };
+}
+
+function advertIsVisible(advert, placement) {
+  if (!advert || advert.active !== true) {
+    return false;
+  }
+
+  if (placement && advert.placement !== placement) {
+    return false;
+  }
+
+  const now = Date.now();
+  const startsAt = advert.startsAt ? new Date(advert.startsAt).getTime() : null;
+  const endsAt = advert.endsAt ? new Date(advert.endsAt).getTime() : null;
+
+  if (startsAt && startsAt > now) {
+    return false;
+  }
+
+  if (endsAt && endsAt < now) {
+    return false;
+  }
+
+  return true;
+}
+
+function sortAdverts(adverts) {
+  return adverts.sort((left, right) => {
+    const priorityDiff = (right.priority || 0) - (left.priority || 0);
+    if (priorityDiff !== 0) {
+      return priorityDiff;
+    }
+
+    return new Date(right.createdAt || 0).getTime() - new Date(left.createdAt || 0).getTime();
+  });
+}
+
+function canManageAdvert(user, advert) {
+  return !!user && user.status === 'approved' && (user.role === 'admin' || advert.ownerId === String(user._id));
+}
+
+function canSeeAdvert(user, advert, placement) {
+  if (user && user.role === 'admin' && user.status === 'approved') {
+    return !placement || advert.placement === placement;
+  }
+
+  return advertIsVisible(advert, placement);
+}
+
+function sanitizeManagedUser(user) {
+  return {
+    _id: user._id,
+    fullName: user.fullName || '',
+    userName: user.userName || '',
+    email: user.email || '',
+    role: user.role || 'user',
+    status: user.status || 'pending',
+    profile: user.profile || '',
+    createdAt: user.createdAt || null,
+    approvedAt: user.approvedAt || null,
+    lastLoginAt: user.lastLoginAt || null
+  };
+}
+
 // handeling registration
 user_route.get('/register', auth.isLogin ,(req,res)=>{
   res.render("register");
@@ -100,12 +235,81 @@ user_route.post('/register',upload.any(), userController.register);
 
 // handling login
 user_route.get('/login',auth.isLogin, userController.loadLogin);
-user_route.post('/login', userController.login);
+user_route.post('/api/auth/login', userController.login);
+user_route.post('/api/auth/logout', auth.requireAuth, userController.logout);
+user_route.get('/api/auth/me', auth.requireAuth, userController.me);
 
 // handling logouts
-user_route.get('/logout',auth.isLogout, userController.logout)
+user_route.get('/logout',auth.isLogout, (req, res) => {
+  res.redirect('/login');
+})
 
 user_route.get('/dashboard',userController.loadDashboard);
+
+user_route.get('/api/admin/users', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+  try {
+    const users = await db.readRows({}, 'newHymnal', 'users');
+    if (!users || users.err) {
+      return res.status(500).json({ success: false, message: 'Failed to load users' });
+    }
+
+    res.json({
+      success: true,
+      data: users.listings.map(sanitizeManagedUser)
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+user_route.patch('/api/admin/users/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid user ID' });
+    }
+
+    const existingUser = await db.readRow({ _id: new ObjectId(req.params.id) }, 'newHymnal', 'users');
+    if (!existingUser || existingUser.err || !existingUser.found) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const updateData = {
+      updatedAt: new Date()
+    };
+
+    if (req.body.status !== undefined) {
+      const nextStatus = String(req.body.status);
+      if (['pending', 'approved', 'disabled'].indexOf(nextStatus) === -1) {
+        return res.status(400).json({ success: false, message: 'Invalid status value' });
+      }
+
+      updateData.status = nextStatus;
+      if (nextStatus === 'approved') {
+        updateData.approvedAt = new Date();
+        updateData.approvedBy = String(req.user._id);
+      }
+    }
+
+    if (req.body.role !== undefined) {
+      const nextRole = String(req.body.role);
+      if (['user', 'admin'].indexOf(nextRole) === -1) {
+        return res.status(400).json({ success: false, message: 'Invalid role value' });
+      }
+
+      updateData.role = nextRole;
+    }
+
+    const result = await db.updateRow({ _id: new ObjectId(req.params.id) }, updateData, 'newHymnal', 'users');
+    if (!result || result.err) {
+      return res.status(500).json({ success: false, message: 'Failed to update user' });
+    }
+
+    const refreshedUser = await db.readRow({ _id: new ObjectId(req.params.id) }, 'newHymnal', 'users');
+    res.json({ success: true, data: sanitizeManagedUser(refreshedUser.listing) });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 user_route.get('/keepAlive', (req, res)=>{
   console.log('Status checked, clear');
@@ -200,6 +404,207 @@ user_route.post("/addBook", async(req, res)=>{
     res.send("failed");
   }
 })
+
+// ============ ADVERTS API ============
+// GET all adverts
+user_route.get('/api/adverts', auth.attachUserIfPresent, async (req, res) => {
+  try {
+    const placement = req.query.placement ? normalizePlacement(req.query.placement) : '';
+    const adverts = await db.readRows({}, "hymnal", "adverts");
+    if (!adverts || adverts.err) {
+      res.json({ success: false, message: adverts ? adverts.listings : 'Failed to load adverts' });
+    } else {
+      const filteredAdverts = sortAdverts(
+        adverts.listings
+          .map(serializeAdvert)
+          .filter((advert) => canSeeAdvert(req.user, advert, placement))
+      );
+
+      res.json({ success: true, data: filteredAdverts });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// GET single advert by ID
+user_route.get('/api/adverts/:id', auth.attachUserIfPresent, async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid advert ID' });
+    }
+
+    const advert = await db.readRow({ _id: new ObjectId(req.params.id) }, "hymnal", "adverts");
+    if (advert.found) {
+      const serializedAdvert = serializeAdvert(advert.listing);
+      if (!canSeeAdvert(req.user, serializedAdvert, '')) {
+        return res.status(404).json({ success: false, message: 'Advert not found' });
+      }
+
+      res.json({ success: true, data: serializedAdvert });
+    } else {
+      res.status(404).json({ success: false, message: 'Advert not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// CREATE new advert
+user_route.post('/api/adverts', auth.requireAuth, auth.requireApproved, async (req, res) => {
+  try {
+    const { title, images, link, active } = req.body;
+    const startsAt = normalizeOptionalDate(req.body.startsAt);
+    const endsAt = normalizeOptionalDate(req.body.endsAt);
+    const newAdvert = {
+      ownerId: String(req.user._id),
+      title: normalizeAdvertText(title, 120),
+      images: normalizeAdvertImages(images),
+      link: normalizeAdvertLink(link),
+      placement: normalizePlacement(req.body.placement),
+      priority: normalizePriority(req.body.priority),
+      startsAt: startsAt,
+      endsAt: endsAt,
+      views: 0,
+      clicks: 0,
+      active: active !== undefined ? active : true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    if (newAdvert.startsAt && newAdvert.endsAt && newAdvert.startsAt.getTime() > newAdvert.endsAt.getTime()) {
+      return res.status(400).json({ success: false, message: 'Start date must be before end date' });
+    }
+
+    if (!newAdvert.title || newAdvert.images.length === 0) {
+      return res.status(400).json({ success: false, message: 'Advert title and at least one image are required' });
+    }
+
+    await db.createListing(newAdvert, "hymnal", "adverts");
+    res.json({ success: true, message: 'Advert created successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// UPDATE advert
+user_route.put('/api/adverts/:id', auth.requireAuth, auth.requireApproved, async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid advert ID' });
+    }
+
+    const advert = await db.readRow({ _id: new ObjectId(req.params.id) }, "hymnal", "adverts");
+    if (!advert || advert.err || !advert.found) {
+      return res.status(404).json({ success: false, message: 'Advert not found' });
+    }
+
+    if (req.user.role !== 'admin' && advert.listing.ownerId !== String(req.user._id)) {
+      return res.status(403).json({ success: false, message: 'You can only edit your own adverts' });
+    }
+
+    const { title, images, link, active } = req.body;
+    const updateData = {
+      updatedAt: new Date()
+    };
+    if (title !== undefined) updateData.title = normalizeAdvertText(title, 120);
+    if (images !== undefined) updateData.images = normalizeAdvertImages(images);
+    if (link !== undefined) updateData.link = normalizeAdvertLink(link);
+    if (req.body.placement !== undefined) updateData.placement = normalizePlacement(req.body.placement);
+    if (req.body.priority !== undefined) updateData.priority = normalizePriority(req.body.priority);
+    if (req.body.startsAt !== undefined) updateData.startsAt = normalizeOptionalDate(req.body.startsAt);
+    if (req.body.endsAt !== undefined) updateData.endsAt = normalizeOptionalDate(req.body.endsAt);
+    if (active !== undefined) updateData.active = active;
+
+    if (updateData.startsAt && updateData.endsAt && updateData.startsAt.getTime() > updateData.endsAt.getTime()) {
+      return res.status(400).json({ success: false, message: 'Start date must be before end date' });
+    }
+
+    const result = await db.updateRow({ _id: new ObjectId(req.params.id) }, updateData, "hymnal", "adverts");
+    if (result.err) {
+      res.json({ success: false, message: result.updated });
+    } else {
+      res.json({ success: true, message: 'Advert updated successfully' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE advert
+user_route.delete('/api/adverts/:id', auth.requireAuth, auth.requireApproved, async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid advert ID' });
+    }
+
+    const advert = await db.readRow({ _id: new ObjectId(req.params.id) }, "hymnal", "adverts");
+    if (!advert || advert.err || !advert.found) {
+      return res.status(404).json({ success: false, message: 'Advert not found' });
+    }
+
+    if (req.user.role !== 'admin' && advert.listing.ownerId !== String(req.user._id)) {
+      return res.status(403).json({ success: false, message: 'You can only delete your own adverts' });
+    }
+
+    await db.deleteRow({ _id: new ObjectId(req.params.id) }, "hymnal", "adverts");
+    res.json({ success: true, message: 'Advert deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+user_route.post('/api/adverts/:id/view', async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid advert ID' });
+    }
+
+    const advert = await db.readRow({ _id: new ObjectId(req.params.id) }, 'hymnal', 'adverts');
+    if (!advert || advert.err || !advert.found) {
+      return res.status(404).json({ success: false, message: 'Advert not found' });
+    }
+
+    const currentViews = Number(advert.listing.views) || 0;
+    await db.updateRow(
+      { _id: new ObjectId(req.params.id) },
+      { views: currentViews + 1, updatedAt: new Date() },
+      'hymnal',
+      'adverts'
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+user_route.post('/api/adverts/:id/click', async (req, res) => {
+  try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(400).json({ success: false, message: 'Invalid advert ID' });
+    }
+
+    const advert = await db.readRow({ _id: new ObjectId(req.params.id) }, 'hymnal', 'adverts');
+    if (!advert || advert.err || !advert.found) {
+      return res.status(404).json({ success: false, message: 'Advert not found' });
+    }
+
+    const currentClicks = Number(advert.listing.clicks) || 0;
+    await db.updateRow(
+      { _id: new ObjectId(req.params.id) },
+      { clicks: currentClicks + 1, updatedAt: new Date() },
+      'hymnal',
+      'adverts'
+    );
+
+    res.json({ success: true, link: advert.listing.link || '' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ======================================
 
 module.exports = user_route;
 

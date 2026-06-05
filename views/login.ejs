@@ -4,74 +4,384 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	
     <meta property="og:title" content="New Luganda Hymnal">
     <meta property="og:description" content="Download New Luganda Hymnal here">
     <meta property="og:image" content="https://newlugandahymnal.onrender.com/src/images/app.png">
     <meta property="og:url" content="https://newlugandahymnal.onrender.com/download.html">
-	
-    <title>Ennyimba Za Kristo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Login | Ennyimba Za Kristo</title>
     <style>
-        #imagePreview img{
-            max-width: 200px;
+        :root {
+            --bg: #f3efe7;
+            --panel: #fffdf8;
+            --ink: #1d2a2f;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --line: rgba(22, 40, 48, 0.12);
+            --warn-bg: #fff6d9;
+            --warn-ink: #785b00;
+            --danger-bg: #fce9e8;
+            --danger-ink: #8b2822;
+            --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
         }
-        #imagePreview{
-            min-height: 100px;
+
+        * {
+            box-sizing: border-box;
         }
-        #overl{
-          background: rgba(0, 0, 0, 0.164);
-          position: fixed;
-          width: 100%;
-          height: 100%;
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(181, 138, 69, 0.18), transparent 30%),
+                linear-gradient(180deg, #f8f4ec 0%, #efe8dc 100%);
         }
-        .inf{
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%,-50%);
-          padding: 5px;
-          background: white;
-          box-shadow: 0 0 2px 2px darkgrey;
-          border-radius: 5px;
-          max-width: 300px;
-          text-align: center;
+
+        .shell {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
+
+        .hero {
+            padding: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-card {
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255, 253, 248, 0.72);
+            border: 1px solid rgba(255,255,255,0.65);
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin: 20px 0 14px;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            line-height: 0.95;
+        }
+
+        .hero p {
+            margin: 0;
+            max-width: 470px;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .hero-list {
+            margin: 28px 0 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .hero-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--ink);
+            font-size: 0.96rem;
+        }
+
+        .hero-list span {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0f766e, #d9a441);
+            box-shadow: 0 0 0 5px rgba(15, 118, 110, 0.12);
+        }
+
+        .auth-pane {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 460px;
+            padding: 34px;
+            border-radius: 28px;
+            background: rgba(255, 253, 248, 0.9);
+            border: 1px solid rgba(255,255,255,0.85);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .top-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-card h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .auth-card p.lead {
+            margin: 10px 0 0;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 13px 14px;
+            border-radius: 14px;
+            font-size: 0.94rem;
+            line-height: 1.5;
+        }
+
+        .message.info {
+            background: var(--warn-bg);
+            color: var(--warn-ink);
+        }
+
+        .message.error {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        form {
+            margin-top: 22px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .field input {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 16px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: rgba(15, 118, 110, 0.55);
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+        }
+
+        .hint {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .submit {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            padding: 15px 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 16px 28px rgba(15, 118, 110, 0.22);
+        }
+
+        .submit:hover {
+            transform: translateY(-1px);
+        }
+
+        .switch {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 0.94rem;
+            text-align: center;
+        }
+
+        .switch a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .status-row {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 980px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 38px 24px 0;
+            }
+
+            .auth-pane {
+                padding: 24px;
+            }
+
+            .auth-card {
+                max-width: 560px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .hero {
+                padding: 28px 18px 0;
+            }
+
+            .auth-pane {
+                padding: 18px;
+            }
+
+            .auth-card {
+                padding: 24px 20px;
+                border-radius: 22px;
+            }
         }
     </style>
 </head>
 <body>
-        <% if (typeof message !== 'undefined') { %>
-          <div id="overl">
-            <div class="inf">
-              <p><%= message %></p>
-              <button class="btn btn-primary" onclick="document.getElementById('overl').remove()">Retry</button>
-              <% if (typeof login !== 'undefined') { %>
-               <a href="/register" class="btn btn-primary">Register</a>
-              <% } %>
+    <div class="shell">
+        <section class="hero">
+            <div class="hero-card">
+                <div class="eyebrow">Ennyimba Za Kristo</div>
+                <h1>Welcome back.</h1>
+                <p>Sign in to manage adverts, review user approvals, and work from the admin tools without depending on old server sessions.</p>
+                <ul class="hero-list">
+                    <li><span></span>JWT-based access for protected admin tools</li>
+                    <li><span></span>Approval workflow for user accounts</li>
+                    <li><span></span>Adverts with scheduling, priority, and tracking</li>
+                </ul>
             </div>
-          </div>
-        <% } %>
-    <div class="container">
-        <br>
-        <h2>Login</h2>
-        <br>
-        <form action="" method="POST" >
-            <div class="mb-3">
-              <label for="userName" class="form-label">User Name or Email</label>
-              <div id="emailHelp" class="form-text">Enter userName or Email</div>
-              <input type="text" class="form-control" id="userName" name="userName" required>
+        </section>
+
+        <section class="auth-pane">
+            <div class="auth-card">
+                <a class="top-link" href="/index.html">&#8249; Back to home</a>
+                <h2>Login</h2>
+                <p class="lead">Use your username or email together with your password. Only approved accounts can access the admin area.</p>
+
+                <% if (typeof message !== 'undefined') { %>
+                    <div class="message info"><%= message %></div>
+                <% } %>
+
+                <div class="message error" id="loginMessage" style="display:none;"></div>
+
+                <form id="loginForm" action="" method="POST">
+                    <div class="field">
+                        <label for="userName">User Name or Email</label>
+                        <input type="text" id="userName" name="userName" required autocomplete="username">
+                        <div class="hint">You can sign in with either your username or your email address.</div>
+                    </div>
+
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+
+                    <button class="submit" id="submitBtn" type="submit">Sign In</button>
+                </form>
+
+                <div class="switch">
+                    Don’t have an account yet?
+                    <a href="/register">Create one</a>
+                </div>
+
+                <div class="status-row">
+                    <span>Accounts require admin approval.</span>
+                    <span><a href="/register" style="color: var(--accent); text-decoration:none;">Go to sign up</a></span>
+                </div>
             </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <input type="submit" value="Login" class="btn btn-primary">
-          </form>
+        </section>
     </div>
-    <script src="https://kit.fontawesome.com/1698889877.js" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
+
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var message = document.getElementById('loginMessage');
+        var submitBtn = document.getElementById('submitBtn');
+        message.style.display = 'none';
+        message.textContent = '';
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing In...';
+
+        fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userName: document.getElementById('userName').value,
+            password: document.getElementById('password').value
+          })
+        })
+        .then(function(response) {
+          return response.json().then(function(data) {
+            return { status: response.status, data: data };
+          });
+        })
+        .then(function(result) {
+          if (result.status !== 200 || !result.data.success) {
+            message.style.display = 'block';
+            message.textContent = result.data.message || 'Login failed';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In';
+            return;
+          }
+
+          localStorage.setItem('authToken', result.data.accessToken);
+          localStorage.setItem('authUser', JSON.stringify(result.data.user || {}));
+          window.location.href = '/adverts';
+        })
+        .catch(function() {
+          message.style.display = 'block';
+          message.textContent = 'Login failed';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign In';
+        });
+      });
+    </script>
 </body>
 </html>

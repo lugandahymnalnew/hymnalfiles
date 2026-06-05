@@ -4,15 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Menu</title>
+    <title>Index - Ennyimba Za Kristo</title>
     <link rel="stylesheet" href="../style/style.css">
+    <style>
+        .ios-nav {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .ios-nav__back {
+            text-decoration: none;
+            color: #007AFF;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+        }
+        .ios-nav__chevron {
+            font-size: 24px;
+            margin-right: 2px;
+        }
+        .ios-nav__title {
+            flex: 1;
+            text-align: center;
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+        }
+        .ios-nav__spacer {
+            width: 60px;
+        }
+    </style>
     <script src="../js/index-page.js" defer></script>
 </head>
 <body>
+    <header class="ios-nav">
+        <a class="ios-nav__back" href="menu.html" aria-label="Back to menu">
+            <span class="ios-nav__chevron" aria-hidden="true">&#8249;</span>
+            <span>Menu</span>
+        </a>
+        <div class="ios-nav__title">Hymn Index</div>
+        <div class="ios-nav__spacer" aria-hidden="true"></div>
+    </header>
     <div class="inp">
-        <div><p style="font-size:large; font-family: cursive;">Ennyimba Za Kristo</p></div>
         <div class="inp-ser"><input type="text" id="ser" onkeyup="serFunction()" placeholder="Search hymns and children songs..."></div>
-        <div><button><a href="menu.html">Menu <br><small>&copy;KitaRogHope</small></a></button></div>
     </div>
     <div id="ind">
         <div class="tittle">

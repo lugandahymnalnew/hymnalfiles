@@ -4,145 +4,462 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	
     <meta property="og:title" content="New Luganda Hymnal">
     <meta property="og:description" content="Download New Luganda Hymnal here">
     <meta property="og:image" content="https://newlugandahymnal.onrender.com/src/images/app.png">
     <meta property="og:url" content="https://newlugandahymnal.onrender.com/download.html">
-	
-    <title>Ennyimba Za Kristo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Sign Up | Ennyimba Za Kristo</title>
     <style>
-        #imagePreview img{
-            max-width: 200px;
+        :root {
+            --bg: #f2eee5;
+            --panel: rgba(255, 253, 247, 0.92);
+            --ink: #1b2b31;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --gold: #b58538;
+            --line: rgba(27, 43, 49, 0.12);
+            --success: #1d7a44;
+            --danger: #9f2f26;
+            --success-bg: #e8f6ed;
+            --danger-bg: #fae9e7;
+            --info-bg: #fff6d8;
+            --info-ink: #785b00;
+            --shadow: 0 24px 60px rgba(29, 43, 49, 0.14);
         }
-        #imagePreview{
-            min-height: 100px;
+
+        * {
+            box-sizing: border-box;
         }
-        #overl{
-          background: rgba(0, 0, 0, 0.164);
-          position: fixed;
-          width: 100%;
-          height: 100%;
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(181, 133, 56, 0.18), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.16), transparent 32%),
+                linear-gradient(180deg, #f8f4eb 0%, #eee6d9 100%);
         }
-        .inf{
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%,-50%);
-          padding: 5px;
-          background: white;
-          box-shadow: 0 0 2px 2px darkgrey;
-          border-radius: 5px;
-          max-width: 300px;
-          text-align: center;
+
+        .shell {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 0.92fr 1.08fr;
+        }
+
+        .info-pane {
+            padding: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-card {
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.66);
+            border: 1px solid rgba(255,255,255,0.8);
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .info-card h1 {
+            margin: 20px 0 14px;
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            line-height: 0.98;
+        }
+
+        .info-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.7;
+            max-width: 450px;
+        }
+
+        .steps {
+            margin: 28px 0 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            gap: 12px;
+            align-items: start;
+        }
+
+        .step-index {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .step strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .form-pane {
+            padding: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 620px;
+            padding: 34px;
+            border-radius: 28px;
+            background: var(--panel);
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .top-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.92rem;
+            margin-bottom: 20px;
+        }
+
+        .form-card h2 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .lead {
+            margin: 10px 0 0;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 13px 14px;
+            border-radius: 14px;
+            font-size: 0.94rem;
+            line-height: 1.5;
+        }
+
+        .message.info {
+            background: var(--info-bg);
+            color: var(--info-ink);
+        }
+
+        form {
+            margin-top: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .field input {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 16px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .field input:focus {
+            outline: none;
+            border-color: rgba(15, 118, 110, 0.55);
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+        }
+
+        .hint {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
+        .image-preview {
+            min-height: 160px;
+            border: 1px dashed rgba(15, 118, 110, 0.28);
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(246, 242, 234, 0.92));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            overflow: hidden;
+            padding: 14px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .password-status {
+            margin-top: 8px;
+            font-size: 0.88rem;
+            min-height: 22px;
+        }
+
+        .password-status.good {
+            color: var(--success);
+        }
+
+        .password-status.bad {
+            color: var(--danger);
+        }
+
+        .submit {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            padding: 15px 18px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 16px 28px rgba(15, 118, 110, 0.22);
+        }
+
+        .switch {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 0.94rem;
+            text-align: center;
+        }
+
+        .switch a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        @media (max-width: 1100px) {
+            .shell {
+                grid-template-columns: 1fr;
+            }
+
+            .info-pane {
+                padding: 36px 24px 0;
+            }
+
+            .form-pane {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 24px 20px;
+                border-radius: 22px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-pane {
+                padding: 28px 18px 0;
+            }
+
+            .form-pane {
+                padding: 18px;
+            }
         }
     </style>
 </head>
 <body>
-        <% if (typeof message !== 'undefined') { %>
-          <div id="overl">
-            <div class="inf">
-              <p><%= message %></p>
-              <button class="btn btn-primary" onclick="document.getElementById('overl').remove()">Ok</button>
-              <% if (typeof login !== 'undefined') { %>
-               <a href="/login" class="btn btn-primary">Login</a>
-              <% } %>
+    <div class="shell">
+        <section class="info-pane">
+            <div class="info-card">
+                <div class="eyebrow">Create an account</div>
+                <h1>Join the platform.</h1>
+                <p>Set up your account so an admin can approve access for advert management and the admin workspace.</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-index">1</div>
+                        <div>
+                            <strong>Create your account</strong>
+                            <div>Fill in your identity, login details, and profile image.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">2</div>
+                        <div>
+                            <strong>Wait for approval</strong>
+                            <div>Accounts are registered immediately but cannot sign in until approved.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">3</div>
+                        <div>
+                            <strong>Return to login</strong>
+                            <div>Once approved, use the login page to access adverts and admin tools.</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        <% } %>
-    <div class="container">
-        <br>
-        <h2>Register</h2>
-        <br>
-         
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-              <label for="name" class="form-label">Full Name</label>
-              <input type="text" class="form-control" id="name" name="fullName" required>
+        </section>
+
+        <section class="form-pane">
+            <div class="form-card">
+                <a class="top-link" href="/login">&#8249; Back to login</a>
+                <h2>Sign Up</h2>
+                <p class="lead">Use a real name, a unique username, and a profile image. Your account will stay pending until an admin approves it.</p>
+
+                <% if (typeof message !== 'undefined') { %>
+                    <div class="message info"><%= message %></div>
+                <% } %>
+
+                <form action="" method="POST" enctype="multipart/form-data" id="registerForm">
+                    <div class="grid">
+                        <div class="field">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="fullName" required autocomplete="name">
+                        </div>
+
+                        <div class="field">
+                            <label for="userName">User Name</label>
+                            <input type="text" id="userName" name="userName" required autocomplete="username">
+                            <div class="hint">Choose a short unique name for sign in.</div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required autocomplete="email">
+                            <div class="hint">Your email is used for identification and account review.</div>
+                        </div>
+
+                        <div class="field">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required autocomplete="new-password">
+                        </div>
+
+                        <div class="field">
+                            <label for="ppassword">Confirm Password</label>
+                            <input type="password" id="ppassword" required autocomplete="new-password">
+                            <div id="passwordState" class="password-status"></div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="profile">Profile Image</label>
+                            <input type="text" id="profile" name="profile" readonly placeholder="Select an image below">
+                            <div class="hint">Image file name is filled automatically when you select a profile image.</div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="image">Upload Image</label>
+                            <div id="imagePreview" class="image-preview">Profile image preview will appear here</div>
+                            <input name="image" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)" required>
+                        </div>
+                    </div>
+
+                    <button class="submit" type="submit" id="btn-s">Create Account</button>
+                </form>
+
+                <div class="switch">
+                    Already registered?
+                    <a href="/login">Go to login</a>
+                </div>
             </div>
-            <div class="mb-3">
-              <label for="userName" class="form-label">User Name</label>
-              <div id="emailHelp" class="form-text">This is the unique name which distinguishes you from others.</div>
-              <input type="text" class="form-control" id="userName" name="userName" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" onchange="checkpass()" name="password" required>
-            </div>
-            <div class="mb-3">
-              <label for="ppassword" class="form-label">Confirm Password</label>
-              <input type="password"  class="form-control" id="ppassword" onchange="checkpass()" required>
-              <p id="p"></p>
-            </div>
-            <div class="mb-3">
-              <label for="profile" class="form-label">Profile Image</label>
-              <input type="text" class="form-control" id="profile" name="profile" required disabled>
-            </div>
-            <div class="mb-3">
-              <label for="image" class="form-label">Image (jpeg, jpg, png)</label>
-              <div id="imagePreview" class="form-control">image preview here</div> <!-- Image preview container -->
-              <input name="image" class="form-control" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)" required>
-            </div>
-            <input type="submit" value="Register" class="btn btn-primary" id="btn-s">
-          </form>
-          
+        </section>
     </div>
-    <script src="https://kit.fontawesome.com/1698889877.js" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
-    
-          
+
     <script>
         function previewImage(event) {
-          const input = event.target;
-          const imagePreview = document.getElementById("imagePreview");
-          const prof = document.getElementById('profile');
-      
-          if (input.files && input.files[0]) {
-            const reader = new FileReader();
-      
-            reader.onload = function (e) {
-              const imageElement = document.createElement("img");
-              imageElement.setAttribute("src", e.target.result);
-              imageElement.setAttribute("class", "preview-image");
-              imagePreview.innerHTML = ""; // Clear previous preview
-              imagePreview.appendChild(imageElement);
+          var input = event.target;
+          var imagePreview = document.getElementById('imagePreview');
+          var prof = document.getElementById('profile');
 
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              var imageElement = document.createElement('img');
+              imageElement.setAttribute('src', e.target.result);
+              imagePreview.innerHTML = '';
+              imagePreview.appendChild(imageElement);
               prof.value = input.files[0].name;
             };
-      
+
             reader.readAsDataURL(input.files[0]);
           } else {
-            imagePreview.innerHTML = ""; // Clear preview if no file selected
-            prof.value = "";
+            imagePreview.textContent = 'Profile image preview will appear here';
+            prof.value = '';
           }
         }
-        function checkpass(){
+
+        function checkpass() {
           var pass = document.getElementById('password');
           var pass1 = document.getElementById('ppassword');
-          var p = document.getElementById('p');
-          var b = document.getElementById('btn-s');
+          var status = document.getElementById('passwordState');
+          var button = document.getElementById('btn-s');
 
-          if(pass.value == pass1.value){
-            p.className = "text-success"
-            b.disabled = false;
-            p.innerText = "You have confirmed your password successfully";
+          if (!pass.value && !pass1.value) {
+            status.textContent = '';
+            status.className = 'password-status';
+            button.disabled = false;
+            return;
           }
-          else{
-            p.className = "text-danger"
-            p.innerText = "Passwords dont match";
-            b.disabled = true;
+
+          if (pass.value === pass1.value) {
+            status.className = 'password-status good';
+            status.textContent = 'Passwords match.';
+            button.disabled = false;
+          } else {
+            status.className = 'password-status bad';
+            status.textContent = 'Passwords do not match.';
+            button.disabled = true;
           }
         }
-      </script>
-      
+
+        document.getElementById('password').addEventListener('input', checkpass);
+        document.getElementById('ppassword').addEventListener('input', checkpass);
+    </script>
 </body>
 </html>
