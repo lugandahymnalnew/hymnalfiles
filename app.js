@@ -5,6 +5,10 @@ const path = require('path');
 const app = express();
 const http = require('http').Server(app);
 
+// View engine configuration
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 
 function executeTaskEvery10Minutes() {
   // Task to execute
@@ -75,7 +79,12 @@ function executeTaskEvery10Minutes() {
 executeTaskEvery10Minutes();
 
 const userRoute = require('./routes/userRoute');
+const feedbackApiRoute = require('./routes/feedbackRoute');
+const feedbackViewRoute = require('./routes/feedbackViewRoute');
+
 app.use("/",userRoute);
+app.use("/api/feedback", feedbackApiRoute);
+app.use("/", feedbackViewRoute);
 app.get('/adverts', async (req, res) => {
   try {
     // Serve the adverts management page

@@ -395,7 +395,9 @@
                         <div class="field full">
                             <label for="image">Upload Image</label>
                             <div id="imagePreview" class="image-preview">Profile image preview will appear here</div>
+                            <div id="imageSizeInfo" style="margin-top: 8px; font-size: 0.85rem;"></div>
                             <input name="image" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)" required>
+                            <div class="hint">Image is automatically compressed to max 24KB before upload.</div>
                         </div>
                     </div>
 
@@ -410,29 +412,56 @@
         </section>
     </div>
 
+    <script src="/js/image-compressor.js"></script>
     <script>
-        function previewImage(event) {
+        var compressedBase64 = null;
+
+        async function previewImage(event) {
           var input = event.target;
           var imagePreview = document.getElementById('imagePreview');
           var prof = document.getElementById('profile');
+          var sizeInfo = document.getElementById('imageSizeInfo');
 
           if (input.files && input.files[0]) {
-            var reader = new FileReader();
+            var file = input.files[0];
 
-            reader.onload = function (e) {
-              var imageElement = document.createElement('img');
-              imageElement.setAttribute('src', e.target.result);
-              imagePreview.innerHTML = '';
-              imagePreview.appendChild(imageElement);
-              prof.value = input.files[0].name;
-            };
+            // Validate file
+            var validation = imageCompressor.validateFile(file);
+            if (!validation.valid) {
+              imagePreview.innerHTML = '<span style="color: #9f2f26;">' + validation.error + '</span>';
+              prof.value = '';
+              compressedBase64 = null;
+              return;
+            }
 
-            reader.readAsDataURL(input.files[0]);
+            // Compress and preview
+            prof.value = 'Compressing...';
+            compressedBase64 = await imageCompressor.previewCompression(file, imagePreview, sizeInfo);
+
+            if (compressedBase64) {
+              prof.value = file.name;
+            } else {
+              prof.value = '';
+            }
           } else {
             imagePreview.textContent = 'Profile image preview will appear here';
             prof.value = '';
+            compressedBase64 = null;
+            if (sizeInfo) sizeInfo.innerHTML = '';
           }
         }
+
+        // Override form submission to send compressed image
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+          if (compressedBase64) {
+            // Create hidden input for base64 image
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'profileBase64';
+            hiddenInput.value = compressedBase64;
+            this.appendChild(hiddenInput);
+          }
+        });
 
         function checkpass() {
           var pass = document.getElementById('password');

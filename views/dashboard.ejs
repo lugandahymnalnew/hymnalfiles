@@ -2,19 +2,416 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ennyimba Za Kristo</title>
+    <title>Dashboard | Ennyimba Za Kristo</title>
+    <style>
+        :root {
+            --bg: #f3efe7;
+            --panel: #fffdf8;
+            --ink: #1d2a2f;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --line: rgba(22, 40, 48, 0.12);
+            --danger-bg: #fce9e8;
+            --danger-ink: #8b2822;
+            --success-bg: #e8f6ed;
+            --success-ink: #1d7a44;
+            --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(181, 138, 69, 0.12), transparent 30%),
+                linear-gradient(180deg, #f8f4ec 0%, #efe8dc 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            border-color: var(--danger-ink);
+            color: var(--danger-ink);
+            background: var(--danger-bg);
+        }
+
+        .card {
+            background: var(--panel);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .card h2 {
+            margin: 0 0 16px;
+            font-size: 1.4rem;
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .user-details h3 {
+            margin: 0 0 6px;
+            font-size: 1.2rem;
+        }
+
+        .user-details p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .status-badge.approved {
+            background: var(--success-bg);
+            color: var(--success-ink);
+        }
+
+        .status-badge.pending {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent);
+            margin-left: 8px;
+        }
+
+        .session-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        .session-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .session-label {
+            color: var(--muted);
+        }
+
+        .session-value {
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.success {
+            background: var(--success-bg);
+            color: var(--success-ink);
+        }
+
+        .message.error {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--line);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .user-info {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .avatar {
+                margin: 0 auto;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-    Service is comming soon
-    <a href="/download.html"><button>Back</button></a>
-    
-    <% if (typeof user !== 'undefined') { %>
-        <h1>Hello <%= user %></h1>
-    <a href="/logout"><button>Logout</button></a>
-    <% } else {%>
-        <h1>Hello, guest</h1>
-    <a href="/login">login</a>
-    <% } %>
+    <div class="container">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <div>Loading your profile...</div>
+        </div>
+
+        <div id="content" style="display: none;">
+            <div class="message" id="message"></div>
+
+            <div class="card">
+                <h2>Your Profile</h2>
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar"></div>
+                    <div class="user-details">
+                        <h3 id="userName">-</h3>
+                        <p id="userEmail">-</p>
+                        <div>
+                            <span class="status-badge" id="userStatus">-</span>
+                            <span class="role-badge" id="userRole">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="session-info">
+                    <div class="session-row">
+                        <span class="session-label">Authentication</span>
+                        <span class="session-value" id="authStatus">-</span>
+                    </div>
+                    <div class="session-row">
+                        <span class="session-label">Token Type</span>
+                        <span class="session-value">JWT with Refresh</span>
+                    </div>
+                    <div class="session-row">
+                        <span class="session-label">Session Security</span>
+                        <span class="session-value">Encrypted &bull; Auto-refresh</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="refreshTokenNow()">Refresh Token</button>
+                    <button class="btn btn-danger" onclick="logoutAllSessions()">Sign Out Everywhere</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Quick Links</h2>
+                <div style="display: grid; gap: 12px;">
+                    <a href="/index.html" style="padding: 14px 16px; background: rgba(15, 118, 110, 0.08); border-radius: 12px; color: var(--accent); text-decoration: none; font-weight: 600;">Browse Hymnal</a>
+                    <a href="/adverts" id="adminLink" style="display: none; padding: 14px 16px; background: rgba(15, 118, 110, 0.08); border-radius: 12px; color: var(--accent); text-decoration: none; font-weight: 600;">Admin Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        let currentUser = null;
+
+        function showMessage(text, type) {
+            var msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            msg.style.display = 'block';
+
+            setTimeout(function() {
+                msg.style.display = 'none';
+            }, 5000);
+        }
+
+        function loadUserProfile() {
+            currentUser = auth.getCurrentUser();
+
+            if (!currentUser) {
+                window.location.href = '/login';
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+
+            // Populate user info
+            document.getElementById('userName').textContent = currentUser.fullName || currentUser.userName;
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = (currentUser.fullName || currentUser.userName || '?')[0].toUpperCase();
+
+            // Status badge
+            var statusBadge = document.getElementById('userStatus');
+            statusBadge.textContent = currentUser.status === 'approved' ? 'Approved' : 'Pending Approval';
+            statusBadge.className = 'status-badge ' + (currentUser.status === 'approved' ? 'approved' : 'pending');
+
+            // Role badge
+            document.getElementById('userRole').textContent = currentUser.role === 'admin' ? 'Admin' : 'User';
+
+            // Auth status
+            document.getElementById('authStatus').textContent = auth.isLoggedIn() ? 'Logged In' : 'Not Logged In';
+
+            // Show admin link for admins
+            if (currentUser.role === 'admin' && currentUser.status === 'approved') {
+                document.getElementById('adminLink').style.display = 'block';
+            }
+        }
+
+        async function handleLogout() {
+            if (!confirm('Are you sure you want to sign out?')) return;
+
+            await auth.logout();
+            window.location.href = '/login';
+        }
+
+        async function refreshTokenNow() {
+            var btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Refreshing...';
+
+            var result = await auth.refreshAccessToken();
+
+            if (result.success) {
+                showMessage('Token refreshed successfully', 'success');
+            } else {
+                showMessage('Failed to refresh token. You may need to log in again.', 'error');
+                setTimeout(function() {
+                    window.location.href = '/login';
+                }, 2000);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Refresh Token';
+        }
+
+        async function logoutAllSessions() {
+            if (!confirm('This will sign you out from all devices and sessions. Continue?')) return;
+
+            await auth.logoutAll();
+            showMessage('Signed out from all sessions', 'success');
+            setTimeout(function() {
+                window.location.href = '/login';
+            }, 1500);
+        }
+
+        // Load profile on page load
+        loadUserProfile();
+    </script>
 </body>
 </html>

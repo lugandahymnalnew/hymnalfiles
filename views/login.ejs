@@ -371,9 +371,17 @@
             return;
           }
 
-          localStorage.setItem('authToken', result.data.accessToken);
+          // Store both access and refresh tokens
+          localStorage.setItem('accessToken', result.data.accessToken);
+          localStorage.setItem('refreshToken', result.data.refreshToken);
           localStorage.setItem('authUser', JSON.stringify(result.data.user || {}));
-          window.location.href = '/adverts';
+
+          // Redirect based on user role
+          if (result.data.user && result.data.user.role === 'admin') {
+            window.location.href = '/adverts';
+          } else {
+            window.location.href = '/index.html';
+          }
         })
         .catch(function() {
           message.style.display = 'block';

@@ -84,6 +84,8 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage});
 const userController = require('../controllers/userController');
 const auth = require('./../middleWares/auth');
+const { signAccessToken, verifyRefreshToken: verifyJWTRefreshToken } = require('../modules/jwtAuth');
+const { verifyRefreshToken, rotateRefreshToken, revokeAllUserTokens } = require('../modules/refreshToken');
 
 function isValidObjectId(id) {
   return ObjectId.isValid(id);
@@ -239,6 +241,78 @@ user_route.post('/api/auth/login', userController.login);
 user_route.post('/api/auth/logout', auth.requireAuth, userController.logout);
 user_route.get('/api/auth/me', auth.requireAuth, userController.me);
 
+// Refresh access token using refresh token
+user_route.post('/api/auth/refresh', async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ success: false, message: 'Refresh token required' });
+    }
+
+    // First verify the JWT refresh token
+    let decoded;
+    try {
+      decoded = verifyJWTRefreshToken(refreshToken);
+    } catch (err) {
+      return res.status(401).json({ success: false, message: 'Invalid refresh token' });
+    }
+
+    // Then verify it exists and is valid in the database
+    const dbVerification = await verifyRefreshToken(refreshToken);
+    if (!dbVerification.valid) {
+      return res.status(401).json({ success: false, message: dbVerification.error || 'Token invalid' });
+    }
+
+    // Get fresh user data
+    const user = await db.readRow({ _id: decoded.sub }, 'newHymnal', 'users');
+    if (!user || !user.found) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // Rotate refresh token
+    const rotationResult = await rotateRefreshToken(
+      refreshToken,
+      req.headers['user-agent'] || '',
+      req.ip || req.connection.remoteAddress || ''
+    );
+
+    if (!rotationResult.success) {
+      return res.status(401).json({ success: false, message: rotationResult.error || 'Token rotation failed' });
+    }
+
+    // Generate new access token
+    const newAccessToken = signAccessToken(user.listing);
+
+    res.json({
+      success: true,
+      accessToken: newAccessToken,
+      refreshToken: rotationResult.refreshToken
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Revoke all user tokens (full logout)
+user_route.post('/api/auth/revoke-all', auth.requireAuth, async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    // Revoke specific token if provided
+    if (refreshToken) {
+      await revokeRefreshToken(refreshToken);
+    }
+
+    // Revoke all tokens for this user
+    await revokeAllUserTokens(String(req.user._id));
+
+    res.json({ success: true, message: 'All sessions revoked' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // handling logouts
 user_route.get('/logout',auth.isLogout, (req, res) => {
   res.redirect('/login');
@@ -356,6 +430,21 @@ user_route.get('/lugSongs', async (req, res)=>{
   catch (error){
       res.json({data:error.message})
   }
+})
+
+// Get all songs (luganda + children) for index page
+user_route.get('/api/songs/all', async (req, res)=>{
+  try{
+      var lugandaSongs = await db.readRows({},"lugandaHymnal","luganda");
+      if(lugandaSongs.error){
+          res.json({data:"Didn't get songs"});
+      } else {
+          res.json({data:lugandaSongs.listings});
+      }
+  }
+  catch (error){
+      res.json({data:error.message})
+  }
 });
 
 user_route.get("/oneSong/:table/:number", async(req, res)=>{
@@ -372,6 +461,91 @@ user_route.get("/oneSong/:table/:number", async(req, res)=>{
       res.json({data:error.message})
   }
 })
+
+// Get single song by number (searches both luganda and children tables)
+user_route.get('/api/song/:number', async (req, res)=>{
+  try{
+    const songNumber = req.params.number;
+    // Try luganda table first
+    var song = await db.readRow({number: songNumber},"lugandaHymnal","luganda");
+    if(!song.error && song.found){
+        res.json({data: song.listing, category: 'luganda'});
+        return;
+    }
+    // Fallback to children table
+    song = await db.readRow({number: songNumber},"lugandaHymnal","children");
+    if(!song.error && song.found){
+        res.json({data: song.listing, category: 'children'});
+        return;
+    }
+    res.json({error: "Song not found"});
+  }
+  catch (error){
+      res.json({error: error.message})
+  }
+});
+
+// Get children's songs from MongoDB
+user_route.get('/childrenSongs', async (req, res)=>{
+    try{
+        var childrenSongs = await db.readRows({},"lugandaHymnal","children");
+        if(childrenSongs.error){
+            res.json({data:"Didn't get songs"});
+        } else {
+            res.json({data:childrenSongs.listings});
+        }
+    }
+    catch (error){
+        res.json({data:error.message})
+    }
+});
+
+// Get single song by number and category (for OTA corrections)
+user_route.get('/api/songs/corrections', async (req, res)=>{
+    try{
+        const { number, category } = req.query;
+        if (!number) {
+            return res.json({ error: "Missing song number" });
+        }
+        const table = category === 'children' ? 'children' : 'luganda';
+        var song = await db.readRow({number: number},"lugandaHymnal", table);
+        if(song.error || !song.found){
+            res.json({data:"Song not found"});
+        } else {
+            res.json({data:song.listing});
+        }
+    }
+    catch (error){
+        res.json({data:error.message})
+    }
+});
+
+// Get all corrections updated after a date (for bulk sync)
+user_route.get('/api/songs/corrections/all', async (req, res)=>{
+    try{
+        const { since } = req.query;
+        let query = {};
+        if (since) {
+            query.updatedAt = { $gt: new Date(since) };
+        }
+        // Get both luganda and children songs
+        const [lugandaSongs, childrenSongs] = await Promise.all([
+            db.readRows(query, "lugandaHymnal", "luganda"),
+            db.readRows(query, "lugandaHymnal", "children")
+        ]);
+        const allSongs = [];
+        if (!lugandaSongs.error) {
+            allSongs.push(...lugandaSongs.listings.map(s => ({...s, category: 'luganda'})));
+        }
+        if (!childrenSongs.error) {
+            allSongs.push(...childrenSongs.listings.map(s => ({...s, category: 'children'})));
+        }
+        res.json({data: allSongs, count: allSongs.length});
+    }
+    catch (error){
+        res.json({data:error.message})
+    }
+});
 
 user_route.get("/addBook",(req, res)=>{
   try {

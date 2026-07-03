@@ -2,7 +2,8 @@ const db = require('../modules/mongoDBApi');
 const uploadToFTP = require('../modules/ftp');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
-const { signAccessToken, sanitizeUser } = require('../modules/jwtAuth');
+const { signAccessToken, signRefreshToken, sanitizeUser } = require('../modules/jwtAuth');
+const { generateRefreshToken, revokeRefreshToken } = require('../modules/refreshToken');
 
 async function delFiles(req){
     const files = req.files;
@@ -100,11 +101,17 @@ const login = async (req, res)=>{
                     lastLoginAt: new Date()
                 };
                 const accessToken = signAccessToken(freshUser);
+                const refreshTokenResult = await generateRefreshToken(
+                    freshUser._id,
+                    req.headers['user-agent'] || '',
+                    req.ip || req.connection.remoteAddress || ''
+                );
 
                 res.json({
                     success: true,
                     message: 'Login successful',
                     accessToken,
+                    refreshToken: refreshTokenResult.refreshToken,
                     user: sanitizeUser(freshUser)
                 });
             }
@@ -124,6 +131,10 @@ const login = async (req, res)=>{
 
 const logout = async (req, res)=>{
      try {
+        const { refreshToken } = req.body;
+        if (refreshToken) {
+            await revokeRefreshToken(refreshToken);
+        }
         res.json({ success: true, message: 'Logged out' });
       } catch (error) {
         res.render('error',{message:error.message});
