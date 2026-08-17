@@ -3,18 +3,1121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ennyimba Za Kristo</title>
+    <title>Dashboard | Luganda Hymnal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 240px;
+            --accent: #0d6efd;
+            --accent-dark: #0b5ed7;
+            --bg: #f0f2f5;
+            --card-radius: 16px;
+            --shadow: 0 2px 12px rgba(0,0,0,.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: fixed;
+            top: 0; left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: #1e293b;
+            color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+            transition: transform .3s ease;
+        }
+
+        .sidebar-brand {
+            padding: 20px 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand i { font-size: 1.5rem; color: #60a5fa; }
+        .sidebar-brand span { font-weight: 700; font-size: 1.05rem; color: #f1f5f9; }
+
+        .sidebar-nav { padding: 12px 0; flex: 1; }
+
+        .nav-label {
+            padding: 8px 20px 4px;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #64748b;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 0;
+            color: #94a3b8;
+            font-size: .9rem;
+            transition: all .15s;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover { background: rgba(255,255,255,.06); color: #e2e8f0; }
+        .nav-item.active { background: rgba(96,165,250,.15); color: #60a5fa; border-right: 3px solid #60a5fa; }
+        .nav-item i { font-size: 1.1rem; width: 20px; text-align: center; }
+        .nav-item .badge { margin-left: auto; font-size: .7rem; }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255,255,255,.06);
+        }
+
+        .user-avatar-sm {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: .85rem;
+        }
+
+        .user-avatar-sm img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        .user-card-info { flex: 1; min-width: 0; }
+        .user-card-name { font-size: .85rem; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-card-role { font-size: .7rem; color: #64748b; }
+
+        /* ── Main Content ── */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-title { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0; }
+        .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+        .page-body { padding: 24px 28px; }
+
+        /* ── Stats Cards ── */
+        .stat-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 20px 22px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: transform .2s, box-shadow .2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.12); }
+
+        .stat-icon {
+            width: 52px; height: 52px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .stat-icon.blue { background: #eff6ff; color: #3b82f6; }
+        .stat-icon.green { background: #f0fdf4; color: #22c55e; }
+        .stat-icon.purple { background: #faf5ff; color: #a855f7; }
+        .stat-icon.orange { background: #fff7ed; color: #f97316; }
+        .stat-icon.red { background: #fef2f2; color: #ef4444; }
+        .stat-icon.teal { background: #f0fdfa; color: #14b8a6; }
+
+        .stat-body { flex: 1; }
+        .stat-value { font-size: 1.7rem; font-weight: 800; color: #0f172a; line-height: 1; }
+        .stat-label { font-size: .8rem; color: #64748b; margin-top: 4px; }
+
+        .stat-trend {
+            font-size: .75rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .stat-trend.up { background: #f0fdf4; color: #16a34a; }
+        .stat-trend.neutral { background: #f8fafc; color: #64748b; }
+
+        /* ── Section Cards ── */
+        .section-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-title { font-size: .95rem; font-weight: 700; color: #1e293b; margin: 0; display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: #64748b; }
+
+        .section-body { padding: 0; }
+
+        /* ── Activity Feed ── */
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f8fafc;
+            transition: background .15s;
+        }
+
+        .activity-item:hover { background: #f8fafc; }
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-icon {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .85rem;
+            flex-shrink: 0;
+        }
+
+        .activity-body { flex: 1; min-width: 0; }
+        .activity-title { font-size: .85rem; font-weight: 600; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .activity-meta { font-size: .75rem; color: #94a3b8; margin-top: 2px; display: flex; gap: 8px; }
+
+        .activity-badge {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 600;
+        }
+
+        .badge-open { background: #fef2f2; color: #dc2626; }
+        .badge-resolved { background: #f0fdf4; color: #16a34a; }
+        .badge-pending { background: #fffbeb; color: #d97706; }
+        .badge-general { background: #eff6ff; color: #2563eb; }
+        .badge-hymn { background: #faf5ff; color: #9333ea; }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; opacity: .4; }
+        .empty-state p { margin: 0; font-size: .85rem; }
+
+        /* ── Admin Users Table ── */
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th { padding: 10px 16px; text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: #94a3b8; background: #f8fafc; border-bottom: 1px solid #f1f5f9; }
+        .admin-table td { padding: 12px 16px; font-size: .85rem; color: #334155; border-bottom: 1px solid #f8fafc; vertical-align: middle; }
+        .admin-table tr:last-child td { border-bottom: none; }
+        .admin-table tr:hover td { background: #f8fafc; }
+
+        .user-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .chip-avatar {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .65rem; font-weight: 700;
+        }
+
+        .role-admin { background: #eff6ff; color: #2563eb; }
+        .role-user { background: #f8fafc; color: #64748b; }
+
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .dot-approved { background: #22c55e; }
+        .dot-pending { background: #f59e0b; }
+        .dot-disabled { background: #94a3b8; }
+
+        .action-btn {
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid;
+            font-size: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .15s;
+            background: none;
+        }
+
+        .action-btn.approve { border-color: #22c55e; color: #22c55e; }
+        .action-btn.approve:hover { background: #22c55e; color: white; }
+        .action-btn.reject { border-color: #ef4444; color: #ef4444; }
+        .action-btn.reject:hover { background: #ef4444; color: white; }
+        .action-btn.disable { border-color: #94a3b8; color: #64748b; }
+        .action-btn.disable:hover { background: #64748b; color: white; }
+
+        /* ── Quick Actions ── */
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all .15s;
+            text-decoration: none;
+            color: #1e293b;
+            border: 1px solid transparent;
+        }
+
+        .quick-action:hover {
+            background: #f1f5f9;
+            border-color: #e2e8f0;
+            transform: translateX(2px);
+        }
+
+        .qa-icon {
+            width: 38px; height: 38px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+        }
+
+        .qa-text { flex: 1; }
+        .qa-title { font-size: .85rem; font-weight: 600; }
+        .qa-desc { font-size: .75rem; color: #94a3b8; margin: 0; }
+
+        /* ── Buttons ── */
+        .btn-accent { background: var(--accent); color: white; border: none; border-radius: 10px; padding: 8px 18px; font-size: .85rem; font-weight: 600; cursor: pointer; transition: background .15s; }
+        .btn_accent:hover { background: var(--accent-dark); }
+
+        .btn-ghost { background: none; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 18px; font-size: .85rem; font-weight: 600; cursor: pointer; color: #64748b; transition: all .15s; }
+        .btn-ghost:hover { background: #f1f5f9; color: #1e293b; }
+
+        .btn-sm { padding: 5px 12px; font-size: .78rem; }
+
+        /* ── Loading Skeleton ── */
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; }
+        .skeleton-text { height: 14px; margin: 6px 0; }
+        .skeleton-lg { height: 52px; border-radius: 14px; }
+
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        /* ── Message Toast ── */
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast-msg {
+            padding: 12px 18px; border-radius: 12px; font-size: .85rem; font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,.15);
+            animation: slideIn .3s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .toast-msg.success { background: #1e293b; color: #86efac; }
+        .toast-msg.error { background: #1e293b; color: #fca5a5; }
+        .toast-msg.info { background: #1e293b; color: #93c5fd; }
+
+        @keyframes slideIn { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* ── Mobile ── */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-toggle { display: flex !important; }
+        }
+
+        .mobile-toggle { display: none; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-size: 1.5rem; color: #1e293b; padding: 4px; }
+
+        .overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.4);
+            z-index: 99;
+        }
+
+        .overlay.active { display: block; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+    </style>
 </head>
 <body>
-    Service is comming soon
-    <a href="/download.html"><button>Back</button></a>
-    
-    <% if (typeof user !== 'undefined') { %>
-        <h1>Hello <%= user %></h1>
-    <a href="/logout"><button>Logout</button></a>
-    <% } else {%>
-        <h1>Hello, guest</h1>
-    <a href="/login">login</a>
-    <% } %>
+
+<!-- Overlay for mobile sidebar -->
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <i class="bi bi-music-note-beamed"></i>
+        <span>Luganda Hymnal</span>
+    </div>
+
+    <div class="sidebar-nav">
+        <div class="nav-label">Main</div>
+        <a class="nav-item active" href="#overview" onclick="showSection('overview')">
+            <i class="bi bi-grid-1x2"></i> Overview
+        </a>
+        <a class="nav-item" href="#my-feedback" onclick="showSection('my-feedback')">
+            <i class="bi bi-chat-left-text"></i> My Feedback
+        </a>
+        <a class="nav-item" href="#hymns" onclick="showSection('hymns')">
+            <i class="bi bi-book"></i> Browse Hymns
+        </a>
+
+        <div class="nav-label" id="adminNavLabel" style="display:none">Administration</div>
+        <a class="nav-item" href="#users" id="navUsers" onclick="showSection('users')" style="display:none">
+            <i class="bi bi-people"></i> Users
+            <span class="badge bg-warning text-dark" id="pendingBadge" style="display:none">0</span>
+        </a>
+        <a class="nav-item" href="#all-feedback" id="navAllFeedback" onclick="showSection('all-feedback')">
+            <i class="bi bi-inbox"></i> All Feedback
+        </a>
+        <a class="nav-item" href="/adverts" id="navAdverts">
+            <i class="bi bi-megaphone"></i> Adverts
+        </a>
+
+        <div class="nav-label">Account</div>
+        <a class="nav-item" href="#profile" onclick="showSection('profile')">
+            <i class="bi bi-person"></i> My Profile
+        </a>
+        <a class="nav-item" href="/index.html">
+            <i class="bi bi-house"></i> Back to Hymnal
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="user-card">
+            <div class="user-avatar-sm" id="sidebarAvatar"></div>
+            <div class="user-card-info">
+                <div class="user-card-name" id="sidebarName">—</div>
+                <div class="user-card-role" id="sidebarRole">—</div>
+            </div>
+            <button onclick="handleLogout()" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:.9rem;" title="Sign out">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Main Content ── -->
+<div class="main-content">
+    <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <button class="mobile-toggle" onclick="toggleSidebar()">
+                <i class="bi bi-list"></i>
+            </button>
+            <h1 class="topbar-title" id="topbarTitle">Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+            <button class="btn-ghost btn-sm" onclick="refreshAll()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh
+            </button>
+            <button class="btn-accent btn-sm" onclick="showSection('quick-action')">
+                <i class="bi bi-plus-lg"></i> New Feedback
+            </button>
+        </div>
+    </div>
+
+    <div class="page-body">
+
+        <!-- ══ Overview ══ -->
+        <div id="section-overview">
+
+            <!-- Stats Row -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="skeleton skeleton-lg" style="grid-column:span 1"></div>
+                <div class="skeleton skeleton-lg" style="grid-column:span 1"></div>
+                <div class="skeleton skeleton-lg" style="grid-column:span 1"></div>
+                <div class="skeleton skeleton-lg" style="grid-column:span 1"></div>
+            </div>
+
+            <!-- Main Grid -->
+            <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;">
+
+                <!-- Left Column -->
+                <div>
+                    <!-- Hymn Feedback Feed -->
+                    <div class="section-card" style="margin-bottom:20px;">
+                        <div class="section-header">
+                            <div class="section-title"><i class="bi bi-music-note-list"></i> Recent Hymn Issues</div>
+                            <a class="btn-ghost btn-sm" onclick="showSection('all-feedback')">View All</a>
+                        </div>
+                        <div class="section-body" id="hymnActivity">
+                            <div class="empty-state">
+                                <i class="bi bi-music-note"></i>
+                                <p>Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin: Pending Approvals -->
+                    <div class="section-card" id="pendingApprovalsCard" style="display:none;margin-bottom:20px;">
+                        <div class="section-header">
+                            <div class="section-title"><i class="bi bi-person-check"></i> Pending Approvals</div>
+                            <span class="badge bg-warning text-dark" id="pendingCount">0</span>
+                        </div>
+                        <div class="section-body" id="pendingUsersBody">
+                            <div class="empty-state">
+                                <i class="bi bi-check-circle"></i>
+                                <p>All caught up!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <!-- Quick Actions -->
+                    <div class="section-card" style="margin-bottom:20px;">
+                        <div class="section-header">
+                            <div class="section-title"><i class="bi bi-lightning"></i> Quick Actions</div>
+                        </div>
+                        <div class="section-body" style="padding:14px;display:flex;flex-direction:column;gap:8px;">
+                            <a class="quick-action" href="/feedback/create?type=hymn">
+                                <div class="qa-icon qa-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-flag"></i></div>
+                                <div class="qa-text"><div class="qa-title">Report Hymn Issue</div><p class="qa-desc">Flag an error or missing content</p></div>
+                                <i class="bi bi-chevron-right" style="color:#cbd5e1;font-size:.8rem;"></i>
+                            </a>
+                            <a class="quick-action" href="/feedback/create?type=general">
+                                <div class="qa-icon" style="background:#faf5ff;color:#a855f7;"><i class="bi bi-chat-left-dots"></i></div>
+                                <div class="qa-text"><div class="qa-title">General Feedback</div><p class="qa-desc">Share suggestions or ideas</p></div>
+                                <i class="bi bi-chevron-right" style="color:#cbd5e1;font-size:.8rem;"></i>
+                            </a>
+                            <a class="quick-action" href="/adverts">
+                                <div class="qa-icon" style="background:#fff7ed;color:#f97316;"><i class="bi bi-megaphone"></i></div>
+                                <div class="qa-text"><div class="qa-title">Manage Adverts</div><p class="qa-desc">Create and track your ads</p></div>
+                                <i class="bi bi-chevron-right" style="color:#cbd5e1;font-size:.8rem;"></i>
+                            </a>
+                            <a class="quick-action" href="/index.html">
+                                <div class="qa-icon" style="background:#f0fdfa;color:#14b8a6;"><i class="bi bi-book"></i></div>
+                                <div class="qa-text"><div class="qa-title">Browse Hymnal</div><p class="qa-desc">Search songs by name or number</p></div>
+                                <i class="bi bi-chevron-right" style="color:#cbd5e1;font-size:.8rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- General Feedback Feed -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <div class="section-title"><i class="bi bi-chat-square"></i> Recent Feedback</div>
+                        </div>
+                        <div class="section-body" id="generalActivity">
+                            <div class="empty-state">
+                                <i class="bi bi-chat-left"></i>
+                                <p>Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ All Feedback ══ -->
+        <div id="section-all-feedback" style="display:none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="bi bi-inbox"></i> All Feedback</div>
+                    <div style="display:flex;gap:8px;">
+                        <select class="form-select form-select-sm" style="width:auto;" id="filterCategory" onchange="loadAllFeedback()">
+                            <option value="">All Categories</option>
+                            <option value="hymn">Hymn</option>
+                            <option value="general">General</option>
+                        </select>
+                        <select class="form-select form-select-sm" style="width:auto;" id="filterStatus" onchange="loadAllFeedback()">
+                            <option value="">All Status</option>
+                            <option value="open">Open</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="section-body" id="allFeedbackBody">
+                    <div class="empty-state"><i class="bi bi-inbox"></i><p>Loading...</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ My Feedback ══ -->
+        <div id="section-my-feedback" style="display:none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="bi bi-chat-left-text"></i> My Submissions</div>
+                    <a class="btn-accent btn-sm" href="/feedback/create?type=general"><i class="bi bi-plus-lg"></i> New</a>
+                </div>
+                <div class="section-body" id="myFeedbackBody">
+                    <div class="empty-state"><i class="bi bi-chat-left"></i><p>Loading...</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ Users (Admin) ══ -->
+        <div id="section-users" style="display:none;">
+            <div class="section-card">
+                <div class="section-header">
+                    <div class="section-title"><i class="bi bi-people"></i> User Management</div>
+                    <span class="badge bg-secondary" id="totalUsers">0 users</span>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="6" style="text-align:center;color:#94a3b8;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ══ Profile ══ -->
+        <div id="section-profile" style="display:none;">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:800px;">
+                <div class="section-card">
+                    <div class="section-header"><div class="section-title"><i class="bi bi-person"></i> Profile Info</div></div>
+                    <div style="padding:24px;">
+                        <div style="text-align:center;margin-bottom:20px;">
+                            <div id="profileAvatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#3b82f6);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:1.8rem;font-weight:700;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:.9rem;">
+                            <div style="color:#94a3b8;">Full Name</div><div style="font-weight:600;color:#1e293b;" id="profileFullName">—</div>
+                            <div style="color:#94a3b8;">Username</div><div style="font-weight:600;color:#1e293b;" id="profileUserName">—</div>
+                            <div style="color:#94a3b8;">Email</div><div style="font-weight:600;color:#1e293b;" id="profileEmail">—</div>
+                            <div style="color:#94a3b8;">Status</div><div id="profileStatus">—</div>
+                            <div style="color:#94a3b8;">Role</div><div id="profileRole">—</div>
+                            <div style="color:#94a3b8;">Member Since</div><div style="font-weight:600;color:#1e293b;" id="profileCreated">—</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-card">
+                    <div class="section-header"><div class="section-title"><i class="bi bi-shield-lock"></i> Security</div></div>
+                    <div style="padding:24px;display:flex;flex-direction:column;gap:12px;">
+                        <div style="padding:14px;background:#f8fafc;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
+                            <div><div style="font-weight:600;font-size:.85rem;color:#1e293b;">Access Token</div><div style="font-size:.75rem;color:#64748b;">JWT with auto-refresh</div></div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <div style="padding:14px;background:#f8fafc;border-radius:10px;display:flex;align-items:center;justify-content:space-between;">
+                            <div><div style="font-weight:600;font-size:.85rem;color:#1e293b;">Refresh Token</div><div style="font-size:.75rem;color:#64748b;">Single-device rotation</div></div>
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                        <button class="btn-ghost btn-sm" onclick="refreshTokenNow()"><i class="bi bi-arrow-clockwise"></i> Refresh Token</button>
+                        <button class="action-btn reject" onclick="logoutAllSessions()" style="width:100%;border-radius:10px;padding:10px;"><i class="bi bi-box-arrow-right"></i> Sign Out Everywhere</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /page-body -->
+</div><!-- /main-content -->
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="/js/auth.js"></script>
+<script>
+    // ── State ──
+    let currentUser = null;
+    let allUsers = [];
+
+    // ── Init ──
+    async function init() {
+        currentUser = auth.getCurrentUser();
+        if (!currentUser) { window.location.href = '/login'; return; }
+
+        document.getElementById('sidebarAvatar').innerHTML = avatarHTML(currentUser, 36);
+        document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.userName;
+        document.getElementById('sidebarRole').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Member';
+
+        // Admin-only nav
+        if (currentUser.role === 'admin') {
+            document.getElementById('adminNavLabel').style.display = 'block';
+            document.getElementById('navUsers').style.display = 'flex';
+        }
+
+        await Promise.all([
+            loadStats(),
+            loadHymnActivity(),
+            loadGeneralActivity(),
+            loadMyFeedback(),
+            loadPendingApprovals()
+        ]);
+    }
+
+    // ── Auth helpers ──
+    function getInitials(user) {
+        const name = user.fullName || user.userName || '?';
+        return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+
+    function avatarHTML(user, size = 40) {
+        if (user.profile && user.profile.startsWith('data:image')) {
+            return `<img src="${user.profile}" alt="${getInitials(user)}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;">`;
+        }
+        return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#3b82f6);display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:${Math.round(size * 0.38)}px;">${getInitials(user)}</div>`;
+    }
+
+    function getAuthHeaders() {
+        const token = auth.getAccessToken();
+        return { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+    }
+
+    function showToast(msg, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const el = document.createElement('div');
+        el.className = 'toast-msg ' + type;
+        el.innerHTML = '<i class="bi ' + (type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill') + '"></i> ' + msg;
+        container.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+
+    // ── Stats ──
+    async function loadStats() {
+        const grid = document.getElementById('statsGrid');
+        try {
+            const adminHeaders = { 'Authorization': 'Bearer ' + (auth.getAccessToken() || ''), 'Content-Type': 'application/json' };
+            const [songsRes, hymnRes, feedbackRes, usersRes] = await Promise.all([
+                fetch('/lugSongs').catch(() => null),
+                fetch('/api/feedback/hymns').catch(() => null),
+                fetch('/api/feedback/general').catch(() => null),
+                currentUser.role === 'admin' ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
+            ]);
+
+            const songs = songsRes ? (await songsRes.json()).data || [] : [];
+            const hymnRaw = hymnRes ? (await hymnRes.json()).data || {} : {};
+            const hymnIssues = Array.isArray(hymnRaw) ? hymnRaw : Object.values(hymnRaw || {});
+            const generalFeedback = feedbackRes ? (await feedbackRes.json()).data || [] : [];
+            const users = usersRes ? (await usersRes.json()).data || [] : [];
+            const pendingUsers = users.filter(u => u.status === 'pending');
+
+            grid.innerHTML = `
+                <div class="stat-card" onclick="showSection('hymns')">
+                    <div class="stat-icon blue"><i class="bi bi-book-half"></i></div>
+                    <div class="stat-body">
+                        <div class="stat-value">${songs.length.toLocaleString()}</div>
+                        <div class="stat-label">Songs in Library</div>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('all-feedback')">
+                    <div class="stat-icon purple"><i class="bi bi-flag"></i></div>
+                    <div class="stat-body">
+                        <div class="stat-value">${hymnIssues.length}</div>
+                        <div class="stat-label">Hymn Issues Reported</div>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('all-feedback')">
+                    <div class="stat-icon orange"><i class="bi bi-chat-left-text"></i></div>
+                    <div class="stat-body">
+                        <div class="stat-value">${generalFeedback.length}</div>
+                        <div class="stat-label">General Feedback</div>
+                    </div>
+                </div>
+                ${currentUser.role === 'admin' ? `
+                <div class="stat-card" onclick="showSection('users')">
+                    <div class="stat-icon red"><i class="bi bi-person-check"></i></div>
+                    <div class="stat-body">
+                        <div class="stat-value">${pendingUsers.length}</div>
+                        <div class="stat-label">Pending Approvals</div>
+                    </div>
+                    ${pendingUsers.length > 0 ? '<span class="stat-trend up">Needs action</span>' : '<span class="stat-trend neutral">All clear</span>'}
+                </div>` : `
+                <div class="stat-card" onclick="showSection('my-feedback')">
+                    <div class="stat-icon green"><i class="bi bi-send-check"></i></div>
+                    <div class="stat-body">
+                        <div class="stat-value">—</div>
+                        <div class="stat-label">My Submissions</div>
+                    </div>
+                </div>`}
+            `;
+        } catch (e) {
+            grid.innerHTML = '<p style="color:#94a3b8;padding:20px;">Stats unavailable</p>';
+        }
+    }
+
+    // ── API Fetch helper ──
+    async function apiFetch(url, opts = {}) {
+        const res = await fetch(url, { ...opts, headers: { ...getAuthHeaders(), ...(opts.headers || {}) } });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.message || 'Request failed');
+        return json;
+    }
+
+    // ── Hymn Activity ──
+    async function loadHymnActivity() {
+        const el = document.getElementById('hymnActivity');
+        try {
+            const { data } = await apiFetch('/api/feedback/hymns');
+            // API returns data as an object keyed by hymn number — convert to array
+            const items = Array.isArray(data) ? data : Object.values(data || {});
+            const slice = items.slice(0, 5);
+            if (!slice.length) {
+                el.innerHTML = '<div class="empty-state"><i class="bi bi-check-circle"></i><p>No hymn issues yet</p></div>';
+                return;
+            }
+            el.innerHTML = slice.map(item => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background:#fef2f2;color:#ef4444;"><i class="bi bi-flag"></i></div>
+                    <div class="activity-body">
+                        <div class="activity-title">Hymn #${item.hymnNumber || item._id}</div>
+                        <div class="activity-meta">
+                            <span class="activity-badge badge-${item.issues?.[0]?.status || 'open'}">${item.issues?.[0]?.status || 'open'}</span>
+                            <span>${item.issues?.length || 0} issue(s)</span>
+                        </div>
+                    </div>
+                    <a href="/feedback/hymn/${item.hymnNumber || item._id}" class="btn-ghost btn-sm">View</a>
+                </div>
+            `).join('');
+        } catch (e) {
+            el.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle"></i><p>Failed to load</p></div>';
+        }
+    }
+
+    // ── General Activity ──
+    async function loadGeneralActivity() {
+        const el = document.getElementById('generalActivity');
+        try {
+            const { data } = await apiFetch('/api/feedback/general');
+            const items = (data || []).slice(0, 5);
+            if (!items.length) {
+                el.innerHTML = '<div class="empty-state"><i class="bi bi-chat-left"></i><p>No feedback yet</p></div>';
+                return;
+            }
+            el.innerHTML = items.map(item => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background:#eff6ff;color:#3b82f6;"><i class="bi bi-chat-dots"></i></div>
+                    <div class="activity-body">
+                        <div class="activity-title">${escHtml(item.title)}</div>
+                        <div class="activity-meta">
+                            <span class="activity-badge badge-${item.status || 'open'}">${item.status || 'open'}</span>
+                            <span>${item.category || 'general'}</span>
+                            <span>by ${escHtml(item.userName || 'Unknown')}</span>
+                        </div>
+                    </div>
+                    <a href="/feedback/general/${item._id}" class="btn-ghost btn-sm">View</a>
+                </div>
+            `).join('');
+        } catch (e) {
+            el.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle"></i><p>Failed to load</p></div>';
+        }
+    }
+
+    // ── My Feedback ──
+    async function loadMyFeedback() {
+        const el = document.getElementById('myFeedbackBody');
+        try {
+            const { data } = await apiFetch('/api/feedback/my-feedback');
+            // API returns { hymnIssues: [], generalFeedback: [] }
+            const hymnItems = Array.isArray(data) ? data : (data?.hymnIssues || []);
+            const genItems = Array.isArray(data) ? [] : (data?.generalFeedback || []);
+            const allItems = [...hymnItems, ...genItems];
+            if (!allItems.length) {
+                el.innerHTML = '<div class="empty-state"><i class="bi bi-chat-left"></i><p>You haven\'t submitted any feedback yet</p></div>';
+                return;
+            }
+            el.innerHTML = `
+                <table class="admin-table">
+                    <thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Date</th></tr></thead>
+                    <tbody>
+                        ${allItems.map(item => `
+                            <tr>
+                                <td>${escHtml(item.title || item.hymnNumber ? 'Hymn #' + item.hymnNumber : '—')}</td>
+                                <td><span class="activity-badge badge-${item.category || 'general'}">${item.category || 'general'}</span></td>
+                                <td><span class="activity-badge badge-${item.status || 'open'}">${item.status || 'open'}</span></td>
+                                <td style="color:#94a3b8;font-size:.8rem;">${new Date(item.createdAt || Date.now()).toLocaleDateString()}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
+        } catch (e) {
+            el.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle"></i><p>Failed to load your feedback</p></div>';
+        }
+    }
+
+    // ── Admin: Users ──
+    async function loadUsers() {
+        const tbody = document.getElementById('usersTableBody');
+        try {
+            const { data } = await apiFetch('/api/admin/users');
+            allUsers = data || [];
+            document.getElementById('totalUsers').textContent = allUsers.length + ' users';
+            tbody.innerHTML = allUsers.map(u => `
+                <tr>
+                    <td>
+                        <div class="user-chip role-${u.role}">
+                            ${u.profile && u.profile.startsWith('data:image')
+                              ? `<img src="${u.profile}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" alt="${getInitials(u)}">`
+                              : `<div class="chip-avatar">${getInitials(u)}</div>`}
+                            ${escHtml(u.fullName || u.userName)}
+                        </div>
+                    </td>
+                    <td style="color:#64748b;">${escHtml(u.email)}</td>
+                    <td>
+                        <span class="status-dot dot-${u.status}"></span>${u.status}
+                    </td>
+                    <td><span class="user-chip role-${u.role}">${u.role}</span></td>
+                    <td style="color:#94a3b8;font-size:.8rem;">${new Date(u.createdAt || Date.now()).toLocaleDateString()}</td>
+                    <td>
+                        ${u.status === 'pending' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','approved')"><i class="bi bi-check-lg"></i> Approve</button>` : ''}
+                        ${u.status === 'approved' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','disabled')"><i class="bi bi-x-lg"></i> Disable</button>` : ''}
+                        ${u.role !== 'admin' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','admin-role')" style="margin-left:4px;"><i class="bi bi-shield"></i></button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;">Failed to load users</td></tr>';
+        }
+    }
+
+    async function updateUser(userId, action) {
+        try {
+            let body = {};
+            if (action === 'admin-role') body = { role: 'admin' };
+            else body = { status: action };
+
+            await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify(body) });
+            showToast('User updated successfully', 'success');
+            await loadUsers();
+            await loadStats();
+            await loadPendingApprovals();
+        } catch (e) {
+            showToast('Update failed: ' + e.message, 'error');
+        }
+    }
+
+    // ── Pending Approvals widget ──
+    async function loadPendingApprovals() {
+        if (currentUser.role !== 'admin') return;
+        const card = document.getElementById('pendingApprovalsCard');
+        const body = document.getElementById('pendingUsersBody');
+        const badge = document.getElementById('pendingBadge');
+        const count = document.getElementById('pendingCount');
+
+        try {
+            const { data } = await apiFetch('/api/admin/users');
+            const pending = (data || []).filter(u => u.status === 'pending');
+
+            if (!pending.length) {
+                card.style.display = 'none';
+                badge.style.display = 'none';
+                return;
+            }
+
+            card.style.display = 'block';
+            badge.style.display = 'inline';
+            badge.textContent = pending.length;
+            count.textContent = pending.length;
+
+            body.innerHTML = pending.map(u => `
+                <div class="activity-item">
+                    <div class="activity-icon" style="background:#fff7ed;color:#f59e0b;"><i class="bi bi-person"></i></div>
+                    <div class="activity-body">
+                        <div class="activity-title">${escHtml(u.fullName || u.userName)}</div>
+                        <div class="activity-meta"><span>${escHtml(u.email)}</span><span>${new Date(u.createdAt || Date.now()).toLocaleDateString()}</span></div>
+                    </div>
+                    <button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','approved')">Approve</button>
+                </div>
+            `).join('');
+        } catch (e) {
+            card.style.display = 'none';
+        }
+    }
+
+    // ── All Feedback (admin view) ──
+    async function loadAllFeedback() {
+        const el = document.getElementById('allFeedbackBody');
+        try {
+            const [hymnRes, genRes] = await Promise.all([
+                apiFetch('/api/feedback/hymns'),
+                apiFetch('/api/feedback/general')
+            ]);
+
+            const hymnsRaw = Array.isArray(hymnRes.data) ? hymnRes.data : Object.values(hymnRes.data || {});
+            const hymns = hymnsRaw.map(h => ({
+                title: 'Hymn #' + h.hymnNumber,
+                category: 'hymn',
+                status: h.issues?.[0]?.status || 'open',
+                user: h.issues?.[0]?.userName || '—',
+                created: h.issues?.[0]?.createdAt || Date.now(),
+                link: '/feedback/hymn/' + h.hymnNumber
+            }));
+
+            const gen = (genRes.data || []).map(f => ({
+                title: f.title,
+                category: f.category || 'general',
+                status: f.status || 'open',
+                user: f.userName || '—',
+                created: f.createdAt || Date.now(),
+                link: '/feedback/general/' + f._id
+            }));
+
+            let combined = [...hymns, ...gen].sort((a, b) => new Date(b.created) - new Date(a.created));
+
+            // Filters
+            const cat = document.getElementById('filterCategory').value;
+            const stat = document.getElementById('filterStatus').value;
+            if (cat) combined = combined.filter(i => i.category === cat);
+            if (stat) combined = combined.filter(i => i.status === stat);
+
+            if (!combined.length) {
+                el.innerHTML = '<div class="empty-state"><i class="bi bi-inbox"></i><p>No feedback found</p></div>';
+                return;
+            }
+
+            el.innerHTML = `
+                <table class="admin-table">
+                    <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>By</th><th>Date</th><th></th></tr></thead>
+                    <tbody>
+                        ${combined.map(item => `
+                            <tr>
+                                <td style="font-weight:600;">${escHtml(item.title)}</td>
+                                <td><span class="activity-badge badge-${item.category}">${item.category}</span></td>
+                                <td><span class="activity-badge badge-${item.status}">${item.status}</span></td>
+                                <td style="color:#64748b;">${escHtml(item.user)}</td>
+                                <td style="color:#94a3b8;font-size:.8rem;">${new Date(item.created).toLocaleDateString()}</td>
+                                <td><a href="${item.link}" class="btn-ghost btn-sm">View</a></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>`;
+        } catch (e) {
+            el.innerHTML = '<div class="empty-state"><i class="bi bi-exclamation-triangle"></i><p>Failed to load feedback</p></div>';
+        }
+    }
+
+    // ── Navigation ──
+    function showSection(name) {
+        const sections = ['overview','all-feedback','my-feedback','users','profile'];
+        sections.forEach(s => {
+            document.getElementById('section-' + s).style.display = 'none';
+        });
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event && event.currentTarget && event.currentTarget.classList.add('active');
+
+        const titleMap = { overview:'Dashboard', 'all-feedback':'All Feedback', 'my-feedback':'My Feedback', users:'User Management', profile:'My Profile' };
+        document.getElementById('topbarTitle').textContent = titleMap[name] || 'Dashboard';
+
+        if (name === 'overview') {
+            document.getElementById('section-overview').style.display = 'block';
+        } else {
+            document.getElementById('section-' + name).style.display = 'block';
+        }
+
+        if (name === 'users') loadUsers();
+        if (name === 'all-feedback') loadAllFeedback();
+        if (name === 'profile') loadProfile();
+
+        // Close sidebar on mobile
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('overlay').classList.remove('active');
+
+        return false;
+    }
+
+    function loadProfile() {
+        document.getElementById('profileAvatar').outerHTML = avatarHTML(currentUser, 72);
+        document.getElementById('profileFullName').textContent = currentUser.fullName || '—';
+        document.getElementById('profileUserName').textContent = currentUser.userName || '—';
+        document.getElementById('profileEmail').textContent = currentUser.email || '—';
+        document.getElementById('profileStatus').innerHTML = `<span class="activity-badge badge-${currentUser.status === 'approved' ? 'resolved' : 'pending'}">${currentUser.status}</span>`;
+        document.getElementById('profileRole').innerHTML = `<span class="user-chip role-${currentUser.role}">${currentUser.role}</span>`;
+        document.getElementById('profileCreated').textContent = currentUser.createdAt ? new Date(currentUser.createdAt).toLocaleDateString() : '—';
+    }
+
+    // ── Sidebar toggle (mobile) ──
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    }
+
+    // ── Refresh ──
+    async function refreshAll() {
+        showSection('overview');
+        document.querySelector('.nav-item[href="#overview"]')?.click();
+        await loadStats();
+        await loadHymnActivity();
+        await loadGeneralActivity();
+        showToast('Dashboard refreshed', 'success');
+    }
+
+    async function refreshTokenNow() {
+        const result = await auth.refreshAccessToken();
+        if (result.success) showToast('Token refreshed!', 'success');
+        else showToast('Refresh failed. Please log in again.', 'error');
+    }
+
+    async function logoutAllSessions() {
+        if (!confirm('Sign out from all devices?')) return;
+        await auth.logoutAll();
+        window.location.href = '/login';
+    }
+
+    async function handleLogout() {
+        if (!confirm('Sign out?')) return;
+        await auth.logout();
+        window.location.href = '/login';
+    }
+
+    function escHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Go! ──
+    init();
+</script>
 </body>
 </html>

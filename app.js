@@ -1,8 +1,15 @@
+require('dotenv').config();
+
 const express = require('express');
 const fetch = require('node-fetch');
+const path = require('path');
 
 const app = express();
 const http = require('http').Server(app);
+
+// View engine configuration
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 
 function executeTaskEvery10Minutes() {
@@ -74,7 +81,12 @@ function executeTaskEvery10Minutes() {
 executeTaskEvery10Minutes();
 
 const userRoute = require('./routes/userRoute');
+const feedbackApiRoute = require('./routes/feedbackRoute');
+const feedbackViewRoute = require('./routes/feedbackViewRoute');
+
 app.use("/",userRoute);
+app.use("/api/feedback", feedbackApiRoute);
+app.use("/", feedbackViewRoute);
 app.get('/adverts',async (req, res)=>{
   try {
     res.redirect('https://audiorecordingfm.onrender.com/');
@@ -103,6 +115,7 @@ app.get('/leson',async (req, res)=>{
 });
 // Serve all files in the "public" folder
 
-http.listen(3300, () => {
-  console.log('Server connected at port 3300');
+const PORT = process.env.PORT || 3300;
+http.listen(PORT, () => {
+  console.log(`Server connected at port ${PORT}`);
 });

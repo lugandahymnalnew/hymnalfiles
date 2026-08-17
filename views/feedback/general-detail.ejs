@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= feedback.title %> | Feedback Forum</title>
+    <style>
+        :root {
+            --bg: #f3efe7;
+            --panel: #fffdf8;
+            --ink: #1d2a2f;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --line: rgba(22, 40, 48, 0.12);
+            --gold: #b58538;
+            --danger-bg: #fce9e8;
+            --danger-ink: #8b2822;
+            --success-bg: #e8f6ed;
+            --success-ink: #1d7a44;
+            --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(180deg, #f8f4ec 0%, #efe8dc 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        .header h1 { margin: 0; font-size: 1.8rem; }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .main-post {
+            border: 1px solid var(--line);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .post-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 12px 0;
+        }
+
+        .post-content {
+            line-height: 1.8;
+            margin: 20px 0;
+            padding: 16px 0;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-category {
+            background: rgba(181, 133, 56, 0.2);
+            color: var(--gold);
+        }
+
+        .badge-priority {
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-open { background: var(--success-bg); color: var(--success-ink); }
+        .status-resolved { background: var(--danger-bg); color: var(--danger-ink); }
+        .status-closed { background: var(--danger-bg); color: var(--danger-ink); }
+        .status-in-progress { background: rgba(181, 133, 56, 0.2); color: var(--gold); }
+
+        .upvote-section {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .upvote-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(15, 118, 110, 0.08);
+            border: 1px solid rgba(15, 118, 110, 0.2);
+            border-radius: 10px;
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn:hover { background: rgba(15, 118, 110, 0.15); }
+        .upvote-btn.voted { background: var(--accent); color: white; }
+
+        .reply-card {
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 3px solid var(--line);
+        }
+
+        .reply-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .reply-author {
+            font-weight: 600;
+        }
+
+        .reply-content {
+            line-height: 1.7;
+        }
+
+        .internal-note {
+            background: rgba(181, 133, 56, 0.1);
+            border: 1px dashed var(--gold);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--gold);
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover { color: var(--accent); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/feedback" class="back-link">← Back to Forum</a>
+
+        <div class="card main-post">
+            <div class="post-header">
+                <div>
+                    <h1 class="post-title"><%= feedback.title %></h1>
+                    <div class="post-meta">
+                        Posted by <%= feedback.userName %> • <%= new Date(feedback.createdAt).toLocaleDateString() %>
+                        <span class="badge badge-category" style="margin-left: 8px;"><%= feedback.category %></span>
+                        <span class="badge badge-priority" style="margin-left: 4px;"><%= feedback.priority %></span>
+                    </div>
+                </div>
+                <span class="status-badge status-<%= feedback.status %>"><%= feedback.status %></span>
+            </div>
+
+            <div class="post-content"><%= feedback.message %></div>
+
+            <div class="upvote-section">
+                <button class="upvote-btn" onclick="upvoteFeedback()" id="upvoteBtn">
+                    ▲ <span id="upvoteCount"><%= (feedback.upvotes || []).length %></span>
+                </button>
+                <span style="color: var(--muted); font-size: 0.9rem;">
+                    👁 <%= feedback.views || 0 %> views • 💬 <%= (feedback.replies || []).length %> replies
+                </span>
+            </div>
+        </div>
+
+        <!-- Replies Section -->
+        <h2 style="margin: 32px 0 16px;">Replies</h2>
+
+        <% if (feedback.replies && feedback.replies.length > 0) { %>
+            <% feedback.replies.forEach(function(reply) { %>
+                <div class="card reply-card">
+                    <div class="reply-header">
+                        <span class="reply-author"><%= reply.userName %></span>
+                        <span style="color: var(--muted); font-size: 0.85rem;">
+                            <%= new Date(reply.createdAt).toLocaleDateString() %>
+                        </span>
+                    </div>
+                    <% if (reply.isInternal) { %>
+                        <div class="internal-note">
+                            <strong>📝 Internal Note:</strong> <%= reply.message %>
+                        </div>
+                    <% } else { %>
+                        <div class="reply-content"><%= reply.message %></div>
+                    <% } %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="empty-state">
+                <p>No replies yet. Be the first to respond!</p>
+            </div>
+        <% } %>
+
+        <!-- Reply Form -->
+        <div class="card" style="margin-top: 24px;">
+            <h3 style="margin-top: 0;">Add a Reply</h3>
+            <form class="reply-form" onsubmit="submitReply(event)">
+                <textarea id="replyMessage" placeholder="Write your reply..." required></textarea>
+                <div style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
+                    <button type="submit" class="btn btn-primary">Post Reply</button>
+                    <label style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem;">
+                        <input type="checkbox" id="isInternal"> Internal Note (Admin Only)
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        const feedbackId = '<%= feedback._id %>';
+        const currentUserId = auth.getCurrentUser()?._id;
+        const hasUpvoted = currentUserId && feedback.upvotes && feedback.upvotes.includes(currentUserId);
+
+        if (hasUpvoted) {
+            document.getElementById('upvoteBtn').classList.add('voted');
+        }
+
+        async function upvoteFeedback() {
+            if (!auth.isLoggedIn()) {
+                alert('Please login to upvote');
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await auth.apiRequest('/api/feedback/general/' + feedbackId + '/upvote', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    document.getElementById('upvoteCount').textContent = data.data.upvotes.length;
+                    document.getElementById('upvoteBtn').classList.toggle('voted');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function submitReply(event) {
+            event.preventDefault();
+
+            if (!auth.isLoggedIn()) {
+                alert('Please login to reply');
+                window.location.href = '/login';
+                return;
+            }
+
+            const message = document.getElementById('replyMessage').value;
+            const isInternal = document.getElementById('isInternal').checked;
+
+            try {
+                const response = await auth.apiRequest('/api/feedback/general/' + feedbackId + '/reply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message, isInternal })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Reply posted!');
+                    window.location.reload();
+                } else {
+                    alert('Failed to post reply: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

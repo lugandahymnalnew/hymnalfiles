@@ -1,5 +1,4 @@
 const Client = require('ftp');
-const con = require('../config.json');
 const db = require('./mongoDBApi');
 
 async function renameFile(filename, newFilename) {
@@ -18,10 +17,10 @@ async function uploadToFTP(req, res) {
 
   // Connect to the FTP server
   ftpClient.connect({
-    host: con.ftp.host,
-    port: 21,
-    user: con.ftp.username,
-    password: con.ftp.password,
+    host: process.env.FTP_HOST,
+    port: Number(process.env.FTP_PORT || 21),
+    user: process.env.FTP_USERNAME,
+    password: process.env.FTP_PASSWORD,
   });
 
   // On successful FTP connection

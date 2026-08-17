@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hymn <%= feedback.hymnNumber %> Feedback | Ennyimba Za Kristo</title>
+    <style>
+        :root {
+            --bg: #f3efe7;
+            --panel: #fffdf8;
+            --ink: #1d2a2f;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --line: rgba(22, 40, 48, 0.12);
+            --danger-bg: #fce9e8;
+            --danger-ink: #8b2822;
+            --success-bg: #e8f6ed;
+            --success-ink: #1d7a44;
+            --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(180deg, #f8f4ec 0%, #efe8dc 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .issue-card {
+            border: 1px solid var(--line);
+        }
+
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .issue-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .issue-meta {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin: 8px 0;
+        }
+
+        .issue-description {
+            line-height: 1.7;
+            margin: 16px 0;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-open {
+            background: var(--success-bg);
+            color: var(--success-ink);
+        }
+
+        .status-resolved {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        .status-in-progress {
+            background: rgba(181, 133, 56, 0.2);
+            color: #b58538;
+        }
+
+        .upvote-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(15, 118, 110, 0.08);
+            border: 1px solid rgba(15, 118, 110, 0.2);
+            border-radius: 8px;
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn:hover {
+            background: rgba(15, 118, 110, 0.15);
+        }
+
+        .upvote-btn.voted {
+            background: var(--accent);
+            color: white;
+        }
+
+        .category-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .category-error {
+            background: var(--danger-bg);
+            color: var(--danger-ink);
+        }
+
+        .category-suggestion {
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent);
+        }
+
+        .category-correction {
+            background: rgba(181, 133, 56, 0.2);
+            color: #b58538;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/feedback" class="back-link">← Back to Forum</a>
+
+        <div class="header">
+            <h1>Hymn <%= feedback.hymnNumber %> Feedback</h1>
+            <button class="btn btn-primary" onclick="showNewIssueForm()">New Issue</button>
+        </div>
+
+        <!-- New Issue Form -->
+        <div class="card" id="newIssueForm" style="display: none;">
+            <h2 style="margin-top: 0;">Report an Issue</h2>
+            <form id="issueForm" onsubmit="submitIssue(event)">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="issueTitle" required placeholder="Brief description of the issue">
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="issueCategory">
+                        <option value="error">Error/Mistake</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="correction">Correction Needed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="issueDescription" required placeholder="Describe the issue in detail..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Issue</button>
+                <button type="button" class="btn btn-secondary" onclick="hideNewIssueForm()">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Issues List -->
+        <% if (feedback.issues && feedback.issues.length > 0) { %>
+            <% feedback.issues.forEach(function(issue) { %>
+                <div class="card issue-card" id="issue-<%= issue._id %>">
+                    <div class="issue-header">
+                        <div>
+                            <h3 class="issue-title"><%= issue.title %></h3>
+                            <div class="issue-meta">
+                                <span class="category-badge category-<%= issue.category %>"><%= issue.category %></span>
+                                by <%= issue.userName %> • <%= new Date(issue.createdAt).toLocaleDateString() %>
+                            </div>
+                        </div>
+                        <span class="status-badge status-<%= issue.status %>"><%= issue.status %></span>
+                    </div>
+                    <div class="issue-description"><%= issue.description %></div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <button class="upvote-btn" onclick="upvoteIssue('<%= issue._id %>')" id="upvote-<%= issue._id %>">
+                            ▲ <span id="upvote-count-<%= issue._id %>"><%= (issue.upvotes || []).length %></span>
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="empty-state">
+                <p>No issues reported for this hymn yet.</p>
+                <button class="btn btn-primary" onclick="showNewIssueForm()">Be the first to report an issue</button>
+            </div>
+        <% } %>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+        const hymnNumber = '<%= feedback.hymnNumber %>';
+
+        function showNewIssueForm() {
+            if (!auth.isLoggedIn()) {
+                alert('Please login to report an issue');
+                window.location.href = '/login';
+                return;
+            }
+            document.getElementById('newIssueForm').style.display = 'block';
+        }
+
+        function hideNewIssueForm() {
+            document.getElementById('newIssueForm').style.display = 'none';
+        }
+
+        async function submitIssue(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('issueTitle').value;
+            const category = document.getElementById('issueCategory').value;
+            const description = document.getElementById('issueDescription').value;
+
+            try {
+                const response = await auth.apiRequest('/api/feedback/hymn/' + hymnNumber + '/issue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, category, description })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert('Issue reported successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Failed to submit issue: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function upvoteIssue(issueId) {
+            if (!auth.isLoggedIn()) {
+                alert('Please login to upvote');
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await auth.apiRequest('/api/feedback/hymn/' + hymnNumber + '/issue/' + issueId + '/upvote', {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Update the upvote count
+                    const issue = data.data.issues.find(i => i._id === issueId);
+                    document.getElementById('upvote-count-' + issueId).textContent = issue.upvotes.length;
+
+                    // Toggle button style
+                    const btn = document.getElementById('upvote-' + issueId);
+                    if (issue.upvotes.includes(auth.getCurrentUser()._id)) {
+                        btn.classList.add('voted');
+                    } else {
+                        btn.classList.remove('voted');
+                    }
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
