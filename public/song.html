@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song - Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="style/style.css">
+    <style>
+        .ios-nav {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .ios-nav__back {
+            text-decoration: none;
+            color: #007AFF;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+        }
+        .ios-nav__chevron {
+            font-size: 24px;
+            margin-right: 2px;
+        }
+        .ios-nav__title {
+            flex: 1;
+            text-align: center;
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+        }
+        .ios-nav__spacer {
+            width: 60px;
+        }
+        .ios-nav__feedback {
+            background: none;
+            border: none;
+            width: 60px;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            color: #007AFF;
+            text-align: right;
+        }
+        .song-container {
+            padding: 20px 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .song-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .song-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .song-title {
+            font-size: 20px;
+            color: #666;
+            margin: 8px 0;
+        }
+        .song-english-title {
+            font-size: 18px;
+            color: #888;
+        }
+        .song-meta {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+        .song-meta span {
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            color: #555;
+        }
+        .song-lyrics {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            font-family: Georgia, serif;
+        }
+        .song-lyrics b, .song-lyrics strong {
+            color: #c62828;
+        }
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 16px;
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            border-top: 1px solid #e5e5e5;
+        }
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-btn-prev {
+            background: #007AFF;
+            color: white;
+        }
+        .nav-btn-next {
+            background: #007AFF;
+            color: white;
+        }
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .font-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .font-control label {
+            font-size: 14px;
+            color: #666;
+        }
+        .font-control input[type="range"] {
+            flex: 1;
+            max-width: 200px;
+        }
+        .font-value {
+            font-size: 14px;
+            color: #666;
+            min-width: 40px;
+            text-align: right;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #d32f2f;
+        }
+        .collection-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .collection-badge.adult {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .collection-badge.children {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        .feedback-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .feedback-modal-overlay.open {
+            display: flex;
+        }
+        .feedback-modal {
+            background: #fff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 16px 16px 0 0;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .feedback-modal h3 {
+            margin: 0 0 4px;
+        }
+        .feedback-modal p.hint {
+            color: #666;
+            font-size: 13px;
+            margin: 0 0 16px;
+        }
+        .feedback-modal label {
+            display: block;
+            font-size: 13px;
+            color: #555;
+            margin: 12px 0 4px;
+        }
+        .feedback-modal select,
+        .feedback-modal input[type="text"],
+        .feedback-modal textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        .feedback-modal textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+        .feedback-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .feedback-modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .feedback-cancel-btn {
+            background: #f0f0f0;
+            color: #333;
+        }
+        .feedback-submit-btn {
+            background: #007AFF;
+            color: #fff;
+        }
+        .feedback-submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .feedback-status {
+            margin-top: 12px;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback-status.show {
+            display: block;
+        }
+        .feedback-status.error {
+            background: #fdecea;
+            color: #c62828;
+        }
+        .feedback-status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .feedback-status.offline {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .feedback-modal-footer {
+            margin-top: 14px;
+            text-align: center;
+        }
+        .feedback-modal-footer a {
+            font-size: 13px;
+            color: #888;
+            text-decoration: underline;
+        }
+        .feedback-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%) translateY(20px);
+            background: #2e7d32;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .feedback-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header class="ios-nav">
+        <a class="ios-nav__back" href="/src/index.html" aria-label="Back to index">
+            <span class="ios-nav__chevron" aria-hidden="true">&#8249;</span>
+            <span>Index</span>
+        </a>
+        <div class="ios-nav__title" id="navTitle">Song</div>
+        <button class="ios-nav__feedback" id="reportIssueBtn" type="button" aria-label="Feedback on this hymn" title="Feedback on this hymn">&#128172;</button>
+    </header>
+
+    <div class="font-control">
+        <label for="fontSize">Font:</label>
+        <input type="range" id="fontSize" min="0.8" max="3" step="0.1" value="1.2">
+        <span class="font-value" id="fontValue">1.2rem</span>
+    </div>
+
+    <div class="song-container">
+        <div id="songContent">
+            <div class="loading">Loading song...</div>
+        </div>
+    </div>
+
+    <div class="navigation-controls">
+        <button class="nav-btn nav-btn-prev" id="prevBtn" onclick="navigateToPrev()">&#8592; Previous</button>
+        <button class="nav-btn nav-btn-next" id="nextBtn" onclick="navigateToNext()">Next &#8594;</button>
+    </div>
+
+    <div class="feedback-modal-overlay" id="feedbackOverlay">
+        <div class="feedback-modal">
+            <h3>Feedback on this Hymn</h3>
+            <p class="hint">Spotted a wrong lyric, missing verse, or have another suggestion? Let us know.</p>
+
+            <label for="feedbackCategory">Type</label>
+            <select id="feedbackCategory">
+                <option value="error">Lyric error</option>
+                <option value="correction">Suggested correction</option>
+                <option value="suggestion">General suggestion</option>
+            </select>
+
+            <label for="feedbackTitle">Summary</label>
+            <input type="text" id="feedbackTitle" placeholder="e.g. Verse 2 line 3 is misspelled" maxlength="120">
+
+            <label for="feedbackDescription">Details</label>
+            <textarea id="feedbackDescription" placeholder="Describe the issue or suggestion..."></textarea>
+
+            <div class="feedback-status" id="feedbackStatus"></div>
+
+            <div class="feedback-modal-actions">
+                <button type="button" class="feedback-cancel-btn" id="feedbackCancelBtn">Cancel</button>
+                <button type="button" class="feedback-submit-btn" id="feedbackSubmitBtn">Submit</button>
+            </div>
+
+            <div class="feedback-modal-footer">
+                <a href="/feedback/my-feedback" id="myFeedbackLink">View feedback you've submitted</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="feedback-toast" id="feedbackToast"></div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/song-page.js" defer></script>
+    <script src="js/auth.js"></script>
+    <script src="js/feedback.js"></script>
+    <script src="js/song-feedback.js" defer></script>
+</body>
+</html>

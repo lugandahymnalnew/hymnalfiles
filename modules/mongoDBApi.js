@@ -1,8 +1,7 @@
 // Import the required modules
 // const MongoClient = require('mongodb').MongoClient;
 const { MongoClient } = require("mongodb");
-const con = require('./../config.json');
-const url = con.mongoDB.url; // Update this to your MongoUri [visit mongodb.com to get one if you have none]
+const url = process.env.MONGODB_URL;
 
 
 

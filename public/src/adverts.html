@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advert Studio</title>
+  <style>
+    :root{--bg:#f4ede1;--panel:#fffdf8;--ink:#1f2c31;--muted:#67757d;--line:rgba(31,44,49,.1);--accent:#0f766e;--accent2:#0b5b55;--gold:#b98a3b;--danger:#bb4339;--ok:#238553;--shadow:0 24px 56px rgba(25,36,42,.12)}
+    *{box-sizing:border-box}body{margin:0;font-family:"Segoe UI",Tahoma,sans-serif;color:var(--ink);background:radial-gradient(circle at top left,rgba(185,138,59,.18),transparent 24%),radial-gradient(circle at bottom right,rgba(15,118,110,.14),transparent 28%),linear-gradient(180deg,#f8f3ea,#ece3d6)}
+    .shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr}.side{background:rgba(28,39,45,.97);color:#f6f3ed;padding:24px;display:flex;flex-direction:column;gap:18px}.brand small{letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.68)}.brand h1{margin:12px 0 8px;font-size:1.55rem}.brand p{margin:0;color:rgba(255,255,255,.72);line-height:1.6;font-size:.93rem}
+    .nav{display:grid;gap:10px}.nav a,.nav button{width:100%;border:0;border-radius:14px;padding:13px 14px;background:rgba(255,255,255,.05);color:#fff;text-decoration:none;text-align:left;cursor:pointer}.nav a.active{background:linear-gradient(135deg,rgba(15,118,110,.3),rgba(185,138,59,.2))}
+    .note{margin-top:auto;padding:14px;border-radius:16px;background:rgba(255,255,255,.05);font-size:.87rem;line-height:1.6;color:rgba(255,255,255,.72)}
+    .main{padding:24px}.hero,.workspace{display:grid;gap:18px}.hero{grid-template-columns:1.2fr .8fr;margin-bottom:18px}.card{background:rgba(255,253,248,.92);border:1px solid rgba(255,255,255,.85);border-radius:24px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+    .intro{padding:26px}.eyebrow{display:inline-flex;padding:8px 12px;border-radius:999px;background:rgba(15,118,110,.08);color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}.intro h2{margin:18px 0 10px;font-size:clamp(2rem,3vw,3rem);line-height:.96}.intro p{margin:0;color:var(--muted);line-height:1.7}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+    .stats{padding:20px}.stats h3{margin:0 0 8px}.stats p{margin:0 0 16px;color:var(--muted);line-height:1.6}.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:14px;border-radius:16px;background:rgba(255,255,255,.72);border:1px solid rgba(31,44,49,.06)}.stat small{color:var(--muted);text-transform:uppercase;letter-spacing:.05em}.stat strong{display:block;margin-top:8px;font-size:1.55rem}
+    .workspace{grid-template-columns:1.25fr .75fr}.panel-head{padding:22px 22px 12px}.panel-head h3{margin:0}.panel-head p{margin:6px 0 0;color:var(--muted)}.panel-body{padding:0 22px 22px}
+    .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}.toolbar input,.toolbar select,.field input,.field select{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font:inherit;color:var(--ink)}.toolbar input:focus,.toolbar select:focus,.field input:focus,.field select:focus{outline:0;border-color:rgba(15,118,110,.45);box-shadow:0 0 0 4px rgba(15,118,110,.1)}.search{flex:1 1 220px}
+    .btn{border:0;border-radius:14px;padding:12px 14px;font-weight:700;cursor:pointer}.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.btn-secondary{background:rgba(31,44,49,.08);color:var(--ink)}.btn-danger{background:rgba(187,67,57,.12);color:var(--danger)}.btn-small{padding:9px 11px;font-size:.86rem}
+    .list{display:grid;gap:14px}.advert-card{display:grid;grid-template-columns:150px 1fr;gap:14px;padding:15px;border-radius:18px;background:rgba(255,255,255,.72);border:1px solid rgba(31,44,49,.08)}.advert-thumb{width:100%;height:120px;object-fit:cover;border-radius:14px;background:#ddd}.advert-title{margin:0;font-size:1.08rem}.advert-link{display:inline-block;margin-top:7px;color:var(--accent);text-decoration:none;word-break:break-word}.meta,.row-actions{display:flex;flex-wrap:wrap;gap:8px}.meta{margin-top:10px}.chip{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:.78rem;font-weight:700}.chip.live{background:rgba(35,133,83,.12);color:var(--ok)}.chip.off{background:rgba(187,67,57,.12);color:var(--danger)}.chip.neutral{background:rgba(31,44,49,.08);color:var(--ink)}.info{margin-top:10px;color:var(--muted);font-size:.9rem;line-height:1.6}.row-actions{margin-top:12px}
+    .empty,.loading{padding:34px 16px;text-align:center;color:var(--muted);border-radius:18px;background:rgba(255,255,255,.58);border:1px dashed rgba(31,44,49,.12)}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;margin:0 0 8px;font-size:.9rem;font-weight:700}.field.full{grid-column:1/-1}.hint{margin-top:7px;color:var(--muted);font-size:.82rem;line-height:1.45}
+    .preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(82px,1fr));gap:10px}.wrap{position:relative;aspect-ratio:1/1}.image-preview{width:100%;height:100%;object-fit:cover;border-radius:14px;background:#e7e0d5;border:1px solid rgba(31,44,49,.08)}.remove{position:absolute;top:8px;right:8px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(31,44,49,.82);color:#fff;cursor:pointer}
+    .toggle-row{display:flex;align-items:center;gap:12px}.toggle{position:relative;width:56px;height:30px;border-radius:999px;background:rgba(31,44,49,.18);cursor:pointer}.toggle:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s ease}.toggle.active{background:linear-gradient(135deg,var(--accent),var(--ok))}.toggle.active:after{transform:translateX(26px)}.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    @media(max-width:1120px){.shell{grid-template-columns:1fr}.main{padding:18px}}@media(max-width:920px){.hero,.workspace{grid-template-columns:1fr}}@media(max-width:640px){.advert-card,.form-grid{grid-template-columns:1fr}.main{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <div class="brand">
+        <small>Advert Studio</small>
+        <h1>Ennyimba Za Kristo</h1>
+        <p>Professional workspace for campaign setup, scheduling, and performance review.</p>
+      </div>
+      <nav class="nav">
+        <a href="/adverts" class="active">Advert Studio</a>
+        <a href="/admin-users">User Approvals</a>
+        <a href="../index.html">Public Home</a>
+        <button id="logoutBtn" type="button">Logout</button>
+      </nav>
+      <div class="note">Use placement, priority, and schedule windows to control what appears on the public home page and advert detail route.</div>
+    </aside>
+
+    <main class="main">
+      <section class="hero">
+        <div class="card intro">
+          <div class="eyebrow">Campaign Workspace</div>
+          <h2>Advert management with better structure.</h2>
+          <p>Build and maintain campaigns from a single admin screen. Review live status, placement, and engagement while keeping the edit flow close to the list.</p>
+          <div class="actions">
+            <button class="btn btn-primary" id="addBtn" type="button">Create Advert</button>
+            <button class="btn btn-secondary" id="refreshBtn" type="button">Refresh Data</button>
+          </div>
+        </div>
+        <div class="card stats">
+          <h3>Performance Snapshot</h3>
+          <p>Current totals across adverts in this workspace.</p>
+          <div class="stats-grid">
+            <div class="stat"><small>Total</small><strong id="statTotal">0</strong></div>
+            <div class="stat"><small>Active Now</small><strong id="statActive">0</strong></div>
+            <div class="stat"><small>Views</small><strong id="statViews">0</strong></div>
+            <div class="stat"><small>Clicks</small><strong id="statClicks">0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="card">
+          <div class="panel-head">
+            <h3>Campaign Library</h3>
+            <p>Review adverts, filter quickly, and jump into edits.</p>
+          </div>
+          <div class="panel-body">
+            <div class="toolbar">
+              <input class="search" type="text" id="searchInput" placeholder="Search title or link">
+              <select id="statusFilter"><option value="all">All statuses</option><option value="active">Active only</option><option value="inactive">Inactive only</option></select>
+              <select id="placementFilter"><option value="all">All placements</option><option value="home">Home</option><option value="details">Details</option></select>
+            </div>
+            <div id="advertsList" class="list"><div class="loading">Loading adverts...</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="panel-head">
+            <h3 id="editorTitle">Create Advert</h3>
+            <p>Set content, schedule, placement, and images in one editor.</p>
+          </div>
+          <div class="panel-body">
+            <form id="advertForm">
+              <input type="hidden" id="advertId">
+              <div class="form-grid">
+                <div class="field full"><label for="title">Advert Title</label><input type="text" id="title" required placeholder="Enter advert title"></div>
+                <div class="field full"><label for="link">Destination Link</label><input type="url" id="link" placeholder="https://example.com"><div class="hint">Leave blank to open the internal advert detail page.</div></div>
+                <div class="field"><label for="placement">Placement</label><select id="placement"><option value="home">Home</option><option value="details">Details</option></select></div>
+                <div class="field"><label for="priority">Priority</label><input type="number" id="priority" min="0" max="100" value="0"><div class="hint">Higher numbers show first.</div></div>
+                <div class="field"><label for="startsAt">Starts At</label><input type="datetime-local" id="startsAt"></div>
+                <div class="field"><label for="endsAt">Ends At</label><input type="datetime-local" id="endsAt"></div>
+                <div class="field full"><label for="images">Images</label><input type="file" id="images" accept="image/*" multiple><div class="hint">Images are compressed to base64 before save.</div></div>
+                <div class="field full"><div id="imagePreview" class="preview"><div class="empty">No images selected yet.</div></div></div>
+                <div class="field full"><label>Status</label><div class="toggle-row"><div class="toggle active" id="activeToggle"></div><span id="toggleLabel">Active</span></div></div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="saveBtn">Save Advert</button>
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Clear Form</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    var adverts=[],existingImages=[],isActive=true,newImageFiles=[],accessToken=localStorage.getItem('accessToken')||'';
+    function redirectToLogin(){window.location.href='/login'}
+    function getAuthHeaders(json){var h={};if(json)h['Content-Type']='application/json';if(accessToken)h.Authorization='Bearer '+accessToken;return h}
+    function sendJsonRequest(method,url,body,callback){var xhr=new XMLHttpRequest();xhr.open(method,url,true);var headers=getAuthHeaders(true);Object.keys(headers).forEach(function(n){xhr.setRequestHeader(n,headers[n])});xhr.onreadystatechange=function(){if(xhr.readyState===4){if(xhr.status===401||xhr.status===403){localStorage.removeItem('accessToken');localStorage.removeItem('authUser');redirectToLogin();return}callback(xhr)}};xhr.send(body?JSON.stringify(body):null)}
+    function ensureAuthenticated(){if(!accessToken){redirectToLogin();return}var xhr=new XMLHttpRequest();xhr.open('GET','/api/auth/me',true);xhr.setRequestHeader('Authorization','Bearer '+accessToken);xhr.onreadystatechange=function(){if(xhr.readyState===4){if(xhr.status!==200){localStorage.removeItem('accessToken');localStorage.removeItem('authUser');redirectToLogin();return}loadAdverts()}};xhr.send()}
+    function createTextElement(tag,cls,text){var el=document.createElement(tag);el.className=cls;el.textContent=text;return el}
+    function toLocalInputValue(value){if(!value)return'';var d=new Date(value);if(isNaN(d.getTime()))return'';return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+    function formatDate(value){if(!value)return'Open schedule';var d=new Date(value);return isNaN(d.getTime())?'Open schedule':d.toLocaleString()}
+    function isLiveAdvert(advert){if(!advert.active)return false;var now=Date.now(),s=advert.startsAt?new Date(advert.startsAt).getTime():null,e=advert.endsAt?new Date(advert.endsAt).getTime():null;if(s&&s>now)return false;if(e&&e<now)return false;return true}
+    function updateStats(){var v=0,c=0,a=0;for(var i=0;i<adverts.length;i++){v+=Number(adverts[i].views||0);c+=Number(adverts[i].clicks||0);if(isLiveAdvert(adverts[i]))a++}document.getElementById('statTotal').textContent=adverts.length;document.getElementById('statActive').textContent=a;document.getElementById('statViews').textContent=v;document.getElementById('statClicks').textContent=c}
+    function loadAdverts(){var container=document.getElementById('advertsList');container.innerHTML='<div class="loading">Loading adverts...</div>';var xhr=new XMLHttpRequest();xhr.open('GET','/api/adverts',true);xhr.setRequestHeader('Authorization','Bearer '+accessToken);xhr.onreadystatechange=function(){if(xhr.readyState===4){if(xhr.status===200){try{var result=JSON.parse(xhr.responseText);if(result.success){adverts=result.data||[];updateStats();renderAdverts()}else{container.innerHTML='<div class="empty">Error loading adverts</div>'}}catch(_e){container.innerHTML='<div class="empty">Error parsing response</div>'}}else{container.innerHTML='<div class="empty">Error: '+xhr.status+'</div>'}}};xhr.send()}
+    function renderAdverts(){var container=document.getElementById('advertsList'),q=document.getElementById('searchInput').value.trim().toLowerCase(),sf=document.getElementById('statusFilter').value,pf=document.getElementById('placementFilter').value,list=[];for(var i=0;i<adverts.length;i++){var ad=adverts[i],ms=!q||(ad.title||'').toLowerCase().indexOf(q)!==-1||(ad.link||'').toLowerCase().indexOf(q)!==-1,st=sf==='all'||(sf==='active'&&ad.active)||(sf==='inactive'&&!ad.active),pl=pf==='all'||ad.placement===pf;if(ms&&st&&pl)list.push(ad)}if(!list.length){container.innerHTML='<div class="empty">No adverts match your current filters.</div>';return}container.innerHTML='';for(var j=0;j<list.length;j++){var current=list[j],imageUrl=(current.images&&current.images.length>0)?current.images[0]:'',card=document.createElement('div');card.className='advert-card';var img=document.createElement('img');img.className='advert-thumb';img.src=imageUrl;img.alt=current.title||'Advert';img.onerror=function(){this.src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ddd" width="100" height="100"/><text x="50" y="55" text-anchor="middle" fill="%23999" font-size="12">No Image</text></svg>'};var info=document.createElement('div');info.appendChild(createTextElement('h3','advert-title',current.title||'Untitled advert'));if(current.link){var link=document.createElement('a');link.className='advert-link';link.href=current.link;link.target='_blank';link.rel='noopener noreferrer';link.textContent=current.link;info.appendChild(link)}var meta=document.createElement('div');meta.className='meta';meta.appendChild(createTextElement('span','chip '+(current.active?'live':'off'),current.active?'Active':'Inactive'));meta.appendChild(createTextElement('span','chip neutral','Placement: '+(current.placement||'home')));meta.appendChild(createTextElement('span','chip neutral','Priority: '+(current.priority||0)));meta.appendChild(createTextElement('span','chip '+(isLiveAdvert(current)?'live':'off'),isLiveAdvert(current)?'Live now':'Scheduled/offline'));info.appendChild(meta);var details=document.createElement('div');details.className='info';details.innerHTML='Schedule: '+formatDate(current.startsAt)+' to '+formatDate(current.endsAt)+'<br>Views: '+(current.views||0)+' | Clicks: '+(current.clicks||0);info.appendChild(details);var row=document.createElement('div');row.className='row-actions';var edit=createTextElement('button','btn btn-primary btn-small','Edit');edit.type='button';edit.onclick=(function(id){return function(){editAdvert(id)}})(current._id);var toggle=createTextElement('button','btn btn-secondary btn-small',current.active?'Disable':'Enable');toggle.type='button';toggle.onclick=(function(id){return function(){toggleStatus(id)}})(current._id);var del=createTextElement('button','btn btn-danger btn-small','Delete');del.type='button';del.onclick=(function(id){return function(){deleteAdvert(id)}})(current._id);row.appendChild(edit);row.appendChild(toggle);row.appendChild(del);info.appendChild(row);card.appendChild(img);card.appendChild(info);container.appendChild(card)}}
+    function clearForm(){document.getElementById('editorTitle').textContent='Create Advert';document.getElementById('advertForm').reset();document.getElementById('advertId').value='';document.getElementById('placement').value='home';document.getElementById('priority').value=0;document.getElementById('startsAt').value='';document.getElementById('endsAt').value='';existingImages=[];newImageFiles=[];isActive=true;updateToggle();renderImagePreviews()}
+    function openModal(advert){document.getElementById('editorTitle').textContent=advert?'Edit Advert':'Create Advert';if(advert){document.getElementById('advertId').value=advert._id;document.getElementById('title').value=advert.title||'';document.getElementById('link').value=advert.link||'';document.getElementById('placement').value=advert.placement||'home';document.getElementById('priority').value=advert.priority||0;document.getElementById('startsAt').value=toLocalInputValue(advert.startsAt);document.getElementById('endsAt').value=toLocalInputValue(advert.endsAt);existingImages=advert.images?advert.images.slice():[];isActive=advert.active!==false}else{clearForm()}updateToggle();renderImagePreviews();window.scrollTo({top:0,behavior:'smooth'})}
+    function closeModal(){clearForm()}function toggleActive(){isActive=!isActive;updateToggle()}function updateToggle(){var t=document.getElementById('activeToggle'),l=document.getElementById('toggleLabel');if(isActive){t.classList.add('active');l.textContent='Active'}else{t.classList.remove('active');l.textContent='Inactive'}}
+    function previewImages(){var files=document.getElementById('images').files;newImageFiles=[];for(var i=0;i<files.length;i++)newImageFiles.push(files[i]);renderImagePreviews()}
+    function renderImagePreviews(){var c=document.getElementById('imagePreview');c.innerHTML='';if(!existingImages.length&&!newImageFiles.length){c.innerHTML='<div class="empty">No images selected yet.</div>';return}for(var i=0;i<existingImages.length;i++){var w=document.createElement('div');w.className='wrap';var img=document.createElement('img');img.className='image-preview';img.src=existingImages[i];var rm=document.createElement('button');rm.className='remove';rm.type='button';rm.textContent='x';rm.onclick=(function(index){return function(){existingImages.splice(index,1);renderImagePreviews()}})(i);w.appendChild(img);w.appendChild(rm);c.appendChild(w)}for(var j=0;j<newImageFiles.length;j++){(function(file){var reader=new FileReader();reader.onload=function(e){var w=document.createElement('div');w.className='wrap';var img=document.createElement('img');img.className='image-preview';img.src=e.target.result;var rm=document.createElement('button');rm.className='remove';rm.type='button';rm.textContent='x';rm.onclick=function(){for(var k=0;k<newImageFiles.length;k++){if(newImageFiles[k]===file){newImageFiles.splice(k,1);break}}renderImagePreviews()};w.appendChild(img);w.appendChild(rm);c.appendChild(w)};reader.readAsDataURL(file)})(newImageFiles[j])}}
+    function convertFilesToBase64(files,callback){if(!files.length){callback([]);return}var results=[],count=0;for(var i=0;i<files.length;i++){(function(file){resizeAndConvertToBase64(file,function(base64){results.push(base64);count++;if(count===files.length)callback(results)})})(files[i])}}
+    function resizeAndConvertToBase64(file,callback){var reader=new FileReader();reader.onload=function(e){var img=new Image();img.onload=function(){var canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),mw=img.width>img.height?1200:800,mh=img.width>img.height?800:1200,w=img.width,h=img.height;if(w>mw){h=(mw/w)*h;w=mw}if(h>mh){w=(mh/h)*w;h=mh}canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);callback(canvas.toDataURL('image/jpeg',.85))};img.src=e.target.result};reader.readAsDataURL(file)}
+    function editAdvert(id){for(var i=0;i<adverts.length;i++){if(adverts[i]._id===id){openModal(adverts[i]);return}}}
+    function toggleStatus(id){var advert=null;for(var i=0;i<adverts.length;i++){if(adverts[i]._id===id){advert=adverts[i];break}}if(!advert)return;sendJsonRequest('PUT','/api/adverts/'+id,{active:!advert.active},function(xhr){if(xhr.status===200)loadAdverts();else alert('Error updating status')})}
+    function deleteAdvert(id){if(!confirm('Are you sure you want to delete this advert?'))return;sendJsonRequest('DELETE','/api/adverts/'+id,null,function(xhr){if(xhr.status===200)loadAdverts();else alert('Error deleting advert')})}
+    function handleFormSubmit(event){event.preventDefault();var id=document.getElementById('advertId').value,title=document.getElementById('title').value,link=document.getElementById('link').value,placement=document.getElementById('placement').value,priority=document.getElementById('priority').value,startsAt=document.getElementById('startsAt').value,endsAt=document.getElementById('endsAt').value,saveBtn=document.getElementById('saveBtn');saveBtn.disabled=true;saveBtn.textContent='Saving...';convertFilesToBase64(newImageFiles,function(newImages){var data={title:title,link:link,placement:placement,priority:priority,startsAt:startsAt||null,endsAt:endsAt||null,active:isActive,images:existingImages.concat(newImages)},url=id?'/api/adverts/'+id:'/api/adverts',method=id?'PUT':'POST';sendJsonRequest(method,url,data,function(xhr){saveBtn.disabled=false;saveBtn.textContent='Save Advert';if(xhr.status===200){closeModal();loadAdverts()}else alert('Error saving advert')})})}
+    document.getElementById('addBtn').onclick=function(){clearForm()};document.getElementById('refreshBtn').onclick=loadAdverts;document.getElementById('cancelBtn').onclick=closeModal;document.getElementById('activeToggle').onclick=toggleActive;document.getElementById('images').onchange=previewImages;document.getElementById('advertForm').onsubmit=handleFormSubmit;document.getElementById('searchInput').oninput=renderAdverts;document.getElementById('statusFilter').onchange=renderAdverts;document.getElementById('placementFilter').onchange=renderAdverts;document.getElementById('logoutBtn').onclick=function(){localStorage.removeItem('accessToken');localStorage.removeItem('authUser');redirectToLogin()};document.addEventListener('DOMContentLoaded',ensureAuthenticated);
+  </script>
+</body>
+</html>

@@ -1,3 +1,21 @@
 node_modules
 npm-debug.log
+package-lock.json
 
+# Secrets
+.env
+
+# Songs / hymns related
+public/data/
+public/js/index-page.js
+public/js/song-page.js
+public/songs.html
+public/src/
+scripts/
+songs.db
+songs.db.bak
+
+# Uploads
+uploads/
+
+config.json

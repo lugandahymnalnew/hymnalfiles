@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedback | Ennyimba Za Kristo</title>
+    <style>
+        :root {
+            --bg: #f3efe7;
+            --panel: #fffdf8;
+            --ink: #1d2a2f;
+            --muted: #607078;
+            --accent: #0f766e;
+            --accent-strong: #0b5b55;
+            --line: rgba(22, 40, 48, 0.12);
+            --gold: #b58538;
+            --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background: linear-gradient(180deg, #f8f4ec 0%, #efe8dc 100%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header h1 { margin: 0; font-size: 1.8rem; }
+
+        .card {
+            background: var(--panel);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin: 32px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--line);
+        }
+
+        .feedback-item {
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .feedback-meta {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-hymn {
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent);
+        }
+
+        .badge-general {
+            background: rgba(181, 133, 56, 0.12);
+            color: var(--gold);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-open { background: var(--success-bg); color: var(--success-ink); }
+        .status-resolved { background: var(--danger-bg); color: var(--danger-ink); }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--panel);
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover { color: var(--accent); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/feedback" class="back-link">← Back to Forum</a>
+
+        <div class="header">
+            <h1>My Feedback</h1>
+            <p style="color: var(--muted); margin: 8px 0 0;">Track your submitted feedback and issues</p>
+        </div>
+
+        <!-- Hymn Issues -->
+        <h2 class="section-title">Hymn Issues</h2>
+        <% if (userFeedback.hymnIssues && userFeedback.hymnIssues.length > 0) { %>
+            <% userFeedback.hymnIssues.forEach(function(hymn) { %>
+                <div class="card">
+                    <h3 style="margin-top: 0;">Hymn <%= hymn.hymnNumber %></h3>
+                    <% hymn.issues.forEach(function(issue) { %>
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <h4 class="feedback-title"><%= issue.title %></h4>
+                                <span class="status-badge status-<%= issue.status %>"><%= issue.status %></span>
+                            </div>
+                            <div class="feedback-meta">
+                                <span class="badge badge-hymn">Hymn Issue</span>
+                                <%= issue.category %> • <%= new Date(issue.createdAt).toLocaleDateString() %>
+                                <% if (issue.upvotes && issue.upvotes.length > 0) { %>
+                                    • ▲ <%= issue.upvotes.length %> upvotes
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                    <a href="/feedback/hymn/<%= hymn.hymnNumber %>" class="btn btn-secondary" style="margin-top: 12px;">View Thread</a>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="empty-state">
+                <p>You haven't reported any hymn issues yet.</p>
+                <a href="/feedback/create?type=hymn" class="btn btn-primary">Report an Issue</a>
+            </div>
+        <% } %>
+
+        <!-- General Feedback -->
+        <h2 class="section-title">General Feedback</h2>
+        <% if (userFeedback.generalFeedback && userFeedback.generalFeedback.length > 0) { %>
+            <% userFeedback.generalFeedback.forEach(function(fb) { %>
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <h4 class="feedback-title">
+                            <a href="/feedback/general/<%= fb._id %>"><%= fb.title %></a>
+                        </h4>
+                        <span class="status-badge status-<%= fb.status %>"><%= fb.status %></span>
+                    </div>
+                    <div class="feedback-meta">
+                        <span class="badge badge-general">General</span>
+                        <%= fb.category %> • <%= new Date(fb.createdAt).toLocaleDateString() %>
+                        <% if (fb.upvotes && fb.upvotes.length > 0) { %>
+                            • ▲ <%= fb.upvotes.length %> upvotes
+                        <% } %>
+                        <% if (fb.replyCount && fb.replyCount > 0) { %>
+                            • 💬 <%= fb.replyCount %> replies
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="empty-state">
+                <p>You haven't submitted any general feedback yet.</p>
+                <a href="/feedback/create?type=general" class="btn btn-primary">Create Feedback</a>
+            </div>
+        <% } %>
+    </div>
+</body>
+</html>
