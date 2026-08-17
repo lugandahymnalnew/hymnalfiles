@@ -87,28 +87,11 @@ const feedbackViewRoute = require('./routes/feedbackViewRoute');
 app.use("/",userRoute);
 app.use("/api/feedback", feedbackApiRoute);
 app.use("/", feedbackViewRoute);
-app.get('/adverts', async (req, res) => {
+app.get('/adverts',async (req, res)=>{
   try {
-    // Serve the adverts management page
-    res.sendFile(path.join(__dirname, 'public/src/adverts.html'));
+    res.redirect('https://audiorecordingfm.onrender.com/');
   } catch (error) {
-    res.render('error', { error: error.message + "\nIt's on our side don't worry." });
-  }
-});
-
-app.get('/advert-details', async (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, 'public/src/advert-details.html'));
-  } catch (error) {
-    res.render('error', { error: error.message + "\nIt's on our side don't worry." });
-  }
-});
-
-app.get('/admin-users', async (req, res) => {
-  try {
-    res.sendFile(path.join(__dirname, 'public/src/users.html'));
-  } catch (error) {
-    res.render('error', { error: error.message + "\nIt's on our side don't worry." });
+    res.render('error',{error:error.message+"\nIts on our side don't worry."});
   }
 });
 
