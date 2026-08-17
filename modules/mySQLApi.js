@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-const con = require('./../config.json');
 /**
  * @typedef {Object} Record
  * @property {string} name - The name of the record.
@@ -14,10 +13,10 @@ const con = require('./../config.json');
 
 /** @type {mysql.Pool} */
 const pool = mysql.createPool({
-  host: con.mySQL.host,
-  user: con.mySQL.user,
-  password: con.mySQL.password,
-  database: con.mySQL.database,
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   port: 3306
 });
 

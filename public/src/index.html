@@ -38,6 +38,139 @@
         .ios-nav__spacer {
             width: 60px;
         }
+        /* Number pad styles */
+        .numpad-container {
+            display: flex;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f8f8f8;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .numpad-input {
+            flex: 1;
+            font-size: 24px;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+        }
+        .numpad-input:focus {
+            border-color: #007AFF;
+        }
+        .numpad-btn {
+            font-size: 20px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #007AFF;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .numpad-btn:active {
+            background: #0056b3;
+        }
+        .numpad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f0f0f0;
+        }
+        .numpad-key {
+            font-size: 24px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            user-select: none;
+        }
+        .numpad-key:active {
+            background: #e0e0e0;
+        }
+        .numpad-key.zero {
+            grid-column: 2;
+        }
+        .numpad-actions {
+            display: flex;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #f0f0f0;
+        }
+        .numpad-actions button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-go {
+            background: #34c759;
+            color: white;
+        }
+        .btn-go:active {
+            background: #28a745;
+        }
+        .btn-clear {
+            background: #ff3b30;
+            color: white;
+        }
+        .btn-clear:active {
+            background: #d32f2f;
+        }
+        .search-tabs {
+            display: flex;
+            padding: 10px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            gap: 8px;
+        }
+        .search-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            background: #f8f8f8;
+        }
+        .search-tab.active {
+            border-color: #007AFF;
+            background: #e3f2fd;
+            color: #007AFF;
+        }
+        .text-search-container {
+            padding: 10px 16px;
+            background: #fff;
+        }
+        .text-search-container input {
+            width: 100%;
+            font-size: 16px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .text-search-container input:focus {
+            border-color: #007AFF;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Result items clickable */
+        .tittle {
+            cursor: pointer;
+        }
+        .tittle:active {
+            background: #f0f0f0;
+        }
     </style>
     <script src="../js/index-page.js" defer></script>
 </head>
@@ -50,9 +183,47 @@
         <div class="ios-nav__title">Hymn Index</div>
         <div class="ios-nav__spacer" aria-hidden="true"></div>
     </header>
-    <div class="inp">
-        <div class="inp-ser"><input type="text" id="ser" onkeyup="serFunction()" placeholder="Search hymns and children songs..."></div>
+    <!-- Search Mode Tabs -->
+    <div class="search-tabs">
+        <div class="search-tab active" id="tab-number" onclick="switchSearchMode('number')">Number Pad</div>
+        <div class="search-tab" id="tab-text" onclick="switchSearchMode('text')">Text Search</div>
     </div>
+
+    <!-- Number Pad Section -->
+    <div id="number-pad-section">
+        <div class="numpad-container">
+            <input type="tel" class="numpad-input" id="numpad-input" placeholder="Enter song number" maxlength="4">
+            <button class="numpad-btn" onclick="backspace()">⌫</button>
+        </div>
+        <div class="numpad-grid">
+            <div class="numpad-key" onclick="appendNumber('1')">1</div>
+            <div class="numpad-key" onclick="appendNumber('2')">2</div>
+            <div class="numpad-key" onclick="appendNumber('3')">3</div>
+            <div class="numpad-key" onclick="appendNumber('4')">4</div>
+            <div class="numpad-key" onclick="appendNumber('5')">5</div>
+            <div class="numpad-key" onclick="appendNumber('6')">6</div>
+            <div class="numpad-key" onclick="appendNumber('7')">7</div>
+            <div class="numpad-key" onclick="appendNumber('8')">8</div>
+            <div class="numpad-key" onclick="appendNumber('9')">9</div>
+            <div class="numpad-key zero" onclick="appendNumber('0')">0</div>
+        </div>
+        <div class="numpad-actions">
+            <button class="btn-clear" onclick="clearNumpad()">Clear</button>
+            <button class="btn-go" onclick="searchByNumber()">Go</button>
+        </div>
+        <div style="padding: 10px 16px; font-size: 13px; color: #666; background: #f0f0f0;">
+            <small>Tip: Press Go to search by number. Results show adult songs first. Select from list to view details.</small>
+        </div>
+    </div>
+
+    <!-- Text Search Section -->
+    <div id="text-search-section" class="hidden">
+        <div class="text-search-container">
+            <input type="text" id="ser" placeholder="Search by title, composer, or lyrics..." autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Results Section -->
     <div id="ind">
         <div class="tittle">
             <div class="song" style="width:100%;">

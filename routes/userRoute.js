@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
-const con = require('./../config.json');
 const { ObjectId } = require('mongodb');
 const db = require("../modules/mongoDBApi");
 
@@ -84,7 +83,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage});
 const userController = require('../controllers/userController');
 const auth = require('./../middleWares/auth');
-const { signAccessToken, verifyRefreshToken: verifyJWTRefreshToken } = require('../modules/jwtAuth');
+const { signAccessToken } = require('../modules/jwtAuth');
 const { verifyRefreshToken, rotateRefreshToken, revokeAllUserTokens } = require('../modules/refreshToken');
 
 function isValidObjectId(id) {
@@ -241,6 +240,16 @@ user_route.post('/api/auth/login', userController.login);
 user_route.post('/api/auth/logout', auth.requireAuth, userController.logout);
 user_route.get('/api/auth/me', auth.requireAuth, userController.me);
 
+// Email verification
+user_route.get('/api/auth/verify-email', userController.verifyEmail);
+user_route.post('/api/auth/resend-verification', auth.requireAuth, userController.resendVerification);
+
+// Password reset
+user_route.get('/forgot-password', userController.loadForgotPassword);
+user_route.get('/reset-password', userController.loadResetPassword);
+user_route.post('/api/auth/forgot-password', userController.forgotPassword);
+user_route.post('/api/auth/reset-password', userController.resetPassword);
+
 // Refresh access token using refresh token
 user_route.post('/api/auth/refresh', async (req, res) => {
   try {
@@ -250,22 +259,15 @@ user_route.post('/api/auth/refresh', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Refresh token required' });
     }
 
-    // First verify the JWT refresh token
-    let decoded;
-    try {
-      decoded = verifyJWTRefreshToken(refreshToken);
-    } catch (err) {
-      return res.status(401).json({ success: false, message: 'Invalid refresh token' });
-    }
-
-    // Then verify it exists and is valid in the database
+    // The refresh token is an opaque, DB-backed token (see modules/refreshToken.js) —
+    // it is never a JWT, so it's only ever checked against the database.
     const dbVerification = await verifyRefreshToken(refreshToken);
     if (!dbVerification.valid) {
       return res.status(401).json({ success: false, message: dbVerification.error || 'Token invalid' });
     }
 
     // Get fresh user data
-    const user = await db.readRow({ _id: decoded.sub }, 'newHymnal', 'users');
+    const user = await db.readRow({ _id: new ObjectId(dbVerification.userId) }, 'newHymnal', 'users');
     if (!user || !user.found) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }

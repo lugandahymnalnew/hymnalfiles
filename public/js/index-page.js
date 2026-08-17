@@ -1,5 +1,6 @@
 (function () {
     let allEntries = [];
+    let currentSearchMode = 'number';
 
     function escapeHtml(value) {
         return String(value ?? "")
@@ -10,7 +11,7 @@
             .replace(/'/g, "&#39;");
     }
 
-    function renderEntries(entries) {
+    function renderEntries(entries, searchTerm = '') {
         const container = document.getElementById("ind");
         if (!container) {
             return;
@@ -20,7 +21,7 @@
             container.innerHTML = `
                 <div class="tittle">
                     <div class="song" style="width:100%;">
-                        <b>No songs found</b><br>Try another search term
+                        <b>No songs found</b><br>${searchTerm ? `No matches for "${escapeHtml(searchTerm)}"` : 'Enter a song number or search term'}
                     </div>
                 </div>
             `;
@@ -79,20 +80,49 @@
         return items.map((song) => ({
             collection: "children",
             collectionLabel: "Children Songs",
-            href: song.href,
+            href: `/song.html?song=${encodeURIComponent(song.number)}`,
             number: song.number,
-            EngNo: "",
-            song: song.song,
+            EngNo: song.EngNo || "",
+            song: song.song || "",
             EngTit: song.EngTit || "",
-            an: "",
-            signUp: "",
-            signDown: "",
-            composer: "",
+            an: song.An || "",
+            signUp: song.signUp || "",
+            signDown: song.signDown || "",
+            composer: song.composer || "",
             doh: song.doh || ""
         }));
     }
 
-    function applySearch() {
+    // Search by number - exact match or starts with
+    function searchByNumberExact(number) {
+        const num = number.trim();
+        if (!num) {
+            renderEntries([]);
+            return;
+        }
+
+        // Find exact matches first (adult songs prioritized)
+        const exactMatches = allEntries.filter(entry => entry.number === num);
+
+        // If no exact match, find entries starting with the number
+        let results = exactMatches;
+        if (results.length === 0) {
+            results = allEntries.filter(entry => entry.number.startsWith(num));
+        }
+
+        // Sort: adult songs first, then by number
+        results.sort((a, b) => {
+            if (a.collection !== b.collection) {
+                return a.collection === "main" ? -1 : 1;
+            }
+            return parseInt(a.number) - parseInt(b.number) || a.number.localeCompare(b.number);
+        });
+
+        renderEntries(results, num);
+    }
+
+    // Text search across all fields
+    function applyTextSearch() {
         const input = document.getElementById("ser");
         const filter = (input?.value || "").trim().toUpperCase();
 
@@ -115,36 +145,106 @@
             return haystack.includes(filter);
         });
 
-        renderEntries(filtered);
+        // Sort by number
+        filtered.sort((a, b) => {
+            if (a.collection !== b.collection) {
+                return a.collection === "main" ? -1 : 1;
+            }
+            return parseInt(a.number) - parseInt(b.number) || a.number.localeCompare(b.number);
+        });
+
+        renderEntries(filtered, input.value);
     }
 
-    window.serFunction = applySearch;
+    // Global functions for HTML onclick handlers
+    window.switchSearchMode = function(mode) {
+        currentSearchMode = mode;
+        const numPadSection = document.getElementById("number-pad-section");
+        const textSearchSection = document.getElementById("text-search-section");
+        const tabNumber = document.getElementById("tab-number");
+        const tabText = document.getElementById("tab-text");
 
+        if (mode === 'number') {
+            numPadSection.classList.remove("hidden");
+            textSearchSection.classList.add("hidden");
+            tabNumber.classList.add("active");
+            tabText.classList.remove("active");
+        } else {
+            numPadSection.classList.add("hidden");
+            textSearchSection.classList.remove("hidden");
+            tabNumber.classList.remove("active");
+            tabText.classList.add("active");
+            // Focus text input when switching to text mode
+            setTimeout(() => document.getElementById("ser")?.focus(), 100);
+        }
+    };
+
+    window.appendNumber = function(num) {
+        const input = document.getElementById("numpad-input");
+        if (input.value.length < 4) {
+            input.value += num;
+        }
+    };
+
+    window.backspace = function() {
+        const input = document.getElementById("numpad-input");
+        input.value = input.value.slice(0, -1);
+    };
+
+    window.clearNumpad = function() {
+        const input = document.getElementById("numpad-input");
+        input.value = '';
+        renderEntries(allEntries);
+    };
+
+    window.searchByNumber = function() {
+        const input = document.getElementById("numpad-input");
+        searchByNumberExact(input.value);
+    };
+
+    window.serFunction = applyTextSearch;
+
+    // Load all songs from backend
     async function loadIndex() {
         const container = document.getElementById("ind");
 
         try {
+            // Load from backend API which queries song_index table
             const [mainResponse, childrenResponse] = await Promise.all([
-                fetch("/lugSongs"),
-                fetch("/data/children-songs.json")
+                fetch("/api/songs/all"),
+                fetch("/api/childrenSongs")
             ]);
 
             if (!mainResponse.ok) {
                 throw new Error("Failed to load hymnal index");
             }
-            if (!childrenResponse.ok) {
-                throw new Error("Failed to load children songs");
-            }
 
-            const mainSongs = await mainResponse.json();
-            const childrenSongs = await childrenResponse.json();
+            const mainData = await mainResponse.json();
+            const mainSongs = mainData.data || mainData.songs || [];
+
+            let childrenSongs = [];
+            if (childrenResponse.ok) {
+                const childrenData = await childrenResponse.json();
+                childrenSongs = childrenData.data || [];
+            }
 
             allEntries = [
                 ...normaliseChildrenSongs(childrenSongs),
-                ...normaliseMainSongs(mainSongs.data || [])
+                ...normaliseMainSongs(mainSongs)
             ];
 
+            // Show all songs initially
             renderEntries(allEntries);
+
+            // Add enter key handler for numpad input
+            const numpadInput = document.getElementById("numpad-input");
+            if (numpadInput) {
+                numpadInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchByNumber();
+                    }
+                });
+            }
         } catch (error) {
             if (container) {
                 container.innerHTML = `

@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
@@ -130,6 +132,7 @@ app.get('/leson',async (req, res)=>{
 });
 // Serve all files in the "public" folder
 
-http.listen(3300, () => {
-  console.log('Server connected at port 3300');
+const PORT = process.env.PORT || 3300;
+http.listen(PORT, () => {
+  console.log(`Server connected at port ${PORT}`);
 });

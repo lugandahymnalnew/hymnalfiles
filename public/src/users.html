@@ -135,7 +135,7 @@
     </div>
 
     <script>
-        var accessToken = localStorage.getItem('authToken') || '';
+        var accessToken = localStorage.getItem('accessToken') || '';
 
         function redirectToLogin() {
             window.location.href = '/login';
@@ -151,7 +151,7 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 401 || xhr.status === 403) {
-                        localStorage.removeItem('authToken');
+                        localStorage.removeItem('accessToken');
                         localStorage.removeItem('authUser');
                         redirectToLogin();
                         return;
@@ -264,7 +264,7 @@
 
         document.getElementById('refreshBtn').onclick = loadUsers;
         document.getElementById('logoutBtn').onclick = function() {
-            localStorage.removeItem('authToken');
+            localStorage.removeItem('accessToken');
             localStorage.removeItem('authUser');
             redirectToLogin();
         };

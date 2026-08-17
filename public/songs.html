@@ -6,6 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ennyimba Za Kristo</title>
     <link rel="stylesheet" href="style/style.css">
+    <script>
+        // Redirect to new song page if song parameter is present
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const songNumber = urlParams.get('song');
+            if (songNumber) {
+                window.location.href = '/song.html?song=' + encodeURIComponent(songNumber);
+            }
+        })();
+    </script>
     <script src="https://sql.js.org/dist/sql-wasm.js" defer></script>
     <script src="js/jquery.js" defer></script>
     <script src="midi/min-midi-player.js" defer></script>

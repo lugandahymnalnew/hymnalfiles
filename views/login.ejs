@@ -318,6 +318,7 @@
                     <div class="field">
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required autocomplete="current-password">
+                        <div class="hint"><a href="/forgot-password" style="color: var(--accent);">Forgot your password?</a></div>
                     </div>
 
                     <button class="submit" id="submitBtn" type="submit">Sign In</button>
@@ -376,12 +377,10 @@
           localStorage.setItem('refreshToken', result.data.refreshToken);
           localStorage.setItem('authUser', JSON.stringify(result.data.user || {}));
 
-          // Redirect based on user role
-          if (result.data.user && result.data.user.role === 'admin') {
-            window.location.href = '/adverts';
-          } else {
-            window.location.href = '/index.html';
-          }
+          // Redirect back to where the user came from, or the dashboard
+          var params = new URLSearchParams(window.location.search);
+          var returnTo = params.get('returnTo');
+          window.location.href = returnTo ? decodeURIComponent(returnTo) : '/dashboard';
         })
         .catch(function() {
           message.style.display = 'block';
