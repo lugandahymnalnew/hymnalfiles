@@ -147,12 +147,32 @@ async function upvoteHymnIssue(hymnNumber, issueId, userId) {
 }
 
 /**
- * Get all hymn feedback (for listing)
+ * Get all hymn feedback (for listing) — unpaginated, kept for callers that
+ * genuinely need everything (e.g. stats).
  * @returns {Promise<Array>} - List of hymn feedback
  */
 async function getAllHymnFeedback() {
     const result = await db.readRows({}, DB_NAME, HYMN_FEEDBACK_COLLECTION);
     return result && result.listings ? result.listings : [];
+}
+
+const FEEDBACK_PAGE_SIZE = 20;
+
+/**
+ * Get one page of hymn feedback threads.
+ * @param {number} page - 1-indexed page number
+ * @param {number} [pageSize]
+ * @returns {Promise<{items: Array, total: number, page: number, totalPages: number}>}
+ */
+async function getHymnFeedbackPage(page, pageSize = FEEDBACK_PAGE_SIZE) {
+    const result = await db.readRowsPaged({}, DB_NAME, HYMN_FEEDBACK_COLLECTION, page, pageSize, { updatedAt: -1 });
+    const total = result && result.total ? result.total : 0;
+    return {
+        items: result && result.listings ? result.listings : [],
+        total,
+        page: Math.max(1, parseInt(page, 10) || 1),
+        totalPages: Math.max(1, Math.ceil(total / pageSize))
+    };
 }
 
 /**
@@ -179,6 +199,28 @@ async function getGeneralFeedback(filters = {}) {
 
     const result = await db.readRows(query, DB_NAME, GENERAL_FEEDBACK_COLLECTION);
     return result && result.listings ? result.listings : [];
+}
+
+/**
+ * Get one page of general feedback threads.
+ * @param {number} page - 1-indexed page number
+ * @param {Object} [filters] - { category, status }
+ * @param {number} [pageSize]
+ * @returns {Promise<{items: Array, total: number, page: number, totalPages: number}>}
+ */
+async function getGeneralFeedbackPage(page, filters = {}, pageSize = FEEDBACK_PAGE_SIZE) {
+    const query = {};
+    if (filters.category) query.category = filters.category;
+    if (filters.status) query.status = filters.status;
+
+    const result = await db.readRowsPaged(query, DB_NAME, GENERAL_FEEDBACK_COLLECTION, page, pageSize, { createdAt: -1 });
+    const total = result && result.total ? result.total : 0;
+    return {
+        items: result && result.listings ? result.listings : [],
+        total,
+        page: Math.max(1, parseInt(page, 10) || 1),
+        totalPages: Math.max(1, Math.ceil(total / pageSize))
+    };
 }
 
 /**
@@ -440,9 +482,11 @@ module.exports = {
     updateHymnIssue,
     upvoteHymnIssue,
     getAllHymnFeedback,
+    getHymnFeedbackPage,
 
     // General feedback
     getGeneralFeedback,
+    getGeneralFeedbackPage,
     getGeneralFeedbackById,
     createGeneralFeedback,
     updateGeneralFeedback,

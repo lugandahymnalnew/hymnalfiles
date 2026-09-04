@@ -150,6 +150,36 @@ async function readRows(nameOfRow,dbName,tName){ // nameOfRow is place holder fo
     }
 }
 
+// Reading a page of rows, with a total count for building pagination controls
+/**
+ * Reads one page of rows from the specified collection/table, newest first.
+ * @param {Object} nameOfRow - search criteria, e.g. {col1: value}
+ * @param {string} dbName - The name of the database.
+ * @param {string} tName - The name of the collection/table.
+ * @param {number} page - 1-indexed page number.
+ * @param {number} pageSize - rows per page.
+ * @param {Object} [sort] - sort spec, defaults to newest createdAt first.
+ * @returns {Promise<{listings: Array<Object>, total: number, found: boolean, err: boolean}>}
+ */
+async function readRowsPaged(nameOfRow, dbName, tName, page, pageSize, sort) {
+    if (!await checkClient()) { return; }
+    try {
+        const collection = client.db(dbName).collection(tName);
+        const safePage = Math.max(1, parseInt(page, 10) || 1);
+        const safeSize = Math.max(1, parseInt(pageSize, 10) || 20);
+        const total = await collection.countDocuments(nameOfRow);
+        const listings = await collection
+            .find(nameOfRow)
+            .sort(sort || { createdAt: -1 })
+            .skip((safePage - 1) * safeSize)
+            .limit(safeSize)
+            .toArray();
+        return { listings, total, found: listings.length > 0, err: false };
+    } catch (err) {
+        return { listings: [], total: 0, found: false, err: true, message: err.message };
+    }
+}
+
 // Updating one row
 /**
  * Updates one row.
@@ -354,8 +384,9 @@ async function autoInc(tName){
 module.exports = {
     createListing, 
     createListings, 
-    readRow, 
-    readRows, 
+    readRow,
+    readRows,
+    readRowsPaged,
     updateRow, 
     updateRow2, 
     updateRows, 

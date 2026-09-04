@@ -15,11 +15,20 @@ feedbackViewRoute.use(express.static(path.join(__dirname, '../public')));
 const db = require('../modules/mongoDBApi');
 const feedbackDb = require('../modules/feedbackDb');
 
-// GET /feedback - Forum listing page
+// GET /feedback - Forum listing page (paginated)
 feedbackViewRoute.get('/feedback', async (req, res) => {
     try {
-        const hymnFeedback = await feedbackDb.getAllHymnFeedback();
-        const generalFeedback = await feedbackDb.getGeneralFeedback();
+        const type = ['hymn', 'general'].includes(req.query.type) ? req.query.type : 'all';
+        const hymnPage = parseInt(req.query.hymnPage, 10) || 1;
+        const generalPage = parseInt(req.query.generalPage, 10) || 1;
+
+        // Only fetch each section when it's actually going to be shown — no
+        // point paying for a generalFeedback query when the "Hymn Issues"
+        // tab is selected, and vice versa.
+        const [hymnResult, generalResult] = await Promise.all([
+            type !== 'general' ? feedbackDb.getHymnFeedbackPage(hymnPage) : Promise.resolve({ items: [], total: 0, page: 1, totalPages: 1 }),
+            type !== 'hymn' ? feedbackDb.getGeneralFeedbackPage(generalPage) : Promise.resolve({ items: [], total: 0, page: 1, totalPages: 1 })
+        ]);
 
         // Attach user if logged in
         let user = null;
@@ -40,8 +49,11 @@ feedbackViewRoute.get('/feedback', async (req, res) => {
         }
 
         res.render('feedback/index', {
-            hymnFeedback,
-            generalFeedback,
+            type,
+            hymnFeedback: hymnResult.items,
+            hymnPagination: { page: hymnResult.page, totalPages: hymnResult.totalPages, total: hymnResult.total },
+            generalFeedback: generalResult.items,
+            generalPagination: { page: generalResult.page, totalPages: generalResult.totalPages, total: generalResult.total },
             user
         });
     } catch (error) {

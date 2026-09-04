@@ -83,6 +83,52 @@ executeTaskEvery10Minutes();
 const userRoute = require('./routes/userRoute');
 const feedbackApiRoute = require('./routes/feedbackRoute');
 const feedbackViewRoute = require('./routes/feedbackViewRoute');
+const bibleRoute = require('./routes/bibleRoute');
+const db = require('./modules/mongoDBApi');
+
+app.use('/api/bible', bibleRoute);
+
+const SITE_URL = process.env.SITE_URL || 'https://newlugandahymnal.onrender.com';
+
+function xmlEscape(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const staticUrls = [
+      { loc: '/', changefreq: 'weekly', priority: '1.0' },
+      { loc: '/src/menu.html', changefreq: 'monthly', priority: '0.8' },
+      { loc: '/src/index.html', changefreq: 'monthly', priority: '0.8' },
+      { loc: '/books', changefreq: 'weekly', priority: '0.6' }
+    ];
+
+    const songs = await db.readRows({}, 'lugandaHymnal', 'luganda');
+    const songUrls = (!songs.err && songs.listings ? songs.listings : [])
+      .filter((song) => song.number)
+      .map((song) => ({
+        loc: `/songs.html?song=${encodeURIComponent(song.number)}`,
+        changefreq: 'yearly',
+        priority: '0.5'
+      }));
+
+    const allUrls = [...staticUrls, ...songUrls];
+
+    const body = allUrls
+      .map((url) => `  <url>\n    <loc>${xmlEscape(SITE_URL + url.loc)}</loc>\n    <changefreq>${url.changefreq}</changefreq>\n    <priority>${url.priority}</priority>\n  </url>`)
+      .join('\n');
+
+    res.set('Content-Type', 'application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>`);
+  } catch (error) {
+    res.status(500).set('Content-Type', 'application/xml').send('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
+  }
+});
 
 app.use("/",userRoute);
 app.use("/api/feedback", feedbackApiRoute);

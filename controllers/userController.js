@@ -27,25 +27,33 @@ const loadRegister = async (req, res)=>{
 }
 
 const register = async (req, res)=>{
+    // Re-render with whatever the user already typed so a validation error
+    // doesn't force them to retype the whole form.
+    const formValues = {
+        fullName: req.body.fullName || '',
+        userName: req.body.userName || '',
+        email: req.body.email || ''
+    };
+
     try {
+        if (!req.body.password || req.body.password.length < 8) {
+            return res.render('register', { message: 'Password must be at least 8 characters.', ...formValues });
+        }
+
         const passwordHash = await bcrypt.hash(req.body.password, 10);
         const checkUser = await db.readRow({$or:[{"userName":req.body.userName},{"email":req.body.email}]},"newHymnal","users");
         if(checkUser.found){
             if(checkUser.listing.email == req.body.email && checkUser.listing.userName == req.body.userName){
-                console.log('You are already rigistered hit login');
-                res.render('register',{message:"You are already rigistered hit login",login:""});
+                res.render('register',{message:"You're already registered — try logging in instead.",login:"", ...formValues});
             }
             else if(checkUser.listing.email == req.body.email){
-                console.log('Email already taken');
-                res.render('register',{message:"Email already taken"});
+                res.render('register',{message:"Email already taken", ...formValues});
             }
             else{
-                console.log("user name already taken");
-                res.render('register',{message:"user name already taken"});
+                res.render('register',{message:"Username already taken", ...formValues});
             }
         }
         else{
-            console.log(checkUser);
             await uploadToFTP(req, res);
             const profileData = req.body.profileBase64 || '';
             const newUser = {
@@ -167,6 +175,81 @@ const loadDashboard = async (req, res)=>{
 const me = async (req, res) => {
     try {
         res.json({ success: true, user: req.user });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+/**
+ * =====================
+ * PROFILE
+ * =====================
+ */
+
+const updateProfile = async (req, res) => {
+    try {
+        const updates = {};
+
+        if (typeof req.body.fullName === 'string' && req.body.fullName.trim()) {
+            updates.fullName = req.body.fullName.trim();
+        }
+
+        if (typeof req.body.profileBase64 === 'string' && req.body.profileBase64.startsWith('data:image')) {
+            updates.profile = req.body.profileBase64;
+        }
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ success: false, message: 'Nothing to update' });
+        }
+
+        updates.updatedAt = new Date();
+        await db.updateRow({ _id: req.user._id }, updates, "newHymnal", "users");
+
+        const fresh = await db.readRow({ _id: req.user._id }, "newHymnal", "users");
+        if (!fresh || !fresh.found) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        res.json({ success: true, user: sanitizeUser(fresh.listing) });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+const changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ success: false, message: 'Current and new password are required' });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ success: false, message: 'New password must be at least 8 characters' });
+        }
+
+        const user = await db.readRow({ _id: req.user._id }, "newHymnal", "users");
+        if (!user || !user.found) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const passwordHash = user.listing.passwordHash || user.listing.password;
+        const matches = await bcrypt.compare(currentPassword, passwordHash);
+        if (!matches) {
+            return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+        }
+
+        const newHash = await bcrypt.hash(newPassword, 10);
+        await db.updateRow(
+            { _id: req.user._id },
+            { passwordHash: newHash, updatedAt: new Date() },
+            "newHymnal",
+            "users"
+        );
+
+        // Keep this session valid, but sign every other session out.
+        await revokeAllUserTokens(String(req.user._id));
+
+        res.json({ success: true, message: 'Password updated. Other devices have been signed out.' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -313,5 +396,7 @@ module.exports = {
     forgotPassword,
     resetPassword,
     loadForgotPassword,
-    loadResetPassword
+    loadResetPassword,
+    updateProfile,
+    changePassword
 }

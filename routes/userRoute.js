@@ -250,6 +250,10 @@ user_route.get('/reset-password', userController.loadResetPassword);
 user_route.post('/api/auth/forgot-password', userController.forgotPassword);
 user_route.post('/api/auth/reset-password', userController.resetPassword);
 
+// Profile (logged-in user updating their own account)
+user_route.patch('/api/auth/profile', auth.requireAuth, userController.updateProfile);
+user_route.post('/api/auth/change-password', auth.requireAuth, userController.changePassword);
+
 // Refresh access token using refresh token
 user_route.post('/api/auth/refresh', async (req, res) => {
   try {

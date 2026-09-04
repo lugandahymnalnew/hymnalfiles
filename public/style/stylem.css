@@ -71,6 +71,22 @@ body{
     line-height: 1;
     margin-top: -2px;
 }
+.menu-appbar__group{
+    justify-self: end;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.menu-appbar__group .menu-appbar__link{
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+.menu-appbar__chevron--right{
+    font-size: 1.1rem;
+    margin-top: 0;
+}
 
 .form{
     width: 100%;

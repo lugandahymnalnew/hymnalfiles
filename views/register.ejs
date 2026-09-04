@@ -360,24 +360,25 @@
                     <div class="grid">
                         <div class="field">
                             <label for="name">Full Name</label>
-                            <input type="text" id="name" name="fullName" required autocomplete="name">
+                            <input type="text" id="name" name="fullName" required autocomplete="name" value="<%= typeof fullName !== 'undefined' ? fullName : '' %>">
                         </div>
 
                         <div class="field">
                             <label for="userName">User Name</label>
-                            <input type="text" id="userName" name="userName" required autocomplete="username">
+                            <input type="text" id="userName" name="userName" required autocomplete="username" value="<%= typeof userName !== 'undefined' ? userName : '' %>">
                             <div class="hint">Choose a short unique name for sign in.</div>
                         </div>
 
                         <div class="field full">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required autocomplete="email">
+                            <input type="email" id="email" name="email" required autocomplete="email" value="<%= typeof email !== 'undefined' ? email : '' %>">
                             <div class="hint">Your email is used for identification and account review.</div>
                         </div>
 
                         <div class="field">
                             <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required autocomplete="new-password">
+                            <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password">
+                            <div class="hint">At least 8 characters.</div>
                         </div>
 
                         <div class="field">
@@ -393,11 +394,11 @@
                         </div>
 
                         <div class="field full">
-                            <label for="image">Upload Image</label>
+                            <label for="image">Upload Image (optional)</label>
                             <div id="imagePreview" class="image-preview">Profile image preview will appear here</div>
                             <div id="imageSizeInfo" style="margin-top: 8px; font-size: 0.85rem;"></div>
-                            <input name="image" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)" required>
-                            <div class="hint">Image is automatically compressed to max 24KB before upload.</div>
+                            <input name="image" type="file" id="image" accept="image/jpeg, image/jpg, image/png" onchange="previewImage(event)">
+                            <div class="hint">Optional. If provided, it's automatically compressed to max 24KB before upload.</div>
                         </div>
                     </div>
 
@@ -424,6 +425,14 @@
 
           if (input.files && input.files[0]) {
             var file = input.files[0];
+
+            if (typeof imageCompressor === 'undefined') {
+              // Compression script unavailable — fall back to uploading the raw file.
+              prof.value = file.name;
+              imagePreview.textContent = file.name + ' selected (uncompressed)';
+              compressedBase64 = null;
+              return;
+            }
 
             // Validate file
             var validation = imageCompressor.validateFile(file);
