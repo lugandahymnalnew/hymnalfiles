@@ -47,7 +47,7 @@ const ki = [
   "/style/stylepay.css"
 ];
 
-const CACHE_NAME = 'my-website-cache-v2';
+const CACHE_NAME = 'my-website-cache-v3';
 const urlsToCache = ki;
 
 self.addEventListener('install', function(event) {

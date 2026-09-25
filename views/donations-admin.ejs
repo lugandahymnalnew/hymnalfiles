@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Donations | Admin | Ennyimba Za Kristo</title>
+    <style>
+        :root {
+            --bg: #eef3f2; --panel: #ffffff; --ink: #1c2b2a; --muted: #5a6b69;
+            --teal: #0b5b55; --teal-dark: #063f3b; --gold: #daa520; --line: #d5e2e0;
+            --ok: #1d7a44; --ok-bg: #e8f6ed; --bad: #8b2822; --bad-bg: #fce9e8; --warn-bg: #fff6df; --warn: #7a4a00;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
+        header { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; padding: 22px 16px; border-bottom: 4px solid var(--gold); }
+        header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        header h1 { margin: 0; font-size: 22px; }
+        header a { color: #f4d78a; text-decoration: none; font-weight: 600; }
+        .wrap { max-width: 980px; margin: 0 auto; }
+        main { padding: 16px; }
+        .card { background: var(--panel); border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.12); padding: 18px; margin-bottom: 16px; }
+        .card h2 { margin: 0 0 12px; font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--teal); }
+        .gate { text-align: center; padding: 40px 16px; }
+        .bar { height: 22px; background: #e3ecea; border-radius: 11px; overflow: hidden; }
+        .bar > i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--teal), var(--gold)); transition: width .5s; }
+        .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+        .stat { flex: 1 1 130px; background: #f6faf9; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+        .stat b { display: block; font-size: 20px; color: var(--teal); }
+        .stat span { font-size: 12px; color: var(--muted); }
+        form.grid { display: flex; flex-wrap: wrap; gap: 10px; }
+        form.grid label { flex: 1 1 150px; font-size: 12px; font-weight: 600; color: var(--muted); }
+        form.grid label.wide { flex: 1 1 100%; }
+        input, select, textarea { width: 100%; margin-top: 4px; padding: 9px 10px; font: inherit; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+        .check { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; font-size: 14px; color: var(--ink); font-weight: 500; }
+        .check input { width: auto; margin: 0; }
+        button { font: inherit; cursor: pointer; border: 0; border-radius: 8px; padding: 9px 14px; font-weight: 700; color: #fff; background: var(--teal); }
+        button.ghost { background: transparent; color: var(--teal); border: 1px solid var(--line); }
+        button.ok { background: var(--ok); } button.bad { background: var(--bad); }
+        button:disabled { opacity: .5; cursor: default; }
+        .tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tabs button { background: #eaf1f0; color: var(--teal); }
+        .tabs button.on { background: var(--teal); color: #fff; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+        th { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); }
+        .pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+        .pill.pending { background: var(--warn-bg); color: var(--warn); }
+        .pill.approved { background: var(--ok-bg); color: var(--ok); }
+        .pill.rejected { background: var(--bad-bg); color: var(--bad); }
+        .actions { white-space: nowrap; } .actions button { padding: 5px 10px; font-size: 12px; margin-right: 4px; }
+        .muted { color: var(--muted); font-size: 13px; }
+        #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: #063f3b; color: #fff; padding: 10px 16px; border-radius: 10px; display: none; z-index: 10; }
+        .scroll { overflow-x: auto; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="wrap">
+        <h1>Donations</h1>
+        <div><a href="/src/pages/mpagila.html">View donate page</a> &nbsp;·&nbsp; <a href="/feedback">Feedback</a></div>
+    </div>
+</header>
+
+<main class="wrap">
+    <div class="card gate" id="gate">
+        <h2>Admin only</h2>
+        <p id="gateMsg">Checking your sign-in&hellip;</p>
+        <p><a id="loginLink" href="/login">Sign in</a></p>
+    </div>
+
+    <div id="app" hidden>
+        <section class="card">
+            <h2>Progress</h2>
+            <div class="bar"><i id="barFill"></i></div>
+            <div class="stats">
+                <div class="stat"><b id="sRaised">–</b><span>Raised</span></div>
+                <div class="stat"><b id="sGoal">–</b><span>Goal</span></div>
+                <div class="stat"><b id="sPercent">–</b><span>Complete</span></div>
+                <div class="stat"><b id="sDonors">–</b><span>Approved donors</span></div>
+                <div class="stat"><b id="sPending">–</b><span>Waiting for review</span></div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Update progress</h2>
+            <p class="muted">Raised = the amount below (gifts received before you started tracking) + every approved donation. Change the goal any time.</p>
+            <form class="grid" id="settingsForm">
+                <label class="wide">Goal title<input name="title" maxlength="120"></label>
+                <label>Goal (USD)<input name="goalAmount" type="number" min="1" step="any" required></label>
+                <label>Already raised before tracking (USD)<input name="baseRaised" type="number" min="0" step="any" required></label>
+                <label>UGX per 1 USD<input name="ugxRate" type="number" min="1" step="any" required></label>
+                <label class="wide"><button type="submit">Save progress settings</button></label>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Record a donation</h2>
+            <form class="grid" id="addForm">
+                <label>Donor name<input name="name" maxlength="60"></label>
+                <label>Amount<input name="amount" type="number" min="0" step="any" required></label>
+                <label>Currency<select name="currency"><option>UGX</option><option>USD</option><option>EUR</option><option>GBP</option></select></label>
+                <label>Method<select name="method">
+                    <option value="mtn">MTN MoMo</option><option value="airtel">Airtel Money</option><option value="paypal">PayPal</option>
+                    <option value="worldremit">World Remit</option><option value="bank">Bank (DFCU)</option><option value="cash">Cash</option><option value="other">Other</option>
+                </select></label>
+                <label>Date<input name="donatedAt" type="date"></label>
+                <label>Reference / transaction ID<input name="reference" maxlength="80"></label>
+                <label class="wide">Message (optional)<input name="message" maxlength="200"></label>
+                <label class="check"><input type="checkbox" name="showName"> Donor agreed to have their name shown on the donor wall</label>
+                <label class="wide"><button type="submit">Add donation</button></label>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Donations</h2>
+            <div class="tabs" id="tabs">
+                <button data-s="pending" class="on">Pending</button>
+                <button data-s="approved">Approved</button>
+                <button data-s="rejected">Rejected</button>
+                <button data-s="">All</button>
+            </div>
+            <div class="scroll">
+                <table>
+                    <thead><tr><th>Donor</th><th>Amount</th><th>Method</th><th>Reference</th><th>Status</th><th></th></tr></thead>
+                    <tbody id="rows"><tr><td colspan="6" class="muted">Loading&hellip;</td></tr></tbody>
+                </table>
+            </div>
+            <p class="muted" id="pager"></p>
+            <button class="ghost" id="more" hidden>Load more</button>
+        </section>
+    </div>
+</main>
+<div id="toast"></div>
+
+<script src="/js/auth.js"></script>
+<script>
+(function () {
+    var status = 'pending', page = 1, loaded = [];
+    var $ = function (id) { return document.getElementById(id); };
+
+    function toast(msg) {
+        var t = $('toast'); t.textContent = msg; t.style.display = 'block';
+        clearTimeout(toast._t); toast._t = setTimeout(function () { t.style.display = 'none'; }, 3200);
+    }
+    function money(n, cur) {
+        try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: cur, maximumFractionDigits: cur === 'UGX' ? 0 : 2 }).format(n); }
+        catch (e) { return n + ' ' + cur; }
+    }
+    async function api(url, method, body) {
+        var res = await window.auth.apiRequest(url, {
+            method: method || 'GET',
+            headers: body ? { 'Content-Type': 'application/json' } : {},
+            body: body ? JSON.stringify(body) : undefined
+        });
+        var json = await res.json().catch(function () { return {}; });
+        if (!res.ok || json.success === false) { throw new Error(json.message || ('Request failed (' + res.status + ')')); }
+        return json;
+    }
+
+    function showSummary(s) {
+        if (!s) { return; }
+        $('barFill').style.width = s.percent + '%';
+        $('sRaised').textContent = money(s.raised, s.currency);
+        $('sGoal').textContent = money(s.goalAmount, s.currency);
+        $('sPercent').textContent = s.percent + '%';
+        $('sDonors').textContent = s.donorCount;
+    }
+
+    function cell(text, cls) {
+        var td = document.createElement('td');
+        if (cls) { td.className = cls; }
+        td.textContent = text;
+        return td;
+    }
+    function actionBtn(label, cls, fn) {
+        var b = document.createElement('button');
+        b.textContent = label; b.className = cls; b.onclick = fn;
+        return b;
+    }
+    function render() {
+        var tbody = $('rows'); tbody.innerHTML = '';
+        if (!loaded.length) {
+            var tr0 = document.createElement('tr'); var td0 = cell('Nothing here yet.', 'muted'); td0.colSpan = 6; tr0.appendChild(td0); tbody.appendChild(tr0); return;
+        }
+        loaded.forEach(function (d) {
+            var tr = document.createElement('tr');
+            var who = (d.name || 'Anonymous') + (d.showName ? '' : ' (hidden)');
+            tr.appendChild(cell(who + (d.message ? ' — ' + d.message : '')));
+            tr.appendChild(cell(money(d.amount, d.currency)));
+            tr.appendChild(cell(d.method + (d.source === 'self' ? ' · self-reported' : '')));
+            tr.appendChild(cell(d.reference || '–'));
+            var st = document.createElement('td'); var pill = document.createElement('span');
+            pill.className = 'pill ' + d.status; pill.textContent = d.status; st.appendChild(pill); tr.appendChild(st);
+            var act = document.createElement('td'); act.className = 'actions';
+            if (d.status !== 'approved') { act.appendChild(actionBtn('Approve', 'ok', function () { setStatus(d._id, 'approved'); })); }
+            if (d.status !== 'rejected') { act.appendChild(actionBtn('Reject', 'ghost', function () { setStatus(d._id, 'rejected'); })); }
+            act.appendChild(actionBtn('Delete', 'bad', function () { remove(d._id); }));
+            tr.appendChild(act); tbody.appendChild(tr);
+        });
+    }
+
+    async function load(reset) {
+        if (reset) { page = 1; loaded = []; }
+        var json = await api('/api/admin/donations?page=' + page + (status ? '&status=' + status : ''));
+        loaded = loaded.concat(json.data.items);
+        $('sPending').textContent = json.data.counts.pending;
+        $('pager').textContent = loaded.length + ' of ' + json.data.total + ' shown';
+        $('more').hidden = loaded.length >= json.data.total;
+        showSummary(json.summary); render();
+    }
+    async function setStatus(id, s) {
+        try { await api('/api/admin/donations/' + id, 'PATCH', { status: s }); toast('Marked ' + s); await load(true); }
+        catch (e) { toast(e.message); }
+    }
+    async function remove(id) {
+        if (!confirm('Delete this donation record? This changes the progress total.')) { return; }
+        try { await api('/api/admin/donations/' + id, 'DELETE'); toast('Deleted'); await load(true); }
+        catch (e) { toast(e.message); }
+    }
+
+    $('tabs').onclick = function (e) {
+        var s = e.target.getAttribute && e.target.getAttribute('data-s');
+        if (s === null || s === undefined) { return; }
+        status = s;
+        Array.prototype.forEach.call($('tabs').children, function (b) { b.className = b === e.target ? 'on' : ''; });
+        load(true).catch(function (err) { toast(err.message); });
+    };
+    $('more').onclick = function () { page += 1; load(false).catch(function (err) { toast(err.message); }); };
+
+    $('addForm').onsubmit = async function (e) {
+        e.preventDefault();
+        var f = e.target, body = {
+            name: f.name.value, amount: f.amount.value, currency: f.currency.value, method: f.method.value,
+            reference: f.reference.value, message: f.message.value, showName: f.showName.checked
+        };
+        if (f.donatedAt.value) { body.donatedAt = f.donatedAt.value; }
+        try { await api('/api/admin/donations', 'POST', body); f.reset(); toast('Donation recorded'); await load(true); }
+        catch (err) { toast(err.message); }
+    };
+
+    $('settingsForm').onsubmit = async function (e) {
+        e.preventDefault();
+        var f = e.target;
+        try {
+            var json = await api('/api/admin/donations/settings', 'PUT', {
+                title: f.title.value, goalAmount: f.goalAmount.value, baseRaised: f.baseRaised.value,
+                rates: { UGX: f.ugxRate.value }
+            });
+            showSummary(json.summary); toast('Progress updated');
+        } catch (err) { toast(err.message); }
+    };
+
+    async function start() {
+        var a = window.auth;
+        if (!a || !a.isLoggedIn()) { $('gateMsg').textContent = 'Please sign in with an admin account.'; return; }
+        try {
+            var s = await api('/api/admin/donations/settings');
+            var f = $('settingsForm');
+            f.title.value = s.data.title; f.goalAmount.value = s.data.goalAmount;
+            f.baseRaised.value = s.data.baseRaised; f.ugxRate.value = (s.data.rates && s.data.rates.UGX) || 3700;
+            $('gate').hidden = true; $('app').hidden = false;
+            await load(true);
+        } catch (err) {
+            $('gateMsg').textContent = /admin/i.test(err.message) ? 'This page is for approved admins only.' : err.message;
+        }
+    }
+    start();
+})();
+</script>
+</body>
+</html>

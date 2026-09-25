@@ -84,9 +84,19 @@ const userRoute = require('./routes/userRoute');
 const feedbackApiRoute = require('./routes/feedbackRoute');
 const feedbackViewRoute = require('./routes/feedbackViewRoute');
 const bibleRoute = require('./routes/bibleRoute');
+const donationRoute = require('./routes/donationRoute');
 const db = require('./modules/mongoDBApi');
 
+// Behind Render's proxy: without this every visitor shares the proxy's IP,
+// which would make the donation-report throttle apply to everyone at once.
+app.set('trust proxy', 1);
+
 app.use('/api/bible', bibleRoute);
+app.use('/api', donationRoute);
+
+// Admin page for donations (the page itself is a shell; every API call it
+// makes is checked server-side for an approved admin token).
+app.get('/admin/donations', (_req, res) => res.render('donations-admin'));
 
 const SITE_URL = process.env.SITE_URL || 'https://newlugandahymnal.onrender.com';
 

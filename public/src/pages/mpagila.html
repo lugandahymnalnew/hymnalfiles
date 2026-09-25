@@ -4,107 +4,258 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wagila omulimu</title>
+    <title>Donate | Ennyimba Za Kristo</title>
     <link rel="stylesheet" href="../../style/stylepay.css">
 </head>
 <body>
-    <div class="pay1" >
-        <br>
-        <a href="../../index.html"><button>back to Main menu</button></a>
-    </div>
-    <div class="pay1">
-        <br>
-        <a href="https://chat.whatsapp.com/DsLiOUJsRyvFLK45uDgqeu"><button>Join whatsapp community</button></a>
-    </div>
-    <div class="container">
-        <h2>Donate </h2>
-        <h3>Wagila omulimu</h3>
-        <div class="tnx">
-            <p>Thank you for considering the New Luganda Hymnal. Reaching this page means you have really taken your time with the app</p>
-            <p class="lug">Webale nyo okukozessa oluyimba lunno. Okutukka wanno kitegeza owadeyo obudde bwo okulaba App enno.</p>
+<div class="container">
+
+    <header class="hero">
+        <h1>Donate</h1>
+        <p>Wagila omulimu</p>
+    </header>
+
+    <section class="card" id="goalCard">
+        <h2>Our goal</h2>
+        <div class="goal__title" id="goalTitle">Bring the hymnal to iPhone and Windows</div>
+        <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="meter">
+            <div class="meter__fill" id="meterFill"></div>
         </div>
-        <div class="msg">
-            <p>This project is to reach all platforms, but due to low funds, am able to have only the android version because its cheap. For iphone and windows, I need to pay a development fee of about 300Usd in total all combined</p>
-            <p class="lug">Project enno yali egoba okulaba nga buli simu ne computer omuntu asobola okuba n'oluyimba. Naye ku lwebbula lyensimbi nasobola kutekka ku simmu zabulijjo zokka. Esimu nga Iphone ne computer netaaga dola 300</p>
+        <div class="goal__nums">
+            <span><b id="raised">&ndash;</b> raised</span>
+            <span>of <b id="goal">&ndash;</b></span>
+            <span><b id="percent">0%</b></span>
         </div>
-            <h3>Payment Options</h3>
-        <div class="don">
-            <div class="pay1" >
-                <p>Use Paypal</p>
-                <button onclick="paypal()">Paypal</button>
+        <div class="goal__state" id="goalState">Loading progress&hellip;</div>
+    </section>
+
+    <section class="card">
+        <h2>Thank you</h2>
+        <p>Thank you for considering the New Luganda Hymnal. Reaching this page means you have really taken your time with the app.</p>
+        <p class="lug">Webale nyo okukozessa oluyimba lunno. Okutukka wanno kitegeza owadeyo obudde bwo okulaba App enno.</p>
+    </section>
+
+    <section class="card">
+        <h2>Why your support matters</h2>
+        <p>This project is to reach all platforms, but due to low funds, I am able to have only the Android version because it's cheap. For iPhone and Windows, I need to pay a development fee of about 300 USD in total, all combined.</p>
+        <p class="lug">Project enno yali egoba okulaba nga buli simu ne computer omuntu asobola okuba n'oluyimba. Naye ku lwebbula lyensimbi nasobola kutekka ku simmu zabulijjo zokka. Esimu nga Iphone ne computer netaaga dola 300</p>
+    </section>
+
+    <section class="card">
+        <h2>Payment options</h2>
+
+        <div class="pay">
+            <div class="pay__title">PayPal</div>
+            <button class="btn" onclick="paypal()">Donate with PayPal</button>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">World Remit</div>
+            <p class="pay__note">You can choose mobile money and send to <b>Airtel Uganda: 0757035774</b> or <b>MTN Uganda: 0789291098</b>. You can also choose bank transfer to <b>DFCU</b>, account <b>01021159772757</b>.</p>
+            <button class="btn" onclick="wave()">Open World Remit</button>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">MTN Mobile Money</div>
+            <button class="btn btn--gold" onclick="ussd('*165*1*1*0789291098#')">Pay with MoMo</button>
+            <p class="pay__note" style="margin-top:8px;">If the button fails, send to 0789291098 (Rogers Kitamirike).</p>
+            <div class="steps-title">Follow these steps</div>
+            <ol class="steps">
+                <li>Dial <b>*165#</b>.</li>
+                <li>Select option 1.</li>
+                <li>Select <b>Mobile User</b>.</li>
+                <li>Enter number <b>0789291098</b> (Rogers Kitamirike).</li>
+                <li>Enter the amount you wish to give.</li>
+                <li>Enter your PIN.</li>
+            </ol>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">Airtel Money</div>
+            <button class="btn btn--gold" onclick="ussd('*185*1*1*0757035774#')">Pay with Airtel</button>
+            <p class="pay__note" style="margin-top:8px;">If the button fails, send to 0757035774 (Rogers Kitamirike).</p>
+            <div class="steps-title">Follow these steps</div>
+            <ol class="steps">
+                <li>Dial <b>*185#</b>.</li>
+                <li>Select option 1.</li>
+                <li>Select <b>Airtel number</b>.</li>
+                <li>Enter number <b>0757035774</b> (Rogers Kitamirike).</li>
+                <li>Enter the amount you wish to give.</li>
+                <li>Enter your PIN.</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="card report">
+        <h2>I have donated</h2>
+        <p>Let us know once you have sent a gift, so it can be counted in the progress bar above. We confirm each one against our payment records before it counts.</p>
+        <form id="reportForm" novalidate>
+            <label>Your name (optional)
+                <input type="text" name="name" maxlength="60" autocomplete="name">
+            </label>
+            <div class="row">
+                <label>Amount
+                    <input type="number" name="amount" min="1" step="any" inputmode="decimal" required>
+                </label>
+                <label>Currency
+                    <select name="currency"><option>UGX</option><option>USD</option><option>EUR</option><option>GBP</option></select>
+                </label>
             </div>
-            <div class="pay2" >
-                <p>Use World Remit</p>
-				<p>You can choose mobile money and send to <b>Airtel Uganda: 0757035774</b> or <b>Mtn Uganda: 0789291098</b></p>
-				<p>You can also choose bank transfer to <b>DFCU</b></p>
-				<p><b>Acc: 01021159772757</b></p>
-                <button onclick="wave()">Wave</button>
-            </div>
-            <div class="pay3" >
-                <p><b>Use Mtn Mobile money</b></p>
-                <button onclick="ussd('*165*1*1*0789291098#')">Momo</button>
-				<p>Send to 0789291098 if button fails</p>
-				<nav>
-					<p><b>Follow steps</b></p>
-					<pre>
- 1. Dail <b>*165#</b>.
- 2. Select option 1.
- 3. Select <b>Mobile User</b>.
- 4. Enter number <b>0789291098</b> Rogers Kitamirike.
- 5. Enter desired amount (donation).
- 6. Enter your pin.
-					</pre>
-				</nav>
-            </div>
-            <div class="pay4" >
-                <p>Use Airtel Money</p>
-                <button onclick="ussd('*185*1*1*0757035774#')">Airtel</button>
-				<p>Send to 0757035774 if button fails</p>
-				<nav style="color:white;">
-					<p><b>Follow steps</b></p>
-					<pre>
- 1. Dail <b>*185#</b>.
- 2. Select option 1.
- 3. Select <b>Airtel number</b>.
- 4. Enter number <b>0757035774</b> Rogers Kitamirike.
- 5. Enter desired amount (donation).
- 6. Enter your pin.
-					</pre>
-				</nav>
-            </div>
-        </div>
-        <h3>Support</h3>
-        <div class="don">
-            <h3 style="padding: 2px;">Share Files</h3>
-            <p>You can also support us by sharing missing file like the midi files. A little help in ironing out the mistakes will do the magic.</p>
-            <p class="lug">Ossobola okutuwagila nga otuyambakko okujamu ensobi ezili mu nnyimba ezenjawulo.</p>
-            <div class="pay1">
-                <p>Share file or send error</p>
-                <button onclick="sEC('kitarogz@gmail.com','Contribution','You can write and also attach files: ');">Share support</button>
-                <!-- <button onclick="B4A.CallSub('SendError', true, 'support', 'Click the file clip to send files : ')">Click Me</button> -->
-            </div>
-        </div>
-        <div class="msg">
-            <p>Any contribution will be fully appreciated. May the good Lord Bless you.</p>
-            <p class="lug">Obuwagizi bwona busibwamu ekitibwa. Mukama akuwe omukisa.</p>
-        </div>
-        <div class="foot">
-            <p>Email: kitarogz@gmail.com</p>
-            <p>Facebook: Kita Rog Hope</p>
-            <p>Whatsapp: +256 757 035774</p>
-            <p>&copy;kitaroghope 2024</p>
-        </div>
-    </div>
-    <a class="btmm" href="../../index.html"><button>Main menu</button></a>
-    <script src="../../js/share.js" defer></script>
-    <script>
-        function trying(func){
-            try {
-                eval(func)
-            } catch (error) {
-                console.log(error.message)
-            }
+            <label>How did you send it?
+                <select name="method">
+                    <option value="mtn">MTN Mobile Money</option>
+                    <option value="airtel">Airtel Money</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="worldremit">World Remit</option>
+                    <option value="bank">Bank transfer (DFCU)</option>
+                    <option value="other">Other</option>
+                </select>
+            </label>
+            <label>Transaction ID or sender number (helps us confirm)
+                <input type="text" name="reference" maxlength="80">
+            </label>
+            <label>A short message (optional)
+                <input type="text" name="message" maxlength="200">
+            </label>
+            <label class="check">
+                <input type="checkbox" name="showName">
+                <span>You may show my name on the donor list. Otherwise I appear as &ldquo;Anonymous&rdquo;.</span>
+            </label>
+            <div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn" type="submit" id="reportBtn">Send</button>
+            <div class="report__msg" id="reportMsg" role="status"></div>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Recent donors</h2>
+        <ul class="wall" id="wall"><li class="wall__empty">Loading&hellip;</li></ul>
+    </section>
+
+    <section class="card">
+        <h2>Other ways to help</h2>
+        <p>You can also support us by sharing missing files, like the MIDI files. A little help in ironing out the mistakes will do the magic.</p>
+        <p class="lug">Ossobola okutuwagila nga otuyambakko okujamu ensobi ezili mu nnyimba ezenjawulo.</p>
+        <button class="btn" onclick="sEC('kitarogz@gmail.com','Contribution','You can write and also attach files: ');">Share a file or report an error</button>
+    </section>
+
+    <section class="card">
+        <p>Any contribution will be fully appreciated. May the good Lord bless you.</p>
+        <p class="lug">Obuwagizi bwona busibwamu ekitibwa. Mukama akuwe omukisa.</p>
+    </section>
+
+    <footer class="foot">
+        <p>Email: kitarogz@gmail.com</p>
+        <p>Facebook: Kita Rog Hope</p>
+        <p>WhatsApp: +256 757 035774</p>
+        <p><a href="https://t.me/EnnyimbaZaKristo">Join the Telegram channel</a></p>
+        <p class="copy">&copy; <span id="yr">2026</span> kitaroghope</p>
+    </footer>
+
+</div>
+<script src="../../js/share.js" defer></script>
+<script>
+(function () {
+    function $(id) { return document.getElementById(id); }
+    function money(n, cur) {
+        try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: cur, maximumFractionDigits: 0 }).format(n); }
+        catch (e) { return cur + ' ' + Math.round(n); }
+    }
+
+    /* Year is filled in at load time so it never goes stale. */
+    $('yr').textContent = String(new Date().getFullYear());
+
+    /* ---- progress + donor wall ---- */
+    function renderSummary(s) {
+        $('goalTitle').textContent = s.title;
+        $('raised').textContent = money(s.raised, s.currency);
+        $('goal').textContent = money(s.goalAmount, s.currency);
+        $('percent').textContent = s.percent + '%';
+        $('meterFill').style.width = s.percent + '%';
+        $('meter').setAttribute('aria-valuenow', String(Math.round(s.percent)));
+        $('goalState').className = 'goal__state';
+        $('goalState').textContent = s.reached
+            ? 'Goal reached — thank you! Every extra gift keeps the project going.'
+            : money(s.remaining, s.currency) + ' to go, from ' + s.donorCount + ' donor' + (s.donorCount === 1 ? '' : 's') + '.';
+
+        var wall = $('wall');
+        wall.innerHTML = '';
+        if (!s.wall.length) {
+            var li = document.createElement('li');
+            li.className = 'wall__empty';
+            li.textContent = 'Be the first to appear here.';
+            wall.appendChild(li);
+            return;
         }
-    </script>
+        s.wall.forEach(function (d) {
+            var li = document.createElement('li');
+            var date = document.createElement('span');
+            date.className = 'wall__date';
+            date.textContent = new Date(d.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+            var name = document.createElement('span');
+            name.className = 'wall__name';
+            name.textContent = d.name;
+            li.appendChild(date);
+            li.appendChild(name);
+            if (d.message) {
+                var msg = document.createElement('span');
+                msg.className = 'wall__msg';
+                msg.textContent = d.message;
+                li.appendChild(msg);
+            }
+            wall.appendChild(li);
+        });
+    }
+
+    function loadSummary() {
+        fetch('/api/donations/summary')
+            .then(function (r) { return r.json(); })
+            .then(function (j) { if (j && j.success) { renderSummary(j.data); } else { throw new Error('bad response'); } })
+            .catch(function () {
+                $('goalState').textContent = 'Progress is unavailable right now. Please check again later.';
+                $('goalState').className = 'goal__state is-error';
+                $('wall').innerHTML = '<li class="wall__empty">Unavailable right now.</li>';
+            });
+    }
+    loadSummary();
+
+    /* ---- "I have donated" ---- */
+    var form = $('reportForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var msg = $('reportMsg'), btn = $('reportBtn');
+        var f = form.elements; /* not form.name / form.method: those are the <form>'s own attributes */
+        var body = {
+            name: f['name'].value, amount: f['amount'].value, currency: f['currency'].value,
+            method: f['method'].value, reference: f['reference'].value, message: f['message'].value,
+            showName: f['showName'].checked, website: f['website'].value
+        };
+        if (!(Number(body.amount) > 0)) {
+            msg.className = 'report__msg err';
+            msg.textContent = 'Please enter the amount you sent.';
+            return;
+        }
+        btn.disabled = true;
+        msg.className = 'report__msg';
+        msg.textContent = 'Sending…';
+        fetch('/api/donations/report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+            .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+            .then(function (res) {
+                msg.className = 'report__msg ' + (res.ok ? 'ok' : 'err');
+                msg.textContent = res.j.message || (res.ok ? 'Thank you!' : 'Something went wrong.');
+                if (res.ok) { form.reset(); }
+            })
+            .catch(function () {
+                msg.className = 'report__msg err';
+                msg.textContent = 'Could not send right now. Please try again.';
+            })
+            .then(function () { btn.disabled = false; });
+    });
+})();
+</script>
 </body>
 </html>
