@@ -158,3 +158,18 @@ ol.steps { font-size: 14px; color: #33413f; }
 .report__msg.ok { color: #1d7a44; }
 .report__msg.err { color: #8b2822; }
 .btn:disabled { opacity: 0.55; }
+
+/* ---------- in-page navigation (web only) ---------- */
+.topnav { display: flex; flex-wrap: wrap; justify-content: space-between; margin: -14px 0 18px; }
+.topnav__link {
+    margin: 4px 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.16);
+}
+.topnav__link:active { background: rgba(255, 255, 255, 0.3); }
+.topnav__link--gold { color: #2b1c00; background: #daa520; }
