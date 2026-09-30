@@ -248,7 +248,10 @@ async function createGeneralFeedback(feedback) {
         message: feedback.message,
         status: 'open', // open, in-progress, resolved, closed
         priority: feedback.priority || 'low', // low, medium, high
-        upvotes: [feedback.userId], // Auto-upvote by creator
+        // Auto-upvote by creator — only when there is one; an anonymous
+        // post's userId is null, and [null] would let anyone's later upvote
+        // toggle land on that same null slot instead of adding their own.
+        upvotes: feedback.userId ? [feedback.userId] : [],
         views: 0,
         replyCount: 0,
         createdAt: new Date(),

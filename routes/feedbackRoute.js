@@ -15,6 +15,29 @@ const feedbackRoute = express();
 feedbackRoute.use(express.json());
 feedbackRoute.use(express.urlencoded({ extended: true }));
 
+// A signed-in poster is identified by their account; an anonymous one isn't,
+// so give anonymous posting its own light per-connection throttle (same
+// pattern as the donation "I have donated" report) rather than none at all.
+const ANON_LIMIT = 10;
+const ANON_WINDOW_MS = 60 * 60 * 1000;
+const anonHits = new Map();
+function anonThrottled(req) {
+    if (req.user) { return false; }
+    const now = Date.now();
+    const hits = (anonHits.get(req.ip) || []).filter((t) => now - t < ANON_WINDOW_MS);
+    if (hits.length >= ANON_LIMIT) { anonHits.set(req.ip, hits); return true; }
+    hits.push(now);
+    anonHits.set(req.ip, hits);
+    if (anonHits.size > 5000) { anonHits.clear(); }
+    return false;
+}
+function rejectIfAnonThrottled(req, res, next) {
+    if (anonThrottled(req)) {
+        return res.status(429).json({ success: false, message: 'Too many anonymous posts from this connection. Please sign in, or try again later.' });
+    }
+    next();
+}
+
 /**
  * =====================
  * HYMN FEEDBACK ROUTES
@@ -41,8 +64,11 @@ feedbackRoute.get('/hymn/:number', async (req, res) => {
     }
 });
 
-// POST /api/feedback/hymn/:number/issue - Add issue to hymn (requires auth)
-feedbackRoute.post('/hymn/:number/issue', auth.requireAuth, async (req, res) => {
+// POST /api/feedback/hymn/:number/issue - Add issue to hymn. Open to anyone;
+// a signed-in poster's name is attached, everyone else is posted as
+// "Anonymous" (attachUserIfPresent hydrates req.user only when a valid token
+// is sent — it never rejects the request for having none).
+feedbackRoute.post('/hymn/:number/issue', auth.attachUserIfPresent, rejectIfAnonThrottled, async (req, res) => {
     try {
         const { title, description, category } = req.body;
 
@@ -54,8 +80,8 @@ feedbackRoute.post('/hymn/:number/issue', auth.requireAuth, async (req, res) => 
         }
 
         const issue = {
-            userId: String(req.user._id),
-            userName: req.user.userName,
+            userId: req.user ? String(req.user._id) : null,
+            userName: req.user ? req.user.userName : 'Anonymous',
             title,
             description,
             category: category || 'error'
@@ -149,8 +175,9 @@ feedbackRoute.get('/general/:id', async (req, res) => {
     }
 });
 
-// POST /api/feedback/general/new - Create new general feedback (requires auth)
-feedbackRoute.post('/general/new', auth.requireAuth, async (req, res) => {
+// POST /api/feedback/general/new - Create new general feedback. Open to
+// anyone; see the comment on the hymn issue route above.
+feedbackRoute.post('/general/new', auth.attachUserIfPresent, rejectIfAnonThrottled, async (req, res) => {
     try {
         const { category, title, message, priority } = req.body;
 
@@ -162,9 +189,9 @@ feedbackRoute.post('/general/new', auth.requireAuth, async (req, res) => {
         }
 
         const feedback = {
-            userId: String(req.user._id),
-            userName: req.user.userName,
-            userEmail: req.user.email,
+            userId: req.user ? String(req.user._id) : null,
+            userName: req.user ? req.user.userName : 'Anonymous',
+            userEmail: req.user ? req.user.email : null,
             category: category || 'general',
             title,
             message,
@@ -178,8 +205,9 @@ feedbackRoute.post('/general/new', auth.requireAuth, async (req, res) => {
     }
 });
 
-// POST /api/feedback/general/:id/reply - Add reply to feedback (requires auth)
-feedbackRoute.post('/general/:id/reply', auth.requireAuth, async (req, res) => {
+// POST /api/feedback/general/:id/reply - Add reply to feedback. Open to
+// anyone; see the comment on the hymn issue route above.
+feedbackRoute.post('/general/:id/reply', auth.attachUserIfPresent, rejectIfAnonThrottled, async (req, res) => {
     try {
         const { message, isInternal } = req.body;
 
@@ -191,11 +219,11 @@ feedbackRoute.post('/general/:id/reply', auth.requireAuth, async (req, res) => {
         }
 
         // Only admins can post internal notes
-        const isActuallyInternal = isInternal === true && req.user.role === 'admin';
+        const isActuallyInternal = isInternal === true && !!req.user && req.user.role === 'admin';
 
         const reply = {
-            userId: String(req.user._id),
-            userName: req.user.userName,
+            userId: req.user ? String(req.user._id) : null,
+            userName: req.user ? req.user.userName : 'Anonymous',
             message,
             isInternal: isActuallyInternal
         };

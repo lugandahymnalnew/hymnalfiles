@@ -127,7 +127,27 @@
             color: #8b2822;
         }
 
+        .alert-info {
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--accent-strong);
+        }
+
+        .alert-info a {
+            color: inherit;
+            font-weight: 700;
+        }
+
         .hidden { display: none; }
+
+        @media (max-width: 640px) {
+            .container { padding: 12px; }
+            .card {
+                padding: 18px 16px;
+                border-radius: 14px;
+                box-shadow: 0 2px 10px rgba(28, 40, 44, 0.1);
+            }
+            h1 { font-size: 1.4rem; }
+        }
     </style>
 </head>
 <body>
@@ -137,6 +157,11 @@
         <div class="card">
             <h1 id="formTitle">Create Feedback</h1>
             <p class="subtitle" id="formSubtitle">Share your thoughts with the community</p>
+
+            <div class="alert alert-info hidden" id="anonNotice">
+                You're not signed in, so this will be posted as <b>Anonymous</b>.
+                <a href="#" id="anonSignInLink">Sign in</a> to have your name shown instead.
+            </div>
 
             <div class="alert alert-error hidden" id="errorAlert"></div>
 
@@ -218,10 +243,13 @@
             document.getElementById('priorityGroup').classList.remove('hidden');
         }
 
-        // Check authentication
+        // Anyone can submit; a signed-out visitor just gets told they'll show
+        // up as Anonymous, instead of being turned away.
         if (!auth.isLoggedIn()) {
-            alert('Please login to submit feedback');
-            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+            const notice = document.getElementById('anonNotice');
+            notice.classList.remove('hidden');
+            document.getElementById('anonSignInLink').href =
+                '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
         }
 
         async function submitFeedback(event) {
