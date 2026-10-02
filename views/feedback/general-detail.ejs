@@ -216,6 +216,48 @@
             padding: 40px 20px;
             color: var(--muted);
         }
+
+        .alert-info {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--accent-strong);
+        }
+
+        .alert-info a { color: inherit; font-weight: 700; }
+
+        .hidden { display: none; }
+
+        @media (max-width: 640px) {
+            /* No mobile rules existed here either — same fix as the hymn
+               detail page, plus the reply thread's 20px indent+border was
+               eating a lot of width on a narrow screen for little payoff. */
+            .container { padding: 12px; }
+            .back-link { margin-bottom: 12px; }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                margin-bottom: 14px;
+                padding: 8px 0;
+            }
+
+            .header h1 { font-size: 1.2rem; }
+
+            .card {
+                padding: 14px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(28, 40, 44, 0.1);
+                margin-bottom: 12px;
+            }
+
+            .reply-card {
+                margin-left: 8px;
+                padding-left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -277,11 +319,15 @@
         <!-- Reply Form -->
         <div class="card" style="margin-top: 24px;">
             <h3 style="margin-top: 0;">Add a Reply</h3>
+            <div class="alert-info hidden" id="anonNotice">
+                You're not signed in, so this will be posted as <b>Anonymous</b>.
+                <a href="#" id="anonSignInLink">Sign in</a> to have your name shown instead.
+            </div>
             <form class="reply-form" onsubmit="submitReply(event)">
                 <textarea id="replyMessage" placeholder="Write your reply..." required></textarea>
                 <div style="margin-top: 12px; display: flex; gap: 12px; align-items: center;">
                     <button type="submit" class="btn btn-primary">Post Reply</button>
-                    <label style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem;">
+                    <label id="internalLabel" style="display: none; align-items: center; gap: 8px; color: var(--muted); font-size: 0.9rem;">
                         <input type="checkbox" id="isInternal"> Internal Note (Admin Only)
                     </label>
                 </div>
@@ -292,11 +338,31 @@
     <script src="/js/auth.js"></script>
     <script>
         const feedbackId = '<%= feedback._id %>';
+        // `feedback` itself is only an EJS (server-side) variable — referencing
+        // it directly here always threw "feedback is not defined" and killed
+        // the rest of this script silently, so the upvote button's "already
+        // voted" highlight, the reply form's anonymous notice and the
+        // admin-only internal-note checkbox never actually ran on load.
+        const feedbackUpvotes = <%- JSON.stringify(feedback.upvotes || []) %>;
         const currentUserId = auth.getCurrentUser()?._id;
-        const hasUpvoted = currentUserId && feedback.upvotes && feedback.upvotes.includes(currentUserId);
+        const hasUpvoted = currentUserId && feedbackUpvotes.includes(currentUserId);
 
         if (hasUpvoted) {
             document.getElementById('upvoteBtn').classList.add('voted');
+        }
+
+        if (auth.isLoggedIn()) {
+            // Only admins can post internal notes; the option was showing to
+            // everyone even though non-admin submissions were silently
+            // demoted to a normal reply server-side.
+            if (auth.isAdmin()) {
+                document.getElementById('internalLabel').style.display = 'flex';
+            }
+        } else {
+            const notice = document.getElementById('anonNotice');
+            notice.classList.remove('hidden');
+            document.getElementById('anonSignInLink').href =
+                '/login?redirect=' + encodeURIComponent(window.location.pathname);
         }
 
         async function upvoteFeedback() {
@@ -324,12 +390,6 @@
 
         async function submitReply(event) {
             event.preventDefault();
-
-            if (!auth.isLoggedIn()) {
-                alert('Please login to reply');
-                window.location.href = '/login';
-                return;
-            }
 
             const message = document.getElementById('replyMessage').value;
             const isInternal = document.getElementById('isInternal').checked;

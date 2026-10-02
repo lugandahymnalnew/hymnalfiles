@@ -149,6 +149,19 @@
 
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
+
+        @media (max-width: 640px) {
+            .container { padding: 12px; }
+            .header { margin-bottom: 14px; padding: 10px 0; }
+            .header h1 { font-size: 1.25rem; }
+            .card {
+                padding: 14px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(28, 40, 44, 0.1);
+            }
+            .section-title { margin: 20px 0 10px; font-size: 1.05rem; }
+            .feedback-item { padding: 12px; }
+        }
     </style>
 </head>
 <body>

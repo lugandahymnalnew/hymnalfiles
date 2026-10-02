@@ -77,7 +77,17 @@ feedbackViewRoute.get('/feedback/general/:id', async (req, res) => {
     try {
         const feedback = await feedbackDb.getGeneralFeedbackById(req.params.id);
 
-        res.render('feedback/general-detail', { feedback });
+        if (!feedback) {
+            return res.status(404).render('error', { error: 'Feedback not found' });
+        }
+
+        // This route (the actual page a visitor lands on) was never fetching
+        // replies or counting the view — only the JSON API sibling above
+        // did both, so the reply thread has silently never rendered here.
+        await feedbackDb.incrementGeneralViews(req.params.id);
+        const replies = await feedbackDb.getReplies(req.params.id);
+
+        res.render('feedback/general-detail', { feedback: { ...feedback, replies } });
     } catch (error) {
         res.render('error', { error: error.message });
     }

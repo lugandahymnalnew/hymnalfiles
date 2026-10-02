@@ -201,6 +201,18 @@
             resize: vertical;
         }
 
+        .alert-info {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            background: rgba(15, 118, 110, 0.1);
+            color: var(--accent-strong);
+        }
+
+        .alert-info a { color: inherit; font-weight: 700; }
+
+        .hidden { display: none; }
+
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -219,6 +231,35 @@
         .back-link:hover {
             color: var(--accent);
         }
+
+        @media (max-width: 640px) {
+            /* This page had no mobile rules at all — the header, cards and
+               shadow were all full desktop size, which is what made a
+               2-line issue take up most of a phone screen. */
+            .container { padding: 12px; }
+            .back-link { margin-bottom: 12px; }
+
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                margin-bottom: 14px;
+                padding: 8px 0;
+            }
+
+            .header h1 { font-size: 1.25rem; }
+
+            .card {
+                padding: 14px;
+                border-radius: 12px;
+                box-shadow: 0 2px 10px rgba(28, 40, 44, 0.1);
+                margin-bottom: 12px;
+            }
+
+            .issue-title { font-size: 1rem; }
+            .issue-header { flex-wrap: wrap; gap: 8px; }
+            .issue-description { margin: 10px 0; }
+        }
     </style>
 </head>
 <body>
@@ -233,6 +274,10 @@
         <!-- New Issue Form -->
         <div class="card" id="newIssueForm" style="display: none;">
             <h2 style="margin-top: 0;">Report an Issue</h2>
+            <div class="alert-info hidden" id="anonNotice">
+                You're not signed in, so this will be posted as <b>Anonymous</b>.
+                <a href="#" id="anonSignInLink">Sign in</a> to have your name shown instead.
+            </div>
             <form id="issueForm" onsubmit="submitIssue(event)">
                 <div class="form-group">
                     <label>Title</label>
@@ -291,9 +336,9 @@
 
         function showNewIssueForm() {
             if (!auth.isLoggedIn()) {
-                alert('Please login to report an issue');
-                window.location.href = '/login';
-                return;
+                document.getElementById('anonNotice').classList.remove('hidden');
+                document.getElementById('anonSignInLink').href =
+                    '/login?redirect=' + encodeURIComponent(window.location.pathname);
             }
             document.getElementById('newIssueForm').style.display = 'block';
         }
