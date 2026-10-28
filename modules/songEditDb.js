@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const db = require('./mongoDBApi');
+const roleAccess = require('./roleAccess');
 
 const EDIT_DB = 'newHymnal';
 const EDIT_COLLECTION = 'songEdits';
@@ -104,8 +105,8 @@ async function getHymnPair(numberValue) {
 }
 
 async function createProposal(input, actor) {
-    if (!actor || actor.status !== 'approved' || !['editor', 'admin'].includes(actor.role)) {
-        throw new Error('An approved Editor or Administrator account is required to submit hymn edits.');
+    if (!roleAccess.hasPermission(actor, roleAccess.PERMISSIONS.SONG_EDITS_SUBMIT)) {
+        throw new Error('The songEdits:submit permission is required to submit hymn edits.');
     }
     const pair = await getHymnPair(input.number);
     const incoming = Array.isArray(input.changes) ? input.changes : [];

@@ -254,8 +254,9 @@
                 throw new Error(data.message || 'Authentication required');
             }
             var user = data.user;
-            if (user.status !== 'approved' || (user.role !== 'editor' && user.role !== 'admin')) {
-                showAccessDenied('Ask an administrator to assign the Editor role to your approved account.');
+            var permissions = Array.isArray(user.permissions) ? user.permissions : [];
+            if (user.status !== 'approved' || (permissions.indexOf('*') === -1 && permissions.indexOf('songEdits:read') === -1)) {
+                showAccessDenied('Ask an administrator to assign a role with hymn editing permission to your approved account.');
                 return;
             }
             await loadEditor(user);

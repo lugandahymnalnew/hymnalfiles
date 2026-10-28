@@ -7,6 +7,7 @@ const { generateRefreshToken, revokeRefreshToken, revokeAllUserTokens } = requir
 const { createEmailVerificationToken, consumeEmailVerificationToken, createPasswordResetToken, consumePasswordResetToken } = require('../modules/emailTokens');
 const mailer = require('../modules/mailer');
 const { ObjectId } = require('mongodb');
+const roleAccess = require('../modules/roleAccess');
 
 async function delFiles(req){
     const files = req.files;
@@ -122,7 +123,8 @@ const login = async (req, res)=>{
 
                 const freshUser = {
                     ...checkUser.listing,
-                    lastLoginAt: new Date()
+                    lastLoginAt: new Date(),
+                    permissions: await roleAccess.resolvePermissions(checkUser.listing.role || 'user')
                 };
                 const accessToken = signAccessToken(freshUser);
                 const refreshTokenResult = await generateRefreshToken(

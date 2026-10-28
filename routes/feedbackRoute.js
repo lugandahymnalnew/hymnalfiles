@@ -8,6 +8,7 @@ const { ObjectId } = require('mongodb');
 const db = require('../modules/mongoDBApi');
 const feedbackDb = require('../modules/feedbackDb');
 const auth = require('../middleWares/auth');
+const { PERMISSIONS } = require('../modules/roleAccess');
 
 const feedbackRoute = express();
 
@@ -95,7 +96,7 @@ feedbackRoute.post('/hymn/:number/issue', auth.attachUserIfPresent, rejectIfAnon
 });
 
 // PUT /api/feedback/hymn/:number/issue/:id - Update hymn issue (admin only)
-feedbackRoute.put('/hymn/:number/issue/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+feedbackRoute.put('/hymn/:number/issue/:id', auth.requireAuth, auth.requirePermission(PERMISSIONS.FEEDBACK_MANAGE), async (req, res) => {
     try {
         const { status, title, description } = req.body;
 
@@ -219,7 +220,7 @@ feedbackRoute.post('/general/:id/reply', auth.attachUserIfPresent, rejectIfAnonT
         }
 
         // Only admins can post internal notes
-        const isActuallyInternal = isInternal === true && !!req.user && req.user.role === 'admin';
+        const isActuallyInternal = isInternal === true && auth.hasPermission(req.user, PERMISSIONS.FEEDBACK_MANAGE);
 
         const reply = {
             userId: req.user ? String(req.user._id) : null,
@@ -249,7 +250,7 @@ feedbackRoute.post('/general/:id/upvote', auth.requireAuth, async (req, res) => 
 });
 
 // PUT /api/feedback/general/:id - Update general feedback (admin only)
-feedbackRoute.put('/general/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+feedbackRoute.put('/general/:id', auth.requireAuth, auth.requirePermission(PERMISSIONS.FEEDBACK_MANAGE), async (req, res) => {
     try {
         const { status, priority, title, message } = req.body;
 
@@ -267,7 +268,7 @@ feedbackRoute.put('/general/:id', auth.requireAuth, auth.requireAdmin, async (re
 });
 
 // DELETE /api/feedback/general/:id - Delete general feedback (admin only)
-feedbackRoute.delete('/general/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+feedbackRoute.delete('/general/:id', auth.requireAuth, auth.requirePermission(PERMISSIONS.FEEDBACK_MANAGE), async (req, res) => {
     try {
         await feedbackDb.deleteGeneralFeedback(req.params.id);
         res.json({ success: true, message: 'Feedback deleted' });
@@ -277,7 +278,7 @@ feedbackRoute.delete('/general/:id', auth.requireAuth, auth.requireAdmin, async 
 });
 
 // DELETE /api/feedback/reply/:id - Delete reply (admin only)
-feedbackRoute.delete('/reply/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+feedbackRoute.delete('/reply/:id', auth.requireAuth, auth.requirePermission(PERMISSIONS.FEEDBACK_MANAGE), async (req, res) => {
     try {
         await feedbackDb.deleteReply(req.params.id);
         res.json({ success: true, message: 'Reply deleted' });
@@ -303,7 +304,7 @@ feedbackRoute.get('/my-feedback', auth.requireAuth, async (req, res) => {
 });
 
 // GET /api/feedback/admin/stats - Get feedback statistics (admin only)
-feedbackRoute.get('/admin/stats', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+feedbackRoute.get('/admin/stats', auth.requireAuth, auth.requirePermission(PERMISSIONS.FEEDBACK_MANAGE), async (req, res) => {
     try {
         const stats = await feedbackDb.getFeedbackStats();
         res.json({ success: true, data: stats });

@@ -64,7 +64,7 @@
     async function api(path, options) {
         if (!window.auth || !auth.isLoggedIn || !auth.isLoggedIn()) {
             window.location.href = '/login?returnTo=' + encodeURIComponent('/admin/song-edits');
-            throw new Error('Please sign in as an administrator.');
+            throw new Error('Please sign in with a role that can review song edits.');
         }
         var response = await auth.apiRequest(path, options || {});
         var data = await response.json();

@@ -83,6 +83,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage});
 const userController = require('../controllers/userController');
 const auth = require('./../middleWares/auth');
+const roleAccess = require('../modules/roleAccess');
 const { signAccessToken } = require('../modules/jwtAuth');
 const { verifyRefreshToken, rotateRefreshToken, revokeAllUserTokens } = require('../modules/refreshToken');
 
@@ -202,11 +203,11 @@ function sortAdverts(adverts) {
 }
 
 function canManageAdvert(user, advert) {
-  return !!user && user.status === 'approved' && (user.role === 'admin' || advert.ownerId === String(user._id));
+  return !!user && user.status === 'approved' && (auth.hasPermission(user, roleAccess.PERMISSIONS.ADVERTS_MANAGE) || advert.ownerId === String(user._id));
 }
 
 function canSeeAdvert(user, advert, placement) {
-  if (user && user.role === 'admin' && user.status === 'approved') {
+  if (auth.hasPermission(user, roleAccess.PERMISSIONS.ADVERTS_MANAGE)) {
     return !placement || advert.placement === placement;
   }
 
@@ -326,7 +327,10 @@ user_route.get('/logout',auth.isLogout, (req, res) => {
 
 user_route.get('/dashboard',userController.loadDashboard);
 
-user_route.get('/api/admin/users', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+const manageUsers = auth.requirePermission(roleAccess.PERMISSIONS.USERS_MANAGE);
+const manageRoles = auth.requirePermission(roleAccess.PERMISSIONS.ROLES_MANAGE);
+
+user_route.get('/api/admin/users', auth.requireAuth, manageUsers, async (req, res) => {
   try {
     const users = await db.readRows({}, 'newHymnal', 'users');
     if (!users || users.err) {
@@ -342,7 +346,7 @@ user_route.get('/api/admin/users', auth.requireAuth, auth.requireAdmin, async (r
   }
 });
 
-user_route.patch('/api/admin/users/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+user_route.patch('/api/admin/users/:id', auth.requireAuth, manageUsers, async (req, res) => {
   try {
     if (!isValidObjectId(req.params.id)) {
       return res.status(400).json({ success: false, message: 'Invalid user ID' });
@@ -371,9 +375,14 @@ user_route.patch('/api/admin/users/:id', auth.requireAuth, auth.requireAdmin, as
     }
 
     if (req.body.role !== undefined) {
-      const nextRole = String(req.body.role);
-      if (['user', 'editor', 'admin'].indexOf(nextRole) === -1) {
-        return res.status(400).json({ success: false, message: 'Invalid role value' });
+      const nextRole = roleAccess.normalizeRoleName(req.body.role);
+      const role = await roleAccess.getRole(nextRole);
+      if (!role) return res.status(400).json({ success: false, message: 'Unknown role' });
+      if (String(existingUser.listing._id) === String(req.user._id)) {
+        const keepsUserManagement = role.permissions.includes('*') || role.permissions.includes(roleAccess.PERMISSIONS.USERS_MANAGE);
+        if (!keepsUserManagement) {
+          return res.status(400).json({ success: false, message: 'You cannot remove your own user-management permission.' });
+        }
       }
 
       updateData.role = nextRole;
@@ -388,6 +397,36 @@ user_route.patch('/api/admin/users/:id', auth.requireAuth, auth.requireAdmin, as
     res.json({ success: true, data: sanitizeManagedUser(refreshedUser.listing) });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+user_route.get('/api/admin/permissions', auth.requireAuth, manageRoles, (_req, res) => {
+  res.json({ success: true, data: Object.values(roleAccess.PERMISSIONS) });
+});
+
+user_route.get('/api/admin/roles', auth.requireAuth, manageUsers, async (_req, res) => {
+  try {
+    res.json({ success: true, data: await roleAccess.listRoles() });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+user_route.put('/api/admin/roles/:name', auth.requireAuth, manageRoles, async (req, res) => {
+  try {
+    const role = await roleAccess.saveRole(req.params.name, req.body || {}, req.user);
+    res.json({ success: true, data: role, message: 'Role saved' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+});
+
+user_route.delete('/api/admin/roles/:name', auth.requireAuth, manageRoles, async (req, res) => {
+  try {
+    await roleAccess.deleteRole(req.params.name);
+    res.json({ success: true, message: 'Role deleted' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
 });
 
@@ -679,7 +718,7 @@ user_route.put('/api/adverts/:id', auth.requireAuth, auth.requireApproved, async
       return res.status(404).json({ success: false, message: 'Advert not found' });
     }
 
-    if (req.user.role !== 'admin' && advert.listing.ownerId !== String(req.user._id)) {
+    if (!auth.hasPermission(req.user, roleAccess.PERMISSIONS.ADVERTS_MANAGE) && advert.listing.ownerId !== String(req.user._id)) {
       return res.status(403).json({ success: false, message: 'You can only edit your own adverts' });
     }
 
@@ -723,7 +762,7 @@ user_route.delete('/api/adverts/:id', auth.requireAuth, auth.requireApproved, as
       return res.status(404).json({ success: false, message: 'Advert not found' });
     }
 
-    if (req.user.role !== 'admin' && advert.listing.ownerId !== String(req.user._id)) {
+    if (!auth.hasPermission(req.user, roleAccess.PERMISSIONS.ADVERTS_MANAGE) && advert.listing.ownerId !== String(req.user._id)) {
       return res.status(403).json({ success: false, message: 'You can only delete your own adverts' });
     }
 

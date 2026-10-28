@@ -128,8 +128,8 @@ Implemented workflow:
 3. Users can edit title/metadata fields and any existing lyric line independently.
 4. Only fields whose value changed are included in the proposal.
 5. The user reviews a before/after diff and can add a note.
-6. The editor is restricted to approved accounts with the `editor` or `admin` role; ordinary members and signed-out visitors cannot load hymn edit data or submit proposals.
-7. Administrators assign or remove the Editor role from the existing user-management dashboard.
+6. The editor is restricted to approved accounts whose role grants `songEdits:read` and `songEdits:submit`; ordinary members and signed-out visitors cannot load hymn edit data or submit proposals.
+7. Administrators assign database-backed roles from the user dashboard; custom reviewer roles can be added without changing route middleware.
 8. Proposals are stored in `newHymnal.songEdits` with status `pending`.
 9. `/admin/song-edits` shows exact diffs. Approval re-reads the live hymn and compares every original value.
 10. If any source text changed after submission, the proposal becomes `conflict` instead of overwriting newer data.

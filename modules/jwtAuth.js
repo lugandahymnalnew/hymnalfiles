@@ -32,6 +32,7 @@ function sanitizeUser(user) {
     userName: user.userName || '',
     email: user.email || '',
     role: user.role || 'user',
+    permissions: Array.isArray(user.permissions) ? user.permissions : [],
     status: user.status || 'pending',
     profile: user.profile || '',
     createdAt: user.createdAt || null,

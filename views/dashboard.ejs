@@ -736,22 +736,37 @@
     // ── State ──
     let currentUser = null;
     let allUsers = [];
+    let allRoles = [];
+
+    function userCan(permission) {
+        const permissions = currentUser && Array.isArray(currentUser.permissions) ? currentUser.permissions : [];
+        return permissions.includes('*') || permissions.includes(permission);
+    }
 
     // ── Init ──
     async function init() {
         currentUser = auth.getCurrentUser();
         if (!currentUser) { window.location.href = '/login'; return; }
+        try {
+            const response = await auth.apiRequest('/api/auth/me');
+            const result = await response.json();
+            if (response.ok && result.success && result.user) currentUser = result.user;
+        } catch (_error) {}
 
         document.getElementById('sidebarAvatar').innerHTML = avatarHTML(currentUser, 36);
         document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.userName;
-        document.getElementById('sidebarRole').textContent = currentUser.role === 'admin'
-            ? 'Administrator'
-            : currentUser.role === 'editor' ? 'Hymn Editor' : 'Member';
+        document.getElementById('sidebarRole').textContent = String(currentUser.role || 'user')
+            .replace(/[-_]/g, ' ')
+            .replace(/\b\w/g, letter => letter.toUpperCase());
 
-        // Admin-only nav
-        if (currentUser.role === 'admin') {
+        // Permission-controlled navigation
+        if (userCan('users:manage') || userCan('songEdits:review')) {
             document.getElementById('adminNavLabel').style.display = 'block';
+        }
+        if (userCan('users:manage')) {
             document.getElementById('navUsers').style.display = 'flex';
+        }
+        if (userCan('songEdits:review')) {
             document.getElementById('navSongEdits').style.display = 'flex';
         }
 
@@ -800,7 +815,7 @@
                 fetch('/lugSongs').catch(() => null),
                 fetch('/api/feedback/hymns').catch(() => null),
                 fetch('/api/feedback/general').catch(() => null),
-                currentUser.role === 'admin' ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
+                userCan('users:manage') ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
             ]);
 
             const songs = songsRes ? (await songsRes.json()).data || [] : [];
@@ -832,7 +847,7 @@
                         <div class="stat-label">General Feedback</div>
                     </div>
                 </div>
-                ${currentUser.role === 'admin' ? `
+                ${userCan('users:manage') ? `
                 <div class="stat-card" onclick="showSection('users')">
                     <div class="stat-icon red"><i class="bi bi-person-check"></i></div>
                     <div class="stat-body">
@@ -959,8 +974,12 @@
     async function loadUsers() {
         const tbody = document.getElementById('usersTableBody');
         try {
-            const { data } = await apiFetch('/api/admin/users');
-            allUsers = data || [];
+            const [usersResult, rolesResult] = await Promise.all([
+                apiFetch('/api/admin/users'),
+                apiFetch('/api/admin/roles')
+            ]);
+            allUsers = usersResult.data || [];
+            allRoles = rolesResult.data || [];
             document.getElementById('totalUsers').textContent = allUsers.length + ' users';
             tbody.innerHTML = allUsers.map(u => `
                 <tr>
@@ -976,14 +995,15 @@
                     <td>
                         <span class="status-dot dot-${u.status}"></span>${u.status}
                     </td>
-                    <td><span class="user-chip role-${u.role}">${u.role}</span></td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="setUserRole('${u._id}', this.value)" aria-label="Role for ${escHtml(u.userName)}">
+                            ${allRoles.map(role => `<option value="${escHtml(role.name)}" ${role.name === u.role ? 'selected' : ''}>${escHtml(role.label)}</option>`).join('')}
+                        </select>
+                    </td>
                     <td style="color:#94a3b8;font-size:.8rem;">${new Date(u.createdAt || Date.now()).toLocaleDateString()}</td>
                     <td>
                         ${u.status === 'pending' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','approved')"><i class="bi bi-check-lg"></i> Approve</button>` : ''}
                         ${u.status === 'approved' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','disabled')"><i class="bi bi-x-lg"></i> Disable</button>` : ''}
-                        ${u.role === 'user' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','editor-role')" style="margin-left:4px;" title="Grant hymn editor access"><i class="bi bi-pencil-square"></i> Editor</button>` : ''}
-                        ${u.role === 'editor' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','user-role')" style="margin-left:4px;" title="Remove hymn editor access"><i class="bi bi-person"></i> Member</button>` : ''}
-                        ${u.role !== 'admin' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','admin-role')" style="margin-left:4px;" title="Grant administrator access"><i class="bi bi-shield"></i> Admin</button>` : ''}
                     </td>
                 </tr>
             `).join('');
@@ -994,11 +1014,7 @@
 
     async function updateUser(userId, action) {
         try {
-            let body = {};
-            if (action === 'admin-role') body = { role: 'admin' };
-            else if (action === 'editor-role') body = { role: 'editor' };
-            else if (action === 'user-role') body = { role: 'user' };
-            else body = { status: action };
+            const body = { status: action };
 
             await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify(body) });
             showToast('User updated successfully', 'success');
@@ -1010,9 +1026,20 @@
         }
     }
 
+    async function setUserRole(userId, role) {
+        try {
+            await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify({ role }) });
+            showToast('User role updated', 'success');
+            await loadUsers();
+        } catch (e) {
+            showToast('Role update failed: ' + e.message, 'error');
+            await loadUsers();
+        }
+    }
+
     // ── Pending Approvals widget ──
     async function loadPendingApprovals() {
-        if (currentUser.role !== 'admin') return;
+        if (!userCan('users:manage')) return;
         const card = document.getElementById('pendingApprovalsCard');
         const body = document.getElementById('pendingUsersBody');
         const badge = document.getElementById('pendingBadge');

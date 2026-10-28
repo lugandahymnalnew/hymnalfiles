@@ -20,6 +20,7 @@ const express = require('express');
 const cors = require('cors');
 const donationDb = require('../modules/donationDb');
 const auth = require('../middleWares/auth');
+const { PERMISSIONS } = require('../modules/roleAccess');
 
 const donationRoute = express.Router();
 // Parsed per route (not router-wide) so this router, mounted at /api, never
@@ -88,7 +89,7 @@ donationRoute.post('/donations/report', publicCors, jsonBody, async (req, res) =
 
 // ----------------------------------------------------------------- admin ----
 
-const adminOnly = [auth.requireAuth, auth.requireAdmin];
+const adminOnly = [auth.requireAuth, auth.requirePermission(PERMISSIONS.DONATIONS_MANAGE)];
 
 donationRoute.get('/admin/donations/settings', adminOnly, async (_req, res) => {
     try {

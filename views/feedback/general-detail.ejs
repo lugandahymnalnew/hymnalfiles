@@ -355,7 +355,7 @@
             // Only admins can post internal notes; the option was showing to
             // everyone even though non-admin submissions were silently
             // demoted to a normal reply server-side.
-            if (auth.isAdmin()) {
+            if (auth.hasPermission('feedback:manage')) {
                 document.getElementById('internalLabel').style.display = 'flex';
             }
         } else {
