@@ -174,9 +174,8 @@ function stop(){
     // trying("B4A.CallSub('Stop', true)")
 }
 function E_err(){
-    console.log('hlo')
-    sEC("kitarogz@gmail.com",`Hymnal ${pages[Npg]}`,"Write your Error here ");
-    // trying("B4A.CallSub('SendError', true, `${pages[Npg]}`,'You can edit the error: ')")
+    var hymnNumber = pages[Npg];
+    window.location.href = '/hymns/' + encodeURIComponent(hymnNumber) + '/edit';
 }
 function N_next(){
     //console.log("next link: "+next)

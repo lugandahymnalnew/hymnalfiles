@@ -97,6 +97,8 @@ body::-webkit-scrollbar{
 }
 .tittle{
     box-shadow: 0 0 2px 2px darkgray;
+    position: relative;
+    top: auto;
 }
 .tittle-1{
     box-shadow: 0 0 5px 5px darkgray;
@@ -772,6 +774,41 @@ stroke: #000;
 .hide-div{
     display: none;
 }
+
+/* Responsive song index: the original percentage columns add up poorly on a
+   phone and force the title/composer columns outside the viewport. */
+#ind { width: 100%; padding: 0 7px 24px; }
+#ind > a { color: inherit; text-decoration: none; }
+#ind .tittle {
+    display: grid;
+    grid-template-columns: 5rem minmax(12rem, 1.8fr) minmax(5rem, .55fr) 4rem minmax(9rem, 1fr);
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    margin: 5px 0;
+    padding: 9px 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,.72);
+}
+#ind .tittle .No,
+#ind .tittle .song,
+#ind .tittle .an,
+#ind .tittle .sign,
+#ind .tittle .comp { width: auto; min-width: 0; overflow-wrap: anywhere; }
+
+/* Song controls stay reachable on narrow screens instead of clipping the
+   Next / edit actions off the right edge. */
+.btn_cont {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 4px 6px;
+}
+.btn_cont button { flex: 0 0 auto; min-height: 34px; }
+#txt { max-width: min(94vw, 48rem); font-size: 1.05rem; line-height: 1.5; }
+
 @media (max-width: 520px) {
     .ios-nav__title{
         font-size: 0.92rem;
@@ -779,4 +816,16 @@ stroke: #000;
     .ios-nav__back{
         font-size: 0.95rem;
     }
+    #ind { padding: 0 6px 20px; }
+    #ind .tittle {
+        grid-template-columns: 2.7rem minmax(0, 1fr) auto;
+        gap: 7px;
+        padding: 9px 7px;
+    }
+    #ind .tittle .No { grid-column: 1; grid-row: 1 / span 2; align-self: start; }
+    #ind .tittle .song { grid-column: 2; grid-row: 1; }
+    #ind .tittle .an { grid-column: 3; grid-row: 1; color: #0b5b55; font-size: .75rem; font-weight: 700; }
+    #ind .tittle .comp { grid-column: 2 / -1; grid-row: 2; color: #647674; font-size: .75rem; }
+    #ind .tittle .sign { display: none; }
+    #txt { font-size: 1rem; }
 }

@@ -12,6 +12,8 @@ const ki = [
   "/src/images/step4.jpg",
   "/src/images/step5.jpg",
   "/js/serv.js",
+  "/js/donor-thanks.js",
+  "/js/song-editor.js",
   "/favicon.ico",
   "/app logo.png",
   "/app.json",
@@ -44,10 +46,13 @@ const ki = [
   "/style/styleAbaana.css",
   "/style/stylem.css",
   "/style/styleorg1.css",
-  "/style/stylepay.css"
+  "/style/stylepay.css",
+  "/style/home.css",
+  "/style/donor-thanks.css",
+  "/style/song-editor.css"
 ];
 
-const CACHE_NAME = 'my-website-cache-v3';
+const CACHE_NAME = 'my-website-cache-v4';
 const urlsToCache = ki;
 
 self.addEventListener('install', function(event) {

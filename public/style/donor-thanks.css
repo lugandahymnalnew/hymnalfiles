@@ -1,0 +1,40 @@
+.donor-thanks {
+    --donor-teal: #0b5b55;
+    --donor-gold: #daa520;
+    width: min(100%, 760px);
+    margin: 14px auto;
+    padding: 12px 14px;
+    border: 1px solid rgba(11, 91, 85, 0.18);
+    border-radius: 14px;
+    color: #19302f;
+    background: #fffdf8;
+    box-shadow: 0 5px 18px rgba(26, 49, 47, 0.09);
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    text-align: left;
+}
+.donor-thanks__row { display: flex; align-items: center; gap: 12px; }
+.donor-thanks__mark { flex: 0 0 auto; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #2c2100; background: #f3d77e; font-size: 20px; }
+.donor-thanks__copy { min-width: 0; flex: 1; }
+.donor-thanks__eyebrow { color: var(--donor-teal); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.donor-thanks__title { margin: 2px 0; font-size: 0.95rem; font-weight: 800; line-height: 1.35; }
+.donor-thanks__meta { color: #647674; font-size: 0.78rem; }
+.donor-thanks__cta { flex: 0 0 auto; width: auto !important; display: inline-block !important; padding: 9px 12px; border-radius: 9px; color: #fff; background: var(--donor-teal); font-size: 0.82rem; font-weight: 800; text-decoration: none; white-space: nowrap; }
+.donor-thanks__meter { height: 4px; margin-top: 10px; overflow: hidden; border-radius: 4px; background: #dde8e6; }
+.donor-thanks__fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--donor-teal), var(--donor-gold)); }
+.donor-thanks--feature { padding: 18px; border-left: 5px solid var(--donor-gold); }
+.donor-thanks--feature .donor-thanks__title { font-size: 1.08rem; }
+.donor-thanks:not(.donor-thanks--feature) { padding: 8px 10px; }
+.donor-thanks:not(.donor-thanks--feature) .donor-thanks__mark { width: 30px; height: 30px; font-size: 15px; }
+.donor-thanks:not(.donor-thanks--feature) .donor-thanks__title { font-size: 0.82rem; }
+.donor-thanks:not(.donor-thanks--feature) .donor-thanks__meta,
+.donor-thanks:not(.donor-thanks--feature) .donor-thanks__meter { display: none; }
+.donor-thanks:not(.donor-thanks--feature) .donor-thanks__cta { padding: 7px 9px; font-size: 0.74rem; }
+@media (max-width: 520px) {
+    .donor-thanks { margin: 10px auto; border-radius: 12px; }
+    .donor-thanks__row { align-items: flex-start; flex-wrap: wrap; }
+    .donor-thanks__mark { width: 34px; height: 34px; font-size: 17px; }
+    .donor-thanks__copy { flex: 1 1 calc(100% - 50px); }
+    .donor-thanks--feature .donor-thanks__cta { margin-left: 46px; }
+    .donor-thanks:not(.donor-thanks--feature) .donor-thanks__row { flex-wrap: nowrap; align-items: center; }
+    .donor-thanks:not(.donor-thanks--feature) .donor-thanks__copy { flex-basis: auto; }
+}

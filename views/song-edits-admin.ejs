@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song edit review | Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="/style/song-editor.css">
+</head>
+<body class="editor-page">
+    <header class="editor-topbar">
+        <a href="/dashboard">&#8249; Dashboard</a>
+        <strong class="editor-topbar__title">Song edit review</strong>
+        <span class="editor-topbar__state" id="reviewTotal">Loading…</span>
+    </header>
+    <main class="review-shell">
+        <section class="editor-intro">
+            <div>
+                <h1>Review hymn corrections</h1>
+                <p>Every proposal shows the exact stored text and the suggested replacement. Approval first checks that the stored text has not changed since submission.</p>
+            </div>
+        </section>
+        <div class="review-tools">
+            <label for="statusFilter"><b>Status</b></label>
+            <select id="statusFilter">
+                <option value="pending">Pending</option>
+                <option value="conflict">Conflicts</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="">All</option>
+            </select>
+            <button type="button" class="editor-btn editor-btn--primary" id="refreshReviews">Refresh</button>
+        </div>
+        <div class="editor-message" id="adminMessage" role="status"></div>
+        <div class="review-list" id="reviewList"><div class="editor-empty">Loading proposals…</div></div>
+    </main>
+    <script src="/js/auth.js"></script>
+    <script src="/js/song-edits-admin.js"></script>
+</body>
+</html>

@@ -266,6 +266,10 @@
         }
 
         @media (max-width: 560px) {
+            .shell > *, .hero-card, .auth-card { min-width: 0; }
+            .hero-card, .auth-card { overflow-wrap: anywhere; }
+            .hero-list li { align-items: flex-start; }
+            .hero-list span { flex: 0 0 11px; margin-top: 6px; }
             .hero {
                 padding: 28px 18px 0;
             }
