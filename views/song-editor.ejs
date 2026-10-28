@@ -6,7 +6,7 @@
     <title>Edit Hymn <%= hymnNumber %> | Ennyimba Za Kristo</title>
     <link rel="stylesheet" href="/style/song-editor.css">
 </head>
-<body class="editor-page" data-hymn-number="<%= hymnNumber %>">
+<body class="editor-page is-access-check" data-hymn-number="<%= hymnNumber %>">
     <header class="editor-topbar">
         <a href="/songs.html?song=<%= encodeURIComponent(hymnNumber) %>">&#8249; Hymn</a>
         <strong class="editor-topbar__title" id="editorNavTitle">Edit hymn <%= hymnNumber %></strong>
@@ -20,7 +20,7 @@
                 <p>Edit only the parts that are wrong. Your changes are sent as a proposal, compared with the current hymn, and reviewed before the public lyrics are updated.</p>
             </div>
             <aside class="editor-anon" id="editorIdentity">
-                You are contributing as <b>Anonymous</b>. <a href="/login?returnTo=<%= encodeURIComponent('/hymns/' + hymnNumber + '/edit') %>">Sign in</a> if you want your name attached.
+                Checking hymn editor access…
             </aside>
         </section>
 

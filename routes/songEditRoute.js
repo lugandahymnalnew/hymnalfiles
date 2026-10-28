@@ -5,30 +5,9 @@ const songEditDb = require('../modules/songEditDb');
 const route = express.Router();
 const jsonBody = express.json({ limit: '100kb' });
 
-const ANON_LIMIT = 6;
-const ANON_WINDOW_MS = 60 * 60 * 1000;
-const anonymousHits = new Map();
+const editorOnly = [auth.requireAuth, auth.requireEditor];
 
-function rejectAnonymousFlood(req, res, next) {
-    if (req.user) {
-        return next();
-    }
-    const now = Date.now();
-    const key = req.ip || 'unknown';
-    const hits = (anonymousHits.get(key) || []).filter((time) => now - time < ANON_WINDOW_MS);
-    if (hits.length >= ANON_LIMIT) {
-        anonymousHits.set(key, hits);
-        return res.status(429).json({ success: false, message: 'Too many anonymous edit proposals from this connection. Please sign in or try again later.' });
-    }
-    hits.push(now);
-    anonymousHits.set(key, hits);
-    if (anonymousHits.size > 5000) {
-        anonymousHits.clear();
-    }
-    next();
-}
-
-route.get('/song-editor/:number', async (req, res) => {
+route.get('/song-editor/:number', editorOnly, async (req, res) => {
     try {
         res.set('Cache-Control', 'no-store');
         res.json({ success: true, data: await songEditDb.getHymnPair(req.params.number) });
@@ -37,15 +16,13 @@ route.get('/song-editor/:number', async (req, res) => {
     }
 });
 
-route.post('/song-edits', jsonBody, auth.attachUserIfPresent, rejectAnonymousFlood, async (req, res) => {
+route.post('/song-edits', jsonBody, editorOnly, async (req, res) => {
     try {
-        const proposal = await songEditDb.createProposal(req.body || {}, req.user || null);
+        const proposal = await songEditDb.createProposal(req.body || {}, req.user);
         res.status(201).json({
             success: true,
             data: proposal,
-            message: req.user
-                ? 'Your correction has been queued for review.'
-                : 'Your correction has been queued for review as Anonymous.'
+            message: 'Your correction has been queued for review.'
         });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });

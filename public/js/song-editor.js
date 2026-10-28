@@ -201,10 +201,23 @@
         });
     }
 
-    async function loadEditor() {
+    function showAccessDenied(message) {
+        document.body.classList.remove('is-access-check');
+        document.body.classList.add('is-access-denied');
+        document.getElementById('editorHeading').textContent = 'Hymn editor access is restricted';
+        document.querySelector('.editor-intro p').textContent = 'Only approved Editors and Administrators can prepare direct hymn corrections. You can still report an issue through the feedback forum.';
+        document.getElementById('editorIdentity').innerHTML = '';
+        document.getElementById('editorIdentity').appendChild(document.createTextNode(message + ' '));
+        var feedbackLink = el('a', 'editor-access-link', 'Open feedback forum');
+        feedbackLink.href = '/feedback/hymn/' + encodeURIComponent(hymnNumber);
+        document.getElementById('editorIdentity').appendChild(feedbackLink);
+        document.getElementById('editorTopState').textContent = 'Restricted';
+    }
+
+    async function loadEditor(user) {
         var message = document.getElementById('editorMessage');
         try {
-            var response = await fetch('/api/song-editor/' + encodeURIComponent(hymnNumber));
+            var response = await auth.apiRequest('/api/song-editor/' + encodeURIComponent(hymnNumber));
             var data = await response.json();
             if (!response.ok || !data.success) throw new Error(data.message || 'Could not load this hymn.');
             pair = data.data;
@@ -214,9 +227,44 @@
             document.getElementById('editorHeading').textContent = 'Help correct ' + hymnNumber + '. ' + title;
             document.getElementById('editorNavTitle').textContent = hymnNumber + '. ' + title;
             document.getElementById('editorTopState').textContent = 'Ready';
+            document.getElementById('editorIdentity').innerHTML = 'Editing as <b></b>. Changes still require administrator review.';
+            document.getElementById('editorIdentity').querySelector('b').textContent = user.userName || user.fullName || 'Editor';
+            document.body.classList.remove('is-access-check');
         } catch (error) {
-            showMessage(message, error.message, 'error');
-            document.getElementById('editorTopState').textContent = 'Could not load';
+            if (error.message && /access|Authentication|token/i.test(error.message)) {
+                showAccessDenied(error.message);
+            } else {
+                showMessage(message, error.message, 'error');
+                document.getElementById('editorTopState').textContent = 'Could not load';
+            }
+        }
+    }
+
+    async function authorizeAndLoad() {
+        var returnTo = '/hymns/' + hymnNumber + '/edit';
+        if (!window.auth || !auth.isLoggedIn || !auth.isLoggedIn()) {
+            window.location.replace('/login?returnTo=' + encodeURIComponent(returnTo));
+            return;
+        }
+
+        try {
+            var response = await auth.apiRequest('/api/auth/me');
+            var data = await response.json();
+            if (!response.ok || !data.success || !data.user) {
+                throw new Error(data.message || 'Authentication required');
+            }
+            var user = data.user;
+            if (user.status !== 'approved' || (user.role !== 'editor' && user.role !== 'admin')) {
+                showAccessDenied('Ask an administrator to assign the Editor role to your approved account.');
+                return;
+            }
+            await loadEditor(user);
+        } catch (error) {
+            if (/Authentication|token/i.test(error.message || '')) {
+                window.location.replace('/login?returnTo=' + encodeURIComponent(returnTo));
+                return;
+            }
+            showAccessDenied(error.message || 'Editor access could not be verified.');
         }
     }
 
@@ -231,11 +279,5 @@
     });
     document.getElementById('submitEdits').addEventListener('click', submitEdits);
 
-    if (window.auth && auth.isLoggedIn && auth.isLoggedIn()) {
-        var user = auth.getCurrentUser && auth.getCurrentUser();
-        document.getElementById('editorIdentity').innerHTML = 'Contributing as <b></b>. Your name will appear on the proposal.';
-        document.getElementById('editorIdentity').querySelector('b').textContent = user && (user.userName || user.fullName) || 'signed-in user';
-    }
-
-    loadEditor();
+    authorizeAndLoad();
 })();

@@ -104,6 +104,9 @@ async function getHymnPair(numberValue) {
 }
 
 async function createProposal(input, actor) {
+    if (!actor || actor.status !== 'approved' || !['editor', 'admin'].includes(actor.role)) {
+        throw new Error('An approved Editor or Administrator account is required to submit hymn edits.');
+    }
     const pair = await getHymnPair(input.number);
     const incoming = Array.isArray(input.changes) ? input.changes : [];
     if (!incoming.length || incoming.length > 80) {
@@ -160,8 +163,8 @@ async function createProposal(input, actor) {
         changes,
         note: cleanText(String(input.note || ''), 1000),
         status: 'pending',
-        submittedBy: actor && actor._id ? String(actor._id) : null,
-        submittedByName: actor && actor.userName ? actor.userName : 'Anonymous',
+        submittedBy: actor._id ? String(actor._id) : null,
+        submittedByName: actor.userName || actor.email || 'Editor',
         createdAt: now,
         updatedAt: now,
         reviewedBy: null,

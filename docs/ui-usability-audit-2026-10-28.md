@@ -128,8 +128,8 @@ Implemented workflow:
 3. Users can edit title/metadata fields and any existing lyric line independently.
 4. Only fields whose value changed are included in the proposal.
 5. The user reviews a before/after diff and can add a note.
-6. Signed-out submissions are explicitly labelled Anonymous; signed-in users have their name attached.
-7. Anonymous submissions are throttled to six per connection per hour.
+6. The editor is restricted to approved accounts with the `editor` or `admin` role; ordinary members and signed-out visitors cannot load hymn edit data or submit proposals.
+7. Administrators assign or remove the Editor role from the existing user-management dashboard.
 8. Proposals are stored in `newHymnal.songEdits` with status `pending`.
 9. `/admin/song-edits` shows exact diffs. Approval re-reads the live hymn and compares every original value.
 10. If any source text changed after submission, the proposal becomes `conflict` instead of overwriting newer data.
@@ -153,5 +153,5 @@ Version-one boundaries are deliberate: it edits existing lines and scalar fields
 - Local route smoke tests for home, menu, index, song, feedback, editor, donation summary and admin shell.
 - Expected 400 response for an empty edit proposal, with no database write.
 - Expected 401 response for an anonymous admin queue request.
-- Isolated in-memory tests for proposal creation, anonymous attribution, approval, exact path updates, stale-data conflict detection, invalid paths and hymn `12a` support.
+- Isolated in-memory tests for role-gated proposal creation, approval, exact path updates, stale-data conflict detection, invalid paths and hymn `12a` support.
 - Responsive visual captures for the core pages and the editor at desktop, tablet and phone sizes.

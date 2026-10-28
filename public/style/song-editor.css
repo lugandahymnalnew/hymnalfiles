@@ -45,6 +45,13 @@ body.editor-page {
 .editor-topbar__state { color: #f7d97b; font-size: 0.85rem; }
 
 .editor-shell { width: min(1180px, 100%); margin: 0 auto; padding: 22px 18px 110px; }
+.editor-page.is-access-check .editor-tabs,
+.editor-page.is-access-check .editor-columns,
+.editor-page.is-access-check .editor-savebar,
+.editor-page.is-access-denied .editor-tabs,
+.editor-page.is-access-denied .editor-columns,
+.editor-page.is-access-denied .editor-savebar { display: none; }
+.editor-access-link { color: var(--editor-teal-dark); font-weight: 800; }
 
 .editor-intro {
     display: flex;
@@ -62,6 +69,7 @@ body.editor-page {
 .editor-intro h1 { margin: 0 0 7px; font-size: clamp(1.55rem, 3vw, 2.25rem); overflow-wrap: anywhere; }
 .editor-intro p { max-width: 760px; margin: 0; color: var(--editor-muted); line-height: 1.6; }
 .editor-anon { flex: 0 0 250px; padding: 12px 14px; border-radius: 12px; color: #634700; background: #fff3c8; font-size: 0.9rem; line-height: 1.45; }
+.editor-page.is-access-denied .editor-anon { color: #7b2c27; background: #fae9e7; }
 .editor-anon a { color: var(--editor-teal-dark); font-weight: 800; }
 
 .editor-tabs { display: none; margin-bottom: 12px; padding: 4px; border-radius: 13px; background: #e1e9e7; }

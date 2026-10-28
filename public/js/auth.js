@@ -51,6 +51,11 @@
         return user && user.role === 'admin' && user.status === 'approved';
     }
 
+    function canEditSongs() {
+        const user = getUser();
+        return !!user && user.status === 'approved' && (user.role === 'editor' || user.role === 'admin');
+    }
+
     /**
      * Decode JWT token to get expiry time
      */
@@ -325,6 +330,7 @@
     window.auth = {
         isLoggedIn,
         isAdmin,
+        canEditSongs,
         login,
         logout,
         logoutAll,

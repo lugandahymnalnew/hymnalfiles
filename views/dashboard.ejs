@@ -277,6 +277,7 @@
         }
 
         .role-admin { background: #eff6ff; color: #2563eb; }
+        .role-editor { background: #ecfdf5; color: #047857; }
         .role-user { background: #f8fafc; color: #64748b; }
 
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
@@ -439,6 +440,9 @@
         <a class="nav-item" href="#users" id="navUsers" onclick="showSection('users')" style="display:none">
             <i class="bi bi-people"></i> Users
             <span class="badge bg-warning text-dark" id="pendingBadge" style="display:none">0</span>
+        </a>
+        <a class="nav-item" href="/admin/song-edits" id="navSongEdits" style="display:none">
+            <i class="bi bi-pencil-square"></i> Song Edit Queue
         </a>
         <a class="nav-item" href="#all-feedback" id="navAllFeedback" onclick="showSection('all-feedback')">
             <i class="bi bi-inbox"></i> All Feedback
@@ -740,12 +744,15 @@
 
         document.getElementById('sidebarAvatar').innerHTML = avatarHTML(currentUser, 36);
         document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.userName;
-        document.getElementById('sidebarRole').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Member';
+        document.getElementById('sidebarRole').textContent = currentUser.role === 'admin'
+            ? 'Administrator'
+            : currentUser.role === 'editor' ? 'Hymn Editor' : 'Member';
 
         // Admin-only nav
         if (currentUser.role === 'admin') {
             document.getElementById('adminNavLabel').style.display = 'block';
             document.getElementById('navUsers').style.display = 'flex';
+            document.getElementById('navSongEdits').style.display = 'flex';
         }
 
         await Promise.all([
@@ -974,7 +981,9 @@
                     <td>
                         ${u.status === 'pending' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','approved')"><i class="bi bi-check-lg"></i> Approve</button>` : ''}
                         ${u.status === 'approved' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','disabled')"><i class="bi bi-x-lg"></i> Disable</button>` : ''}
-                        ${u.role !== 'admin' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','admin-role')" style="margin-left:4px;"><i class="bi bi-shield"></i></button>` : ''}
+                        ${u.role === 'user' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','editor-role')" style="margin-left:4px;" title="Grant hymn editor access"><i class="bi bi-pencil-square"></i> Editor</button>` : ''}
+                        ${u.role === 'editor' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','user-role')" style="margin-left:4px;" title="Remove hymn editor access"><i class="bi bi-person"></i> Member</button>` : ''}
+                        ${u.role !== 'admin' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','admin-role')" style="margin-left:4px;" title="Grant administrator access"><i class="bi bi-shield"></i> Admin</button>` : ''}
                     </td>
                 </tr>
             `).join('');
@@ -987,6 +996,8 @@
         try {
             let body = {};
             if (action === 'admin-role') body = { role: 'admin' };
+            else if (action === 'editor-role') body = { role: 'editor' };
+            else if (action === 'user-role') body = { role: 'user' };
             else body = { status: action };
 
             await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify(body) });

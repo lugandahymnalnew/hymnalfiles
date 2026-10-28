@@ -94,6 +94,21 @@ function requireAdmin(req, res, next) {
   next();
 }
 
+function requireEditor(req, res, next) {
+  if (!req.user) {
+    return res.status(401).json({ success: false, message: 'Authentication required' });
+  }
+
+  if (req.user.status !== 'approved' || !['editor', 'admin'].includes(req.user.role)) {
+    return res.status(403).json({
+      success: false,
+      message: 'Hymn editor access requires an approved Editor or Administrator account'
+    });
+  }
+
+  next();
+}
+
 function isLogin(_req, _res, next) {
   next();
 }
@@ -106,6 +121,7 @@ module.exports = {
   attachUserIfPresent,
   requireAuth,
   requireApproved,
+  requireEditor,
   requireAdmin,
   isLogin,
   isLogout

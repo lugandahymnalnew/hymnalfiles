@@ -372,7 +372,7 @@ user_route.patch('/api/admin/users/:id', auth.requireAuth, auth.requireAdmin, as
 
     if (req.body.role !== undefined) {
       const nextRole = String(req.body.role);
-      if (['user', 'admin'].indexOf(nextRole) === -1) {
+      if (['user', 'editor', 'admin'].indexOf(nextRole) === -1) {
         return res.status(400).json({ success: false, message: 'Invalid role value' });
       }
 

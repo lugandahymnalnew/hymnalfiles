@@ -78,6 +78,7 @@ require.cache[dbPath] = { id: dbPath, filename: dbPath, loaded: true, exports: m
 const songEditDb = require('../modules/songEditDb');
 
 (async function run() {
+    const editor = { _id: 'editor-1', userName: 'Editor', role: 'editor', status: 'approved' };
     const proposal = await songEditDb.createProposal({
         number: '1',
         changes: [
@@ -85,10 +86,10 @@ const songEditDb = require('../modules/songEditDb');
             { path: 'english.english.stanza 1.1', to: 'Early in the morning our song shall rise' }
         ],
         note: 'Spelling and a missing phrase.'
-    }, null);
+    }, editor);
 
     assert.strictEqual(proposal.status, 'pending');
-    assert.strictEqual(proposal.submittedByName, 'Anonymous');
+    assert.strictEqual(proposal.submittedByName, 'Editor');
     assert.strictEqual(proposal.changes.length, 2);
     assert.strictEqual(proposal.changes[0].from, "Gw'oli Mutukuvi");
 
@@ -100,35 +101,62 @@ const songEditDb = require('../modules/songEditDb');
     const stale = await songEditDb.createProposal({
         number: '1',
         changes: [{ path: 'luganda.lyrics.stanza 1.0', to: "Gw'oli ddala mutukuvu" }]
-    }, { _id: 'user-1', userName: 'Singer' });
+    }, { _id: 'user-1', userName: 'Singer', role: 'editor', status: 'approved' });
     hymns.luganda['1'].lyrics['stanza 1'][0] = 'Someone already changed this line';
     const conflicted = await songEditDb.approveProposal(String(stale._id), { userName: 'reviewer' }, 'Retry needed');
     assert.strictEqual(conflicted.status, 'conflict');
     assert.strictEqual(conflicted.conflicts.length, 1);
 
     await assert.rejects(
-        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.unknown', to: 'No' }] }, null),
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.unknown', to: 'No' }] }, editor),
         /not valid/
     );
     await assert.rejects(
-        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: '<b>Unsafe title</b>' }] }, null),
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: '<b>Unsafe title</b>' }] }, editor),
         /HTML is not allowed/
     );
     await assert.rejects(
         songEditDb.createProposal({
             number: '1',
             changes: [{ path: 'luganda.lyrics.stanza 1.1', to: '<b onclick="alert(1)">Unsafe lyric</b>' }]
-        }, null),
+        }, editor),
         /exact <b>/
     );
     const emphasized = await songEditDb.createProposal({
         number: '1',
         changes: [{ path: 'luganda.lyrics.stanza 1.1', to: '<b>Mutukuvu</b>' }]
-    }, null);
+    }, editor);
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: 'Blocked' }] }, {
+            _id: 'member-1', userName: 'Member', role: 'user', status: 'approved'
+        }),
+        /approved Editor/
+    );
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: 'Blocked' }] }, null),
+        /approved Editor/
+    );
     assert.strictEqual(emphasized.changes[0].to, '<b>Mutukuvu</b>');
     assert.strictEqual(songEditDb.cleanNumber('12a'), '12a');
 
-    console.log('Song edit proposal, approval, conflict and validation tests passed.');
+    const auth = require('../middleWares/auth');
+    function runEditorGuard(user) {
+        let nextCalled = false;
+        let responseStatus = null;
+        auth.requireEditor(
+            { user },
+            { status(code) { responseStatus = code; return this; }, json() { return this; } },
+            () => { nextCalled = true; }
+        );
+        return { nextCalled, responseStatus };
+    }
+    assert.deepStrictEqual(runEditorGuard(editor), { nextCalled: true, responseStatus: null });
+    assert.deepStrictEqual(runEditorGuard({ role: 'admin', status: 'approved' }), { nextCalled: true, responseStatus: null });
+    assert.deepStrictEqual(runEditorGuard({ role: 'user', status: 'approved' }), { nextCalled: false, responseStatus: 403 });
+    assert.deepStrictEqual(runEditorGuard({ role: 'editor', status: 'pending' }), { nextCalled: false, responseStatus: 403 });
+    assert.deepStrictEqual(runEditorGuard(null), { nextCalled: false, responseStatus: 401 });
+
+    console.log('Song edit role guard, proposal, approval, conflict and validation tests passed.');
 })().catch((error) => {
     console.error(error);
     process.exit(1);
