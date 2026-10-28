@@ -10,9 +10,53 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="/src/images/app.png">
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/home.css">
+    <link rel="stylesheet" href="style/donor-thanks.css">
     <link rel="shortcut icon" href="src/images/app.png" type="image/x-icon">
 </head>
 <body>
+    <header class="home-hero">
+      <nav class="home-nav">
+        <a class="home-brand" href="/"><img src="/src/images/app.png" alt=""><span>Ennyimba Za Kristo</span></a>
+        <div class="home-nav__links">
+          <a href="/feedback">Feedback</a>
+          <a href="/download.html">Get the app</a>
+        </div>
+      </nav>
+      <div class="home-hero__content">
+        <div class="home-kicker">New Luganda Hymnal</div>
+        <h1>Sing, read and carry the hymnal anywhere.</h1>
+        <p>Browse Luganda hymns with English references, searchable lyrics and playable MIDI. The community can also suggest precise corrections when a title or lyric line is wrong.</p>
+        <div class="home-actions">
+          <a class="home-action home-action--gold" href="/src/menu.html">Open a hymn</a>
+          <a class="home-action" href="/src/index.html">Search the index</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <div data-donor-shoutout data-donor-mode="feature"></div>
+      <section class="home-grid" aria-label="Hymnal links">
+        <a class="home-card" href="/src/pages/abaana.html"><h2>Children's songs</h2><p>Open the separate children's collection.</p></a>
+        <a class="home-card" href="/feedback"><h2>Corrections & feedback</h2><p>Suggest a lyric edit or discuss a problem with the community.</p></a>
+        <a class="home-card" href="/download.html"><h2>Install the app</h2><p>Android download and web-app installation help.</p></a>
+        <a class="home-card" href="/books"><h2>Ebyokuyiga</h2><p>Study and reading resources.</p></a>
+        <a class="home-card" href="/src/pages/agree.html"><h2>Terms & privacy</h2><p>How the app and community features work.</p></a>
+        <a class="home-card" href="/adverts"><h2>Community projects</h2><p>See related services and announcements.</p></a>
+      </section>
+      <details class="home-install">
+        <summary>Install this website like an app</summary>
+        <div class="home-install__actions">
+          <button type="button" onclick="installApp()">Install</button>
+          <button type="button" onclick="addScreen()">iPhone home-screen help</button>
+          <button type="button" onclick="uninstallApp()">Reset offline copy</button>
+        </div>
+      </details>
+    </main>
+    <footer class="home-footer">
+      <p>Ennyimba Za Kristo · version 1.0.50 · Kitamirike Rogers</p>
+      <p><a href="https://wa.me/256757035774">WhatsApp +256 757 035774</a></p>
+    </footer>
     <div class="contMain">
       <br><br>
       <div class="btncn">
@@ -60,6 +104,7 @@
     <div class="sdaL">
       <img src="sidelogo.png" alt="sda logo">
     </div>
+    <script src="js/donor-thanks.js" defer></script>
     <script src="js/serv.js" defer></script>
     <!-- <script>
       function installApp() {

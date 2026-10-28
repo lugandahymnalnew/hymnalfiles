@@ -85,6 +85,8 @@ const feedbackApiRoute = require('./routes/feedbackRoute');
 const feedbackViewRoute = require('./routes/feedbackViewRoute');
 const bibleRoute = require('./routes/bibleRoute');
 const donationRoute = require('./routes/donationRoute');
+const songEditRoute = require('./routes/songEditRoute');
+const songEditViewRoute = require('./routes/songEditViewRoute');
 const db = require('./modules/mongoDBApi');
 
 // Behind Render's proxy: without this every visitor shares the proxy's IP,
@@ -93,10 +95,16 @@ app.set('trust proxy', 1);
 
 app.use('/api/bible', bibleRoute);
 app.use('/api', donationRoute);
+app.use('/api', songEditRoute);
+app.use('/', songEditViewRoute);
 
 // Admin page for donations (the page itself is a shell; every API call it
 // makes is checked server-side for an approved admin token).
 app.get('/admin/donations', (_req, res) => res.render('donations-admin'));
+
+// Admin page for user accounts and roles (same shell: the page is public,
+// every API call behind it is checked server-side).
+app.get('/admin/users', (_req, res) => res.render('users-admin'));
 
 const SITE_URL = process.env.SITE_URL || 'https://newlugandahymnal.onrender.com';
 

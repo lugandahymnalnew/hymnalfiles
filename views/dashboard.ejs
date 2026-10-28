@@ -277,6 +277,7 @@
         }
 
         .role-admin { background: #eff6ff; color: #2563eb; }
+        .role-editor { background: #ecfdf5; color: #047857; }
         .role-user { background: #f8fafc; color: #64748b; }
 
         .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
@@ -439,6 +440,9 @@
         <a class="nav-item" href="#users" id="navUsers" onclick="showSection('users')" style="display:none">
             <i class="bi bi-people"></i> Users
             <span class="badge bg-warning text-dark" id="pendingBadge" style="display:none">0</span>
+        </a>
+        <a class="nav-item" href="/admin/song-edits" id="navSongEdits" style="display:none">
+            <i class="bi bi-pencil-square"></i> Song Edit Queue
         </a>
         <a class="nav-item" href="#all-feedback" id="navAllFeedback" onclick="showSection('all-feedback')">
             <i class="bi bi-inbox"></i> All Feedback
@@ -626,7 +630,10 @@
             <div class="section-card">
                 <div class="section-header">
                     <div class="section-title"><i class="bi bi-people"></i> User Management</div>
-                    <span class="badge bg-secondary" id="totalUsers">0 users</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/admin/users" class="btn btn-sm btn-outline-secondary">Open user admin</a>
+                        <span class="badge bg-secondary" id="totalUsers">0 users</span>
+                    </div>
                 </div>
                 <div style="overflow-x:auto;">
                     <table class="admin-table">
@@ -732,20 +739,38 @@
     // ── State ──
     let currentUser = null;
     let allUsers = [];
+    let allRoles = [];
+
+    function userCan(permission) {
+        const permissions = currentUser && Array.isArray(currentUser.permissions) ? currentUser.permissions : [];
+        return permissions.includes('*') || permissions.includes(permission);
+    }
 
     // ── Init ──
     async function init() {
         currentUser = auth.getCurrentUser();
         if (!currentUser) { window.location.href = '/login'; return; }
+        try {
+            const response = await auth.apiRequest('/api/auth/me');
+            const result = await response.json();
+            if (response.ok && result.success && result.user) currentUser = result.user;
+        } catch (_error) {}
 
         document.getElementById('sidebarAvatar').innerHTML = avatarHTML(currentUser, 36);
         document.getElementById('sidebarName').textContent = currentUser.fullName || currentUser.userName;
-        document.getElementById('sidebarRole').textContent = currentUser.role === 'admin' ? 'Administrator' : 'Member';
+        document.getElementById('sidebarRole').textContent = String(currentUser.role || 'user')
+            .replace(/[-_]/g, ' ')
+            .replace(/\b\w/g, letter => letter.toUpperCase());
 
-        // Admin-only nav
-        if (currentUser.role === 'admin') {
+        // Permission-controlled navigation
+        if (userCan('users:manage') || userCan('songEdits:review')) {
             document.getElementById('adminNavLabel').style.display = 'block';
+        }
+        if (userCan('users:manage')) {
             document.getElementById('navUsers').style.display = 'flex';
+        }
+        if (userCan('songEdits:review')) {
+            document.getElementById('navSongEdits').style.display = 'flex';
         }
 
         await Promise.all([
@@ -793,7 +818,7 @@
                 fetch('/lugSongs').catch(() => null),
                 fetch('/api/feedback/hymns').catch(() => null),
                 fetch('/api/feedback/general').catch(() => null),
-                currentUser.role === 'admin' ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
+                userCan('users:manage') ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
             ]);
 
             const songs = songsRes ? (await songsRes.json()).data || [] : [];
@@ -825,7 +850,7 @@
                         <div class="stat-label">General Feedback</div>
                     </div>
                 </div>
-                ${currentUser.role === 'admin' ? `
+                ${userCan('users:manage') ? `
                 <div class="stat-card" onclick="showSection('users')">
                     <div class="stat-icon red"><i class="bi bi-person-check"></i></div>
                     <div class="stat-body">
@@ -952,8 +977,12 @@
     async function loadUsers() {
         const tbody = document.getElementById('usersTableBody');
         try {
-            const { data } = await apiFetch('/api/admin/users');
-            allUsers = data || [];
+            const [usersResult, rolesResult] = await Promise.all([
+                apiFetch('/api/admin/users'),
+                apiFetch('/api/admin/roles')
+            ]);
+            allUsers = usersResult.data || [];
+            allRoles = rolesResult.data || [];
             document.getElementById('totalUsers').textContent = allUsers.length + ' users';
             tbody.innerHTML = allUsers.map(u => `
                 <tr>
@@ -969,12 +998,15 @@
                     <td>
                         <span class="status-dot dot-${u.status}"></span>${u.status}
                     </td>
-                    <td><span class="user-chip role-${u.role}">${u.role}</span></td>
+                    <td>
+                        <select class="form-select form-select-sm" onchange="setUserRole('${u._id}', this.value)" aria-label="Role for ${escHtml(u.userName)}">
+                            ${allRoles.map(role => `<option value="${escHtml(role.name)}" ${role.name === u.role ? 'selected' : ''}>${escHtml(role.label)}</option>`).join('')}
+                        </select>
+                    </td>
                     <td style="color:#94a3b8;font-size:.8rem;">${new Date(u.createdAt || Date.now()).toLocaleDateString()}</td>
                     <td>
                         ${u.status === 'pending' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','approved')"><i class="bi bi-check-lg"></i> Approve</button>` : ''}
                         ${u.status === 'approved' ? `<button class="action-btn disable btn-sm" onclick="updateUser('${u._id}','disabled')"><i class="bi bi-x-lg"></i> Disable</button>` : ''}
-                        ${u.role !== 'admin' ? `<button class="action-btn approve btn-sm" onclick="updateUser('${u._id}','admin-role')" style="margin-left:4px;"><i class="bi bi-shield"></i></button>` : ''}
                     </td>
                 </tr>
             `).join('');
@@ -985,9 +1017,7 @@
 
     async function updateUser(userId, action) {
         try {
-            let body = {};
-            if (action === 'admin-role') body = { role: 'admin' };
-            else body = { status: action };
+            const body = { status: action };
 
             await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify(body) });
             showToast('User updated successfully', 'success');
@@ -999,9 +1029,20 @@
         }
     }
 
+    async function setUserRole(userId, role) {
+        try {
+            await apiFetch(`/api/admin/users/${userId}`, { method: 'PATCH', body: JSON.stringify({ role }) });
+            showToast('User role updated', 'success');
+            await loadUsers();
+        } catch (e) {
+            showToast('Role update failed: ' + e.message, 'error');
+            await loadUsers();
+        }
+    }
+
     // ── Pending Approvals widget ──
     async function loadPendingApprovals() {
-        if (currentUser.role !== 'admin') return;
+        if (!userCan('users:manage')) return;
         const card = document.getElementById('pendingApprovalsCard');
         const body = document.getElementById('pendingUsersBody');
         const badge = document.getElementById('pendingBadge');

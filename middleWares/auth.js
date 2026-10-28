@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongodb');
 const db = require('../modules/mongoDBApi');
 const { verifyAccessToken, sanitizeUser } = require('../modules/jwtAuth');
+const roleAccess = require('../modules/roleAccess');
 
 function getBearerToken(req) {
   const authHeader = req.headers.authorization || '';
@@ -26,7 +27,9 @@ async function hydrateUser(req, decodedToken) {
     return null;
   }
 
-  return sanitizeUser(lookup.listing);
+  const user = sanitizeUser(lookup.listing);
+  user.permissions = await roleAccess.resolvePermissions(user.role || 'user');
+  return user;
 }
 
 async function attachUserIfPresent(req, _res, next) {
@@ -82,17 +85,35 @@ function requireApproved(req, res, next) {
   next();
 }
 
-function requireAdmin(req, res, next) {
-  if (!req.user) {
-    return res.status(401).json({ success: false, message: 'Authentication required' });
-  }
-
-  if (req.user.status !== 'approved' || req.user.role !== 'admin') {
-    return res.status(403).json({ success: false, message: 'Admin access required' });
-  }
-
-  next();
+function requirePermission(permission) {
+  return function permissionMiddleware(req, res, next) {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+    if (!roleAccess.hasPermission(req.user, permission)) {
+      return res.status(403).json({
+        success: false,
+        message: `Permission required: ${permission}`
+      });
+    }
+    next();
+  };
 }
+
+function requireAnyPermission(...permissions) {
+  return function anyPermissionMiddleware(req, res, next) {
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+    if (!permissions.some((permission) => roleAccess.hasPermission(req.user, permission))) {
+      return res.status(403).json({ success: false, message: 'This account does not have the required permission' });
+    }
+    next();
+  };
+}
+
+const requireAdmin = requirePermission(roleAccess.PERMISSIONS.ADMIN_ACCESS);
+const requireEditor = requirePermission(roleAccess.PERMISSIONS.SONG_EDITS_SUBMIT);
 
 function isLogin(_req, _res, next) {
   next();
@@ -106,7 +127,11 @@ module.exports = {
   attachUserIfPresent,
   requireAuth,
   requireApproved,
+  requirePermission,
+  requireAnyPermission,
+  requireEditor,
   requireAdmin,
+  hasPermission: roleAccess.hasPermission,
   isLogin,
   isLogout
 };

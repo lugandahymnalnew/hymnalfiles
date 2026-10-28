@@ -47,8 +47,17 @@
      * Check if user is admin
      */
     function isAdmin() {
+        return hasPermission('admin:access');
+    }
+
+    function hasPermission(permission) {
         const user = getUser();
-        return user && user.role === 'admin' && user.status === 'approved';
+        const permissions = user && Array.isArray(user.permissions) ? user.permissions : [];
+        return !!user && user.status === 'approved' && (permissions.indexOf('*') !== -1 || permissions.indexOf(permission) !== -1);
+    }
+
+    function canEditSongs() {
+        return hasPermission('songEdits:read');
     }
 
     /**
@@ -325,6 +334,8 @@
     window.auth = {
         isLoggedIn,
         isAdmin,
+        canEditSongs,
+        hasPermission,
         login,
         logout,
         logoutAll,

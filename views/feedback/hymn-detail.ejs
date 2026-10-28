@@ -268,7 +268,10 @@
 
         <div class="header">
             <h1>Hymn <%= feedback.hymnNumber %> Feedback</h1>
-            <button class="btn btn-primary" onclick="showNewIssueForm()">New Issue</button>
+            <div>
+                <a class="btn btn-secondary" href="/hymns/<%= feedback.hymnNumber %>/edit">Edit hymn text</a>
+                <button class="btn btn-primary" onclick="showNewIssueForm()">New Issue</button>
+            </div>
         </div>
 
         <!-- New Issue Form -->

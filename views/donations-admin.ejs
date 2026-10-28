@@ -59,7 +59,7 @@
 <header>
     <div class="wrap">
         <h1>Donations</h1>
-        <div><a href="/src/pages/mpagila.html">View donate page</a> &nbsp;·&nbsp; <a href="/feedback">Feedback</a></div>
+        <div><a href="/src/pages/mpagila.html">View donate page</a> &nbsp;·&nbsp; <a href="/feedback">Feedback</a> &nbsp;·&nbsp; <a href="/admin/users">Users</a></div>
     </div>
 </header>
 
@@ -91,6 +91,9 @@
                 <label>Goal (USD)<input name="goalAmount" type="number" min="1" step="any" required></label>
                 <label>Already raised before tracking (USD)<input name="baseRaised" type="number" min="0" step="any" required></label>
                 <label>UGX per 1 USD<input name="ugxRate" type="number" min="1" step="any" required></label>
+                <label>EUR per 1 USD<input name="eurRate" type="number" min="0.01" step="any"></label>
+                <label>GBP per 1 USD<input name="gbpRate" type="number" min="0.01" step="any"></label>
+                <label class="wide muted">Leave a rate blank if you do not receive that currency. A currency with no rate cannot be valued against the goal, so it is not offered to donors, and a gift already received in it stays on record but is not counting.</label>
                 <label class="wide"><button type="submit">Save progress settings</button></label>
             </form>
         </section>
@@ -188,7 +191,14 @@
             var tr = document.createElement('tr');
             var who = (d.name || 'Anonymous') + (d.showName ? '' : ' (hidden)');
             tr.appendChild(cell(who + (d.message ? ' — ' + d.message : '')));
-            tr.appendChild(cell(money(d.amount, d.currency)));
+            // goalValue is what the gift is worth toward the goal. A gift in a
+            // currency with no rate shows "no rate set", because it is on
+            // record but is not counting toward the progress bar.
+            var amountCell = cell(money(d.amount, d.currency));
+            if (d.goalValue === 0) {
+                amountCell.appendChild(document.createTextNode(' · no rate set'));
+            }
+            tr.appendChild(amountCell);
             tr.appendChild(cell(d.method + (d.source === 'self' ? ' · self-reported' : '')));
             tr.appendChild(cell(d.reference || '–'));
             var st = document.createElement('td'); var pill = document.createElement('span');
@@ -246,7 +256,7 @@
         try {
             var json = await api('/api/admin/donations/settings', 'PUT', {
                 title: f.title.value, goalAmount: f.goalAmount.value, baseRaised: f.baseRaised.value,
-                rates: { UGX: f.ugxRate.value }
+                rates: { UGX: f.ugxRate.value, EUR: f.eurRate.value, GBP: f.gbpRate.value }
             });
             showSummary(json.summary); toast('Progress updated');
         } catch (err) { toast(err.message); }
@@ -259,7 +269,11 @@
             var s = await api('/api/admin/donations/settings');
             var f = $('settingsForm');
             f.title.value = s.data.title; f.goalAmount.value = s.data.goalAmount;
-            f.baseRaised.value = s.data.baseRaised; f.ugxRate.value = (s.data.rates && s.data.rates.UGX) || 3700;
+            f.baseRaised.value = s.data.baseRaised;
+            var rates = s.data.rates || {};
+            f.ugxRate.value = rates.UGX || 4390;
+            f.eurRate.value = rates.EUR || '';
+            f.gbpRate.value = rates.GBP || '';
             $('gate').hidden = true; $('app').hidden = false;
             await load(true);
         } catch (err) {

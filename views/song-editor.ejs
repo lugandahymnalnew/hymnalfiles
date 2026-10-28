@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Hymn <%= hymnNumber %> | Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="/style/song-editor.css">
+</head>
+<body class="editor-page is-access-check" data-hymn-number="<%= hymnNumber %>">
+    <header class="editor-topbar">
+        <a href="/songs.html?song=<%= encodeURIComponent(hymnNumber) %>">&#8249; Hymn</a>
+        <strong class="editor-topbar__title" id="editorNavTitle">Edit hymn <%= hymnNumber %></strong>
+        <span class="editor-topbar__state" id="editorTopState">Loading…</span>
+    </header>
+
+    <main class="editor-shell">
+        <section class="editor-intro">
+            <div>
+                <h1 id="editorHeading">Help correct hymn <%= hymnNumber %></h1>
+                <p>Edit only the parts that are wrong. Your changes are sent as a proposal, compared with the current hymn, and reviewed before the public lyrics are updated.</p>
+            </div>
+            <aside class="editor-anon" id="editorIdentity">
+                Checking hymn editor access…
+            </aside>
+        </section>
+
+        <div class="editor-message" id="editorMessage" role="status"></div>
+
+        <nav class="editor-tabs" aria-label="Lyrics language">
+            <button class="editor-tab is-active" type="button" data-editor-tab="luganda">Luganda</button>
+            <button class="editor-tab" type="button" data-editor-tab="english">English</button>
+        </nav>
+
+        <div class="editor-columns" id="editorColumns">
+            <section class="editor-language is-active" id="editorLuganda" data-language="luganda">
+                <div class="editor-language__heading"><h2>Luganda hymn</h2><span>Title, details and lyrics</span></div>
+                <div class="editor-empty">Loading Luganda lyrics…</div>
+            </section>
+            <section class="editor-language" id="editorEnglish" data-language="english">
+                <div class="editor-language__heading"><h2>English hymn</h2><span>Title and lyrics</span></div>
+                <div class="editor-empty">Loading English lyrics…</div>
+            </section>
+        </div>
+    </main>
+
+    <div class="editor-savebar">
+        <div>
+            <span class="editor-savebar__count" id="changeCount">No changes yet</span>
+            <span class="editor-savebar__hint">Only changed fields will be submitted.</span>
+        </div>
+        <div class="editor-actions">
+            <button class="editor-btn editor-btn--secondary" type="button" id="resetEdits" disabled>Reset</button>
+            <button class="editor-btn editor-btn--primary" type="button" id="reviewEdits" disabled>Review</button>
+        </div>
+    </div>
+
+    <section class="editor-review" id="reviewPanel" aria-hidden="true">
+        <div class="editor-review__panel" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+            <div class="editor-review__head">
+                <h2 id="reviewTitle">Review your correction</h2>
+                <button class="editor-review__close" type="button" id="closeReview" aria-label="Close">&times;</button>
+            </div>
+            <div class="editor-review__body">
+                <div id="reviewDiffs"></div>
+                <label for="editNote"><b>Note for the reviewer</b> (optional)</label>
+                <textarea class="editor-note" id="editNote" maxlength="1000" placeholder="Explain a spelling, translation or source if it helps the reviewer."></textarea>
+                <div class="editor-message" id="submitMessage" role="status"></div>
+                <button class="editor-btn editor-btn--primary" type="button" id="submitEdits">Send for review</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/song-editor.js"></script>
+</body>
+</html>

@@ -281,9 +281,10 @@ body{
         min-height: 46px;
         padding: 0 8px;
     }
-    .menu-appbar__title{
-        font-size: 0.92rem;
-    }
+    .menu-appbar{ grid-template-columns: 1fr 1fr; }
+    .menu-appbar__title{ display: none; }
+    .menu-appbar__group .menu-appbar__link:first-child{ display: none; }
+    .menu-appbar__group .menu-appbar__link{ font-size: 0.78rem; }
     .menu-appbar__link{
         font-size: 0.88rem;
     }

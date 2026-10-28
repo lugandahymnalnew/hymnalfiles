@@ -303,6 +303,24 @@ async function deleteRows(nameOfRow,dbName,tName){
     console.log(`deleted ${result.deletedCount} row(s)`);
 }
 
+// Counting rows
+/**
+ * Counts the rows that match a filter.
+ * @param {Object} nameOfRow - eg{col1: value} the filter to match.
+ * @param {string} dbName - name of the database.
+ * @param {string} tName - table or collection name.
+ * @returns {Promise<number>} how many rows matched, 0 when the query fails.
+ */
+async function countRows(nameOfRow,dbName,tName){
+    if(!await checkClient()){return 0;}
+    try{
+        return await client.db(dbName).collection(tName).countDocuments(nameOfRow || {});
+    } catch (err) {
+        console.error(`count failed for ${dbName}.${tName}:`, err.message);
+        return 0;
+    }
+}
+
 // Showing available databases
 /**
  * Returns list of databases
@@ -392,7 +410,8 @@ module.exports = {
     updateRows, 
     updateRows2, 
     deleteRow, 
-    deleteRows, 
+    deleteRows,
+    countRows, 
     listDatabeses,
     listTables,
     createTable,

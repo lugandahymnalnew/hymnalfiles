@@ -69,7 +69,7 @@ $(document).on('click','.share',function(){
 //Error button
 var btn_err = document.createElement('button');
 btn_err.className = "err";
-btn_err.innerHTML = 'Report Error';
+btn_err.innerHTML = 'Suggest edit';
 $(document).on('click','.err',function(){
     E_err();
 });

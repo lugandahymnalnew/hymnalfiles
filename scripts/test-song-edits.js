@@ -1,0 +1,218 @@
+const assert = require('assert');
+const path = require('path');
+
+const dbPath = require.resolve('../modules/mongoDBApi');
+
+const hymns = {
+    luganda: {
+        '1': {
+            number: '1',
+            song: "Gw'oli Mutukuvi",
+            EngTit: 'Holy, Holy, Holy',
+            EngNo: 'CH 73',
+            An: '',
+            composer: 'John B.Dykes',
+            doh: 'Doh is E',
+            signUp: '4',
+            signDown: '4',
+            lyrics: { 'stanza 1': ["Gw'oli mutukuvu", 'Buli ku nkya'] }
+        }
+    },
+    english: {
+        '1': {
+            number: '1',
+            english: { 'stanza 1': ['Holy, holy, holy!', 'Early in the morning'] }
+        }
+    }
+};
+
+const proposals = new Map();
+const roles = new Map();
+
+function clone(value) {
+    return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+}
+
+function setPath(target, dottedPath, value) {
+    const parts = dottedPath.split('.');
+    let cursor = target;
+    for (let i = 0; i < parts.length - 1; i += 1) {
+        cursor = cursor[parts[i]];
+    }
+    cursor[parts[parts.length - 1]] = value;
+}
+
+const mockDb = {
+    async readRow(filter, dbName, collection) {
+        if (dbName === 'lugandaHymnal') {
+            const item = hymns[collection] && hymns[collection][filter.number];
+            return { found: !!item, err: false, listing: clone(item) || null };
+        }
+        if (dbName === 'newHymnal' && collection === 'roles') {
+            const item = roles.get(String(filter._id));
+            return { found: !!item, err: false, listing: clone(item) || null };
+        }
+        if (dbName === 'newHymnal' && collection === 'users') {
+            return { found: false, err: false, listing: null };
+        }
+        const id = filter._id && String(filter._id);
+        const item = proposals.get(id);
+        return { found: !!item, err: false, listing: clone(item) || null };
+    },
+    async readRows(_filter, dbName, collection) {
+        if (dbName === 'newHymnal' && collection === 'roles') {
+            return { listings: clone(Array.from(roles.values())), found: roles.size > 0, err: false };
+        }
+        return { listings: [], found: false, err: false };
+    },
+    async createListing(document) {
+        proposals.set(String(document._id), clone(document));
+    },
+    async readRowsPaged(filter, _dbName, _collection, page, pageSize) {
+        const items = Array.from(proposals.values()).filter((item) => !filter.status || item.status === filter.status);
+        return { listings: clone(items), total: items.length, found: !!items.length, err: false, page, pageSize };
+    },
+    async updateRow(filter, updates, dbName, collection) {
+        if (dbName === 'lugandaHymnal') {
+            const item = hymns[collection] && hymns[collection][filter.number];
+            if (!item) return { updated: 0, err: false };
+            Object.entries(updates).forEach(([key, value]) => setPath(item, key, value));
+            return { updated: 1, err: false };
+        }
+        const id = String(filter._id);
+        const proposal = proposals.get(id);
+        if (!proposal) return { updated: 0, err: false };
+        Object.assign(proposal, clone(updates));
+        proposals.set(id, proposal);
+        return { updated: 1, err: false };
+    },
+    async updateRow2(filter, updates, dbName, collection) {
+        if (dbName === 'newHymnal' && collection === 'roles') {
+            roles.set(String(filter._id), clone(updates));
+            return { updated: 'Added 1 rows and updated 0 rows', err: false };
+        }
+        return { updated: '', err: true };
+    },
+    async deleteRow(filter, dbName, collection) {
+        if (dbName === 'newHymnal' && collection === 'roles') roles.delete(String(filter._id));
+    }
+};
+
+require.cache[dbPath] = { id: dbPath, filename: dbPath, loaded: true, exports: mockDb };
+const songEditDb = require('../modules/songEditDb');
+
+(async function run() {
+    const editor = {
+        _id: 'editor-1',
+        userName: 'Editor',
+        role: 'editor',
+        status: 'approved',
+        permissions: ['songEdits:read', 'songEdits:submit']
+    };
+    const proposal = await songEditDb.createProposal({
+        number: '1',
+        changes: [
+            { path: 'luganda.song', to: "Gw'oli Mutukuvu" },
+            { path: 'english.english.stanza 1.1', to: 'Early in the morning our song shall rise' }
+        ],
+        note: 'Spelling and a missing phrase.'
+    }, editor);
+
+    assert.strictEqual(proposal.status, 'pending');
+    assert.strictEqual(proposal.submittedByName, 'Editor');
+    assert.strictEqual(proposal.changes.length, 2);
+    assert.strictEqual(proposal.changes[0].from, "Gw'oli Mutukuvi");
+
+    const approved = await songEditDb.approveProposal(String(proposal._id), { userName: 'reviewer' }, 'Checked');
+    assert.strictEqual(approved.status, 'approved');
+    assert.strictEqual(hymns.luganda['1'].song, "Gw'oli Mutukuvu");
+    assert.strictEqual(hymns.english['1'].english['stanza 1'][1], 'Early in the morning our song shall rise');
+
+    const stale = await songEditDb.createProposal({
+        number: '1',
+        changes: [{ path: 'luganda.lyrics.stanza 1.0', to: "Gw'oli ddala mutukuvu" }]
+    }, {
+        _id: 'user-1', userName: 'Singer', role: 'editor', status: 'approved',
+        permissions: ['songEdits:read', 'songEdits:submit']
+    });
+    hymns.luganda['1'].lyrics['stanza 1'][0] = 'Someone already changed this line';
+    const conflicted = await songEditDb.approveProposal(String(stale._id), { userName: 'reviewer' }, 'Retry needed');
+    assert.strictEqual(conflicted.status, 'conflict');
+    assert.strictEqual(conflicted.conflicts.length, 1);
+
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.unknown', to: 'No' }] }, editor),
+        /not valid/
+    );
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: '<b>Unsafe title</b>' }] }, editor),
+        /HTML is not allowed/
+    );
+    await assert.rejects(
+        songEditDb.createProposal({
+            number: '1',
+            changes: [{ path: 'luganda.lyrics.stanza 1.1', to: '<b onclick="alert(1)">Unsafe lyric</b>' }]
+        }, editor),
+        /exact <b>/
+    );
+    const emphasized = await songEditDb.createProposal({
+        number: '1',
+        changes: [{ path: 'luganda.lyrics.stanza 1.1', to: '<b>Mutukuvu</b>' }]
+    }, editor);
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: 'Blocked' }] }, {
+            _id: 'member-1', userName: 'Member', role: 'user', status: 'approved'
+        }),
+        /songEdits:submit/
+    );
+    await assert.rejects(
+        songEditDb.createProposal({ number: '1', changes: [{ path: 'luganda.song', to: 'Blocked' }] }, null),
+        /songEdits:submit/
+    );
+    assert.strictEqual(emphasized.changes[0].to, '<b>Mutukuvu</b>');
+    assert.strictEqual(songEditDb.cleanNumber('12a'), '12a');
+
+    const auth = require('../middleWares/auth');
+    function runEditorGuard(user) {
+        let nextCalled = false;
+        let responseStatus = null;
+        auth.requireEditor(
+            { user },
+            { status(code) { responseStatus = code; return this; }, json() { return this; } },
+            () => { nextCalled = true; }
+        );
+        return { nextCalled, responseStatus };
+    }
+    assert.deepStrictEqual(runEditorGuard(editor), { nextCalled: true, responseStatus: null });
+    assert.deepStrictEqual(runEditorGuard({ role: 'translator', status: 'approved', permissions: ['songEdits:submit'] }), { nextCalled: true, responseStatus: null });
+    assert.deepStrictEqual(runEditorGuard({ role: 'admin', status: 'approved', permissions: ['*'] }), { nextCalled: true, responseStatus: null });
+    assert.deepStrictEqual(runEditorGuard({ role: 'user', status: 'approved' }), { nextCalled: false, responseStatus: 403 });
+    assert.deepStrictEqual(runEditorGuard({ role: 'editor', status: 'pending', permissions: ['songEdits:submit'] }), { nextCalled: false, responseStatus: 403 });
+    assert.deepStrictEqual(runEditorGuard(null), { nextCalled: false, responseStatus: 401 });
+
+    const roleAccess = require('../modules/roleAccess');
+    const savedRole = await roleAccess.saveRole('translator', {
+        label: 'Translator',
+        permissions: ['songEdits:read', 'songEdits:submit']
+    }, { userName: 'reviewer' });
+    assert.strictEqual(savedRole.name, 'translator');
+    assert.deepStrictEqual(await roleAccess.resolvePermissions('translator'), ['songEdits:read', 'songEdits:submit']);
+    assert.strictEqual(roleAccess.hasPermission({ status: 'approved', permissions: savedRole.permissions }, 'songEdits:submit'), true);
+    await assert.rejects(
+        roleAccess.saveRole('unsafe', { permissions: ['madeUp:permission'] }, { userName: 'reviewer' }),
+        /Unknown permission/
+    );
+    await assert.rejects(
+        roleAccess.saveRole('admin', { permissions: [] }, { userName: 'reviewer' }),
+        /Built-in roles/
+    );
+    const availableRoles = await roleAccess.listRoles();
+    assert.strictEqual(availableRoles.some((role) => role.name === 'translator'), true);
+    await roleAccess.deleteRole('translator');
+    assert.strictEqual(await roleAccess.getRole('translator'), null);
+
+    console.log('Capability middleware, custom roles, song edit proposal, approval, conflict and validation tests passed.');
+})().catch((error) => {
+    console.error(error);
+    process.exit(1);
+});

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback Forum | Ennyimba Za Kristo</title>
+    <link rel="stylesheet" href="/style/donor-thanks.css">
     <style>
         :root {
             --bg: #f3efe7;
@@ -273,6 +274,7 @@
             .header > div {
                 display: flex;
                 gap: 8px;
+                min-width: 0;
             }
 
             .header .btn {
@@ -281,6 +283,8 @@
                 font-size: 0.82rem;
                 text-align: center;
                 margin-left: 0 !important;
+                min-width: 0;
+                white-space: normal;
             }
 
             .tabs {
@@ -337,10 +341,16 @@
                 font-size: 0.85rem;
             }
         }
+
+        @media (max-width: 420px) {
+            .header > div { flex-direction: column; }
+            .header .btn { width: 100%; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a href="/" style="display:inline-block;margin:4px 0 8px;color:var(--muted);text-decoration:none;">&#8249; Main menu</a>
         <div class="header">
             <h1>Feedback Forum</h1>
             <div>
@@ -471,8 +481,11 @@
                 </div>
             <% } %>
         <% } %>
+
+        <div data-donor-shoutout></div>
     </div>
 
     <script src="/js/auth.js"></script>
+    <script src="/js/donor-thanks.js"></script>
 </body>
 </html>
