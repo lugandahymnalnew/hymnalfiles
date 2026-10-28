@@ -52,7 +52,7 @@ const ki = [
   "/style/song-editor.css"
 ];
 
-const CACHE_NAME = 'my-website-cache-v6';
+const CACHE_NAME = 'my-website-cache-v8';
 const urlsToCache = ki;
 
 self.addEventListener('install', function(event) {

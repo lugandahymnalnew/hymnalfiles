@@ -329,17 +329,84 @@ user_route.get('/dashboard',userController.loadDashboard);
 
 const manageUsers = auth.requirePermission(roleAccess.PERMISSIONS.USERS_MANAGE);
 const manageRoles = auth.requirePermission(roleAccess.PERMISSIONS.ROLES_MANAGE);
+// Listing the roles is needed by anyone who can change a user's role, and by
+// anyone who can edit the roles themselves. The permission catalogue stays
+// behind roles:manage, because that is the list of things you can hand out.
+const listRoles = auth.requireAnyPermission(roleAccess.PERMISSIONS.USERS_MANAGE, roleAccess.PERMISSIONS.ROLES_MANAGE);
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Accounts written before the status or role fields existed are shown as
+// "pending" and "Member" in the admin table, so the counts and the filters
+// have to treat them the same way. Otherwise a user is on screen but in
+// none of the buckets.
+function effectiveValueFilter(field, value, fallback) {
+  if (value !== fallback) {
+    return { [field]: value };
+  }
+  return { $or: [{ [field]: value }, { [field]: { $exists: false } }, { [field]: null }] };
+}
 
 user_route.get('/api/admin/users', auth.requireAuth, manageUsers, async (req, res) => {
   try {
-    const users = await db.readRows({}, 'newHymnal', 'users');
-    if (!users || users.err) {
+    const search = String(req.query.q || '').trim();
+    const status = String(req.query.status || '').trim();
+    const role = String(req.query.role || '').trim();
+    const wantsPage = req.query.page !== undefined || req.query.limit !== undefined;
+
+    // Without any filter this returns every user as a plain list, which is
+    // what the dashboard has always asked for. With a filter it returns the
+    // matching page and the counts the admin screen shows above the table.
+    if (!wantsPage && !search && !status && !role) {
+      const users = await db.readRows({}, 'newHymnal', 'users');
+      if (!users || users.err) {
+        return res.status(500).json({ success: false, message: 'Failed to load users' });
+      }
+
+      return res.json({
+        success: true,
+        data: users.listings.map(sanitizeManagedUser)
+      });
+    }
+
+    const clauses = [];
+    if (status) clauses.push(effectiveValueFilter('status', status, 'pending'));
+    if (role) clauses.push(effectiveValueFilter('role', roleAccess.normalizeRoleName(role), 'user'));
+    if (search) {
+      const pattern = new RegExp(escapeRegExp(search), 'i');
+      clauses.push({ $or: [{ fullName: pattern }, { userName: pattern }, { email: pattern }] });
+    }
+    const filter = clauses.length === 0 ? {} : (clauses.length === 1 ? clauses[0] : { $and: clauses });
+
+    const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 25));
+
+    const listed = await db.readRowsPaged(filter, 'newHymnal', 'users', page, limit, { createdAt: -1 });
+    if (!listed || listed.err) {
       return res.status(500).json({ success: false, message: 'Failed to load users' });
     }
 
+    // The counts always describe the whole community, not the filtered page,
+    // so the figures above the table do not move when a filter is applied.
+    const counts = {
+      total: await db.countRows({}, 'newHymnal', 'users'),
+      pending: await db.countRows(effectiveValueFilter('status', 'pending', 'pending'), 'newHymnal', 'users'),
+      approved: await db.countRows({ status: 'approved' }, 'newHymnal', 'users'),
+      disabled: await db.countRows({ status: 'disabled' }, 'newHymnal', 'users')
+    };
+
     res.json({
       success: true,
-      data: users.listings.map(sanitizeManagedUser)
+      data: listed.listings.map(sanitizeManagedUser),
+      page: {
+        page,
+        limit,
+        total: listed.total,
+        pages: Math.max(1, Math.ceil(listed.total / limit)),
+        counts
+      }
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -404,7 +471,7 @@ user_route.get('/api/admin/permissions', auth.requireAuth, manageRoles, (_req, r
   res.json({ success: true, data: Object.values(roleAccess.PERMISSIONS) });
 });
 
-user_route.get('/api/admin/roles', auth.requireAuth, manageUsers, async (_req, res) => {
+user_route.get('/api/admin/roles', auth.requireAuth, listRoles, async (_req, res) => {
   try {
     res.json({ success: true, data: await roleAccess.listRoles() });
   } catch (error) {

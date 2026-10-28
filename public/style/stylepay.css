@@ -76,6 +76,27 @@ ul.list.lug { padding-left: 30px; margin-left: 0; }
 .pay__title { margin-bottom: 4px; font-weight: 700; color: #0b5b55; }
 .pay__note { font-size: 14px; color: #4c5d5b; }
 .pay b { color: #0b3f3b; }
+.pay__intro { margin-bottom: 10px; color: #4c5d5b; }
+.pay__fallback { margin-top: 8px; font-size: 13px; color: #7a8a88; }
+.pay__fee { margin-top: 10px; font-size: 13px; color: #4c5d5b; }
+.pay__src {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #7a8a88;
+    /* A source URL must wrap rather than push the card wide on a phone. */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.pay__details {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border: 1px dashed #c5d6d3;
+    border-radius: 9px;
+    background: #fff;
+    font-size: 14px;
+    color: #1c2b2a;
+}
+#copyNote { margin-top: 6px; font-size: 13px; color: #1d7a44; }
 
 .btn {
     display: block;
@@ -126,6 +147,11 @@ ol.steps { font-size: 14px; color: #33413f; }
 .goal__nums b { color: #0b3f3b; font-size: 17px; }
 .goal__state { margin-top: 8px; font-size: 14px; color: #4c5d5b; }
 .goal__state.is-error { color: #8b2822; }
+
+/* The goal expressed in the money most donors will actually send. */
+.goal__fx { margin-top: 10px; }
+.goal__fx-main { font-size: 15px; font-weight: 700; color: #0b3f3b; }
+.goal__fx-note { margin-top: 3px; font-size: 12px; color: #7a8a88; }
 
 .wall { list-style: none; margin: 8px 0 0; padding: 0; }
 .wall li { padding: 9px 0; border-bottom: 1px solid #e3ecea; }

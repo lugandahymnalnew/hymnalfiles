@@ -19,6 +19,7 @@
         <p>Wagila omulimu</p>
     </header>
 
+    <!-- The goal comes first: it turns "give money" into one finite task. -->
     <section class="card" id="goalCard">
         <h2>Our goal</h2>
         <div class="goal__title" id="goalTitle">Bring the hymnal to iPhone and Windows</div>
@@ -31,68 +32,81 @@
             <span><b id="percent">0%</b></span>
         </div>
         <div class="goal__state" id="goalState">Loading progress&hellip;</div>
+        <!-- The same goal in the money most donors will actually send. -->
+        <div class="goal__fx" id="goalFx"></div>
     </section>
 
-    <section class="card">
-        <h2>Thank you</h2>
-        <p>Thank you for considering the New Luganda Hymnal. Reaching this page means you have really taken your time with the app.</p>
-        <p class="lug">Webale nyo okukozessa oluyimba lunno. Okutukka wanno kitegeza owadeyo obudde bwo okulaba App enno.</p>
-    </section>
-
-    <section class="card">
-        <h2>Why your support matters</h2>
-        <p>This project is to reach all platforms, but due to low funds, I am able to have only the Android version because it's cheap. For iPhone and Windows, I need to pay a development fee of about 300 USD in total, all combined.</p>
-        <p class="lug">Project enno yali egoba okulaba nga buli simu ne computer omuntu asobola okuba n'oluyimba. Naye ku lwebbula lyensimbi nasobola kutekka ku simmu zabulijjo zokka. Esimu nga Iphone ne computer netaaga dola 300</p>
-    </section>
-
+    <!-- Payment options come before any prose: a donor who has chosen to give
+         does not want to be persuaded more. -->
     <section class="card">
         <h2>Payment options</h2>
-
-        <div class="pay">
-            <div class="pay__title">PayPal</div>
-            <button class="btn" onclick="paypal()">Donate with PayPal</button>
-        </div>
-
-        <div class="pay">
-            <div class="pay__title">World Remit</div>
-            <p class="pay__note">You can choose mobile money and send to <b>Airtel Uganda: 0757035774</b> or <b>MTN Uganda: 0789291098</b>. You can also choose bank transfer to <b>Stanbic Bank</b>, account <b>9030025159798</b>.</p>
-            <button class="btn" onclick="wave()">Open World Remit</button>
-        </div>
+        <p class="pay__intro">Pay whichever way is easiest for you. Every gift is optional, and every gift is confirmed against our payment records before it shows on the progress bar.</p>
 
         <div class="pay">
             <div class="pay__title">MTN Mobile Money</div>
-            <button class="btn btn--gold" onclick="ussd('*165*1*1*0789291098#')">Pay with MoMo</button>
-            <p class="pay__note" style="margin-top:8px;">If the button fails, send to 0789291098 (Rogers Kitamirike).</p>
+            <p class="pay__note">Send to <b>0789291098</b> (Rogers Kitamirike).</p>
+            <button class="btn btn--gold" onclick="ussd('*165*1*1*0789291098#')">Pay with MTN Money</button>
+            <p class="pay__fallback">If the button does not open, dial <b>*165#</b> and follow the steps below.</p>
             <div class="steps-title">Follow these steps</div>
             <ol class="steps">
                 <li>Dial <b>*165#</b>.</li>
-                <li>Select option 1.</li>
+                <li>Select option 1 (Send Money).</li>
                 <li>Select <b>Mobile User</b>.</li>
                 <li>Enter number <b>0789291098</b> (Rogers Kitamirike).</li>
                 <li>Enter the amount you wish to give.</li>
                 <li>Enter your PIN.</li>
             </ol>
+            <p class="pay__fee">The sending fee is taken from your MTN balance automatically, so we receive the full amount you type. It is <b>500 UGX</b> for 5,001 to 60,000 and <b>1,000 UGX</b> for 60,001 to 500,000. The smallest transfer MTN accepts is 500 UGX.</p>
+            <p class="pay__src">MTN Uganda published Mobile Money Tariffs, mtn.co.ug/tariffs/mobile-money-tariffs</p>
         </div>
 
         <div class="pay">
             <div class="pay__title">Airtel Money</div>
-            <button class="btn btn--gold" onclick="ussd('*185*1*1*0757035774#')">Pay with Airtel</button>
-            <p class="pay__note" style="margin-top:8px;">If the button fails, send to 0757035774 (Rogers Kitamirike).</p>
+            <p class="pay__note">Send to <b>0757035774</b> (Rogers Kitamirike).</p>
+            <button class="btn btn--gold" onclick="ussd('*185*1*0757035774#')">Pay with Airtel Money</button>
+            <p class="pay__fallback">If the button does not open, dial <b>*185#</b> and follow the steps below.</p>
             <div class="steps-title">Follow these steps</div>
             <ol class="steps">
                 <li>Dial <b>*185#</b>.</li>
-                <li>Select option 1.</li>
-                <li>Select <b>Airtel number</b>.</li>
+                <li>Select option 1 (Send Money).</li>
                 <li>Enter number <b>0757035774</b> (Rogers Kitamirike).</li>
                 <li>Enter the amount you wish to give.</li>
                 <li>Enter your PIN.</li>
             </ol>
+            <p class="pay__fee">The sending fee is taken from your Airtel Money balance automatically, so we receive the full amount you type. It is <b>500 UGX</b> for 5,001 to 60,000 and <b>1,000 UGX</b> for 60,001 to 500,000. The smallest transfer Airtel accepts is 500 UGX.</p>
+            <p class="pay__src">Airtel Uganda published transaction fees, airtel.co.ug/airtelmoney/transaction_fees</p>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">Bank transfer (Stanbic)</div>
+            <p class="pay__note">Account name <b>Rogers Kitamirike</b>, Stanbic Bank, account <b>9030025159798</b>.</p>
+            <button class="btn btn--ghost" onclick="copyDetails('bankDetails')">Copy account details</button>
+            <div class="pay__details" id="bankDetails">Rogers Kitamirike &middot; Stanbic Bank &middot; 9030025159798</div>
+            <p class="pay__note" id="copyNote" role="status"></p>
+            <p class="pay__fallback">If copying does not work, take a screenshot of the details above instead.</p>
+            <p class="pay__fee">Your bank may charge a transfer fee. Bank transfers take a few days to reach us, and we confirm them against the statement.</p>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">World Remit</div>
+            <p class="pay__note">Send money online from anywhere in the world to Uganda, to our mobile money numbers or to our bank account above.</p>
+            <button class="btn" onclick="wave()">Open World Remit</button>
+            <p class="pay__fallback">If the button does not open, go to <b>worldremit.com</b>, choose Uganda and send to the number or account above.</p>
+            <p class="pay__fee">World Remit charges its own fee, and the transfer takes a few days to arrive. We confirm it against their record once it reaches us.</p>
+        </div>
+
+        <div class="pay">
+            <div class="pay__title">PayPal</div>
+            <p class="pay__note">Pay with a card, a PayPal balance, or PayPal. Choose any amount you like.</p>
+            <button class="btn" onclick="paypal()">Donate with PayPal</button>
+            <p class="pay__fallback">If the button does not open, go to <b>paypal.me/newlugandahymnal</b> and pay any amount you choose.</p>
+            <p class="pay__fee">PayPal charges its own fee, which for a card payment can come out of the amount you send. We confirm the gift against the PayPal record.</p>
         </div>
     </section>
 
     <section class="card report">
         <h2>I have donated</h2>
-        <p>Let us know once you have sent a gift, so it can be counted in the progress bar above. We confirm each one against our payment records before it counts.</p>
+        <p>Let us know once you have sent a gift, so it can be counted in the progress bar above. We confirm each one against our payment records before it counts, so a reported gift usually appears within a few days.</p>
         <form id="reportForm" novalidate>
             <label>Your name (optional)
                 <input type="text" name="name" maxlength="60" autocomplete="name">
@@ -102,16 +116,16 @@
                     <input type="number" name="amount" min="1" step="any" inputmode="decimal" required>
                 </label>
                 <label>Currency
-                    <select name="currency"><option>UGX</option><option>USD</option><option>EUR</option><option>GBP</option></select>
+                    <select name="currency" id="currencySelect"><option>UGX</option><option>USD</option></select>
                 </label>
             </div>
             <label>How did you send it?
                 <select name="method">
                     <option value="mtn">MTN Mobile Money</option>
                     <option value="airtel">Airtel Money</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="worldremit">World Remit</option>
                     <option value="bank">Bank transfer (Stanbic)</option>
+                    <option value="worldremit">World Remit</option>
+                    <option value="paypal">PayPal</option>
                     <option value="other">Other</option>
                 </select>
             </label>
@@ -133,7 +147,14 @@
 
     <section class="card">
         <h2>Recent donors</h2>
+        <p class="pay__note">Only donors who asked us to show their name are named. Everyone else appears as &ldquo;Anonymous&rdquo;, and no gift amounts are published.</p>
         <ul class="wall" id="wall"><li class="wall__empty">Loading&hellip;</li></ul>
+    </section>
+
+    <section class="card">
+        <h2>Why your support matters</h2>
+        <p>This project is to reach all platforms, but due to low funds, I am able to have only the Android version because it's cheap. For iPhone and Windows, I need to pay a development fee of about 300 USD in total, all combined.</p>
+        <p class="lug">Project enno yali egoba okulaba nga buli simu ne computer omuntu asobola okuba n'oluyimba. Naye ku lwebbula lyensimbi nasobola kutekka ku simmu zabulijjo zokka. Esimu nga Iphone ne computer netaaga dola 300</p>
     </section>
 
     <section class="card">
@@ -144,8 +165,8 @@
     </section>
 
     <section class="card">
-        <p>Any contribution will be fully appreciated. May the good Lord bless you.</p>
-        <p class="lug">Obuwagizi bwona busibwamu ekitibwa. Mukama akuwe omukisa.</p>
+        <p>Thank you for considering the New Luganda Hymnal. Reaching this page means you have really taken your time with the app, and any contribution will be fully appreciated. May the good Lord bless you.</p>
+        <p class="lug">Webale nyo okukozessa oluyimba lunno. Okutukka wanno kitegeza owadeyo obudde bwo okulaba App enno. Obuwagizi bwona busibwamu ekitibwa. Mukama akuwe omukisa.</p>
     </section>
 
     <footer class="foot">
@@ -165,13 +186,64 @@
         try { return new Intl.NumberFormat(undefined, { style: 'currency', currency: cur, maximumFractionDigits: 0 }).format(n); }
         catch (e) { return cur + ' ' + Math.round(n); }
     }
+    function shortDate(value) {
+        try { return new Date(value).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }); }
+        catch (e) { return ''; }
+    }
 
     /* Year is filled in at load time so it never goes stale. */
     $('yr').textContent = String(new Date().getFullYear());
 
     /* ---- progress + donor wall ---- */
+
+    /* Only offer currencies the server can actually convert. A currency with
+       no rate would be recorded but worth zero against the goal. */
+    function fillCurrencies(currencies) {
+        var sel = $('currencySelect');
+        if (!sel || !currencies || !currencies.length) { return; }
+        var current = sel.value;
+        sel.innerHTML = '';
+        currencies.forEach(function (code) {
+            var opt = document.createElement('option');
+            opt.textContent = code;
+            sel.appendChild(opt);
+        });
+        if (currencies.indexOf(current) !== -1) { sel.value = current; }
+    }
+
+    /* The goal expressed in the money most donors will actually send. The
+       server does the conversion; the note says plainly that it is an
+       approximation, because the rate moves. */
+    function renderLocalValues(s) {
+        var box = $('goalFx');
+        if (!box) { return; }
+        box.innerHTML = '';
+        var values = s.localValues || {};
+        var code = values.UGX ? 'UGX' : null;
+        if (!code) {
+            for (var c in values) {
+                if (Object.prototype.hasOwnProperty.call(values, c)) { code = c; break; }
+            }
+        }
+        if (!code) { return; }
+        var v = values[code];
+        var main = document.createElement('p');
+        main.className = 'goal__fx-main';
+        main.textContent = s.raised > 0
+            ? 'About ' + money(v.raised, code) + ' raised of ' + money(v.goal, code)
+            : 'About ' + money(v.goal, code) + ' to reach this goal';
+        var note = document.createElement('p');
+        note.className = 'goal__fx-note';
+        note.textContent = 'At ' + v.rate + ' ' + code + ' per 1 ' + s.currency
+            + (s.ratesUpdatedAt ? ', reviewed ' + shortDate(s.ratesUpdatedAt) : '')
+            + '. The rate moves, so this is an approximation.';
+        box.appendChild(main);
+        box.appendChild(note);
+    }
+
     function renderSummary(s) {
         $('goalTitle').textContent = s.title;
+        fillCurrencies(s.currencies);
         $('raised').textContent = money(s.raised, s.currency);
         $('goal').textContent = money(s.goalAmount, s.currency);
         $('percent').textContent = s.percent + '%';
@@ -181,6 +253,8 @@
         $('goalState').textContent = s.reached
             ? 'Goal reached — thank you! Every extra gift keeps the project going.'
             : money(s.remaining, s.currency) + ' to go, from ' + s.donorCount + ' donor' + (s.donorCount === 1 ? '' : 's') + '.';
+
+        renderLocalValues(s);
 
         var wall = $('wall');
         wall.innerHTML = '';
@@ -218,6 +292,7 @@
             .catch(function () {
                 $('goalState').textContent = 'Progress is unavailable right now. Please check again later.';
                 $('goalState').className = 'goal__state is-error';
+                $('goalFx').innerHTML = '';
                 $('wall').innerHTML = '<li class="wall__empty">Unavailable right now.</li>';
             });
     }
@@ -259,7 +334,41 @@
             })
             .then(function () { btn.disabled = false; });
     });
+
+    /* ---- copy the bank details ----
+       The clipboard API is missing in older WebViews, so the fallback selects
+       the text and asks the donor to copy it by hand rather than failing. */
 })();
+</script>
+<script>
+/* These two are called from an inline onclick attribute, which resolves in
+   global scope, so they live outside the module above. */
+function selectDetails(el) {
+    try {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } catch (e) { /* nothing else to try */ }
+}
+function copyDetails(id) {
+    var el = document.getElementById(id);
+    var note = document.getElementById('copyNote');
+    if (!el || !note) { return; }
+    var text = el.textContent || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+            note.textContent = 'Account details copied.';
+        }, function () {
+            selectDetails(el);
+            note.textContent = 'Account details selected — copy them by hand.';
+        });
+        return;
+    }
+    selectDetails(el);
+    note.textContent = 'Account details selected — copy them by hand.';
+}
 </script>
 </body>
 </html>

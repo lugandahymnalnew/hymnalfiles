@@ -102,6 +102,10 @@ app.use('/', songEditViewRoute);
 // makes is checked server-side for an approved admin token).
 app.get('/admin/donations', (_req, res) => res.render('donations-admin'));
 
+// Admin page for user accounts and roles (same shell: the page is public,
+// every API call behind it is checked server-side).
+app.get('/admin/users', (_req, res) => res.render('users-admin'));
+
 const SITE_URL = process.env.SITE_URL || 'https://newlugandahymnal.onrender.com';
 
 function xmlEscape(value) {

@@ -11,6 +11,10 @@
  * Donors can report their own gift (status "pending"); an admin approves it
  * after checking the PayPal / MoMo / Airtel / bank statement. Admins can also
  * record gifts directly (created already approved).
+ *
+ * Every gift stores the rate it was converted at ("rate", "goalAmount",
+ * "goalCurrency"). That is what stops a later rate change from quietly
+ * revaluing the whole history.
  */
 
 const db = require('./mongoDBApi');
@@ -30,7 +34,14 @@ const DEFAULT_SETTINGS = {
     goalAmount: 300,
     goalCurrency: 'USD',
     baseRaised: 0,
-    rates: { UGX: 3700 },
+    // Units of the local currency per 1 unit of the goal currency.
+    // Mid-market 28 Oct 2026: XE 4391.89, TradingEconomics 4393.20,
+    // Investing.com 4382.70. The previous 3700 was roughly 16% below the
+    // market, which silently over-credited the progress bar. This number
+    // wants a monthly look.
+    rates: { UGX: 4390 },
+    // When this default rate was set, so the page can date it.
+    ratesUpdatedAt: new Date('2026-10-28T00:00:00Z'),
     updatedAt: null,
     updatedBy: null
 };
@@ -67,13 +78,33 @@ async function saveSettings(input, adminName) {
         throw new Error('baseRaised must be zero or more');
     }
     if (input.rates && typeof input.rates === 'object') {
-        const rates = {};
+        // Normalise the submitted keys first, so "is this currency being
+        // managed?" compares like with like.
+        const submitted = {};
         Object.keys(input.rates).slice(0, 10).forEach((code) => {
-            const rate = Number(input.rates[code]);
             const key = cleanText(code, 3).toUpperCase();
-            if (key && rate > 0 && rate < 1e9) { rates[key] = rate; }
+            if (key) { submitted[key] = Number(input.rates[code]); }
+        });
+        const rates = {};
+        // Only the currencies the settings form manages are replaced. Anything
+        // else the organisation had configured is left alone.
+        Object.keys(current.rates).forEach((code) => {
+            if (!(code in submitted)) { rates[code] = current.rates[code]; }
+        });
+        Object.keys(submitted).forEach((key) => {
+            const rate = submitted[key];
+            // A blank or zero rate removes that currency: it can no longer be
+            // given, because a currency with no rate is worth zero.
+            if (rate > 0 && rate < 1e9) { rates[key] = rate; }
         });
         next.rates = rates;
+        // Record when the rates were last touched, so a stale rate is visible
+        // rather than silently over-crediting the goal.
+        next.ratesUpdatedAt = JSON.stringify(next.rates) === JSON.stringify(current.rates)
+            ? (current.ratesUpdatedAt || null)
+            : new Date();
+    } else {
+        next.ratesUpdatedAt = current.ratesUpdatedAt || null;
     }
     await db.updateRow2({ key: 'main' }, next, DB_NAME, SETTINGS);
     return next;
@@ -88,6 +119,38 @@ function toGoalCurrency(donation, settings) {
     return rate > 0 ? amount / rate : 0;
 }
 
+// Units of a currency per 1 unit of the goal currency. 0 means the currency
+// has no rate yet, so a gift in it cannot be valued.
+function rateFor(currency, settings) {
+    if (currency === settings.goalCurrency) { return 1; }
+    const rate = Number(settings.rates[currency]);
+    return rate > 0 ? rate : 0;
+}
+
+// The value of one gift in the goal currency.
+//
+// A gift stores the rate it was converted at, so changing the rate later does
+// not quietly revalue the history. Gifts recorded before that field existed
+// are converted with the current rate, which is the only value they ever had.
+function giftValue(donation, settings) {
+    if (donation.goalCurrency === settings.goalCurrency && typeof donation.goalAmount === 'number') {
+        return donation.goalAmount;
+    }
+    return toGoalCurrency(donation, settings);
+}
+
+// The currencies a donor can actually give in: the goal currency plus every
+// currency that has a rate. A currency without a rate would be recorded but
+// worth zero, so the public form must not offer it.
+function convertibleCurrencies(settings) {
+    const list = [settings.goalCurrency];
+    Object.keys(settings.rates || {}).forEach((code) => {
+        const cur = String(code).toUpperCase();
+        if (rateFor(cur, settings) > 0 && list.indexOf(cur) === -1) { list.push(cur); }
+    });
+    return list;
+}
+
 /**
  * Public numbers for the donate page: total raised, percentage of the goal,
  * donor count and a "wall" of recent approved donors. Names are only shown for
@@ -99,11 +162,37 @@ async function getSummary() {
     const result = await db.readRows({ status: 'approved' }, DB_NAME, DONATIONS);
     const list = result && !result.err && Array.isArray(result.listings) ? result.listings : [];
 
+    // Only gifts that convert are counted. A gift in a currency with no rate
+    // stays on record but adds nothing to the bar and nobody to the donor
+    // count, which is what used to make it look as if a gift had landed.
     let raised = Number(settings.baseRaised) || 0;
-    list.forEach((d) => { raised += toGoalCurrency(d, settings); });
+    let donorCount = 0;
+    let unconvertedCount = 0;
+    list.forEach((d) => {
+        const value = giftValue(d, settings);
+        if (value > 0) { raised += value; donorCount++; } else { unconvertedCount++; }
+    });
     raised = Math.round(raised * 100) / 100;
 
     const percent = Math.min(100, Math.round((raised / settings.goalAmount) * 1000) / 10);
+
+    // The goal and the raised amount expressed in every currency that has a
+    // rate, so a donor can see what the goal means in the money they will
+    // actually send. The server does the conversion; the page says plainly
+    // that the figure is an approximation because the rate moves.
+    const localValues = {};
+    Object.keys(settings.rates || {}).forEach((code) => {
+        const cur = String(code).toUpperCase();
+        const rate = rateFor(cur, settings);
+        if (rate > 0) {
+            localValues[cur] = {
+                goal: Math.round(settings.goalAmount * rate),
+                raised: Math.round(raised * rate),
+                rate: rate
+            };
+        }
+    });
+
     const wall = list
         .slice()
         .sort((a, b) => new Date(b.donatedAt || b.createdAt) - new Date(a.donatedAt || a.createdAt))
@@ -122,13 +211,17 @@ async function getSummary() {
         remaining: Math.max(0, Math.round((settings.goalAmount - raised) * 100) / 100),
         percent,
         reached: raised >= settings.goalAmount,
-        donorCount: list.length,
+        donorCount,
+        unconvertedCount,
+        currencies: convertibleCurrencies(settings),
+        localValues,
         wall,
-        updatedAt: settings.updatedAt
+        updatedAt: settings.updatedAt,
+        ratesUpdatedAt: settings.ratesUpdatedAt
     };
 }
 
-function normalizeDonation(input, { source, approved, adminName }) {
+function normalizeDonation(input, { source, approved, adminName }, settings) {
     const amount = Number(input.amount);
     if (!(amount > 0) || amount > 1e9) {
         throw new Error('Amount must be a number greater than zero');
@@ -141,12 +234,21 @@ function normalizeDonation(input, { source, approved, adminName }) {
     let donatedAt = input.donatedAt ? new Date(input.donatedAt) : new Date();
     if (isNaN(donatedAt.getTime())) { donatedAt = new Date(); }
 
+    // The rate this gift is converted at, stored on the gift. goalAmount is 0
+    // when the currency has no rate yet, which means the gift is on record but
+    // is not yet worth anything toward the goal.
+    const rate = rateFor(currency, settings);
+    const goalAmount = rate > 0 ? Math.round((amount / rate) * 100) / 100 : 0;
+
     return {
         _id: new ObjectId(),
         name: cleanText(input.name, 60),
         showName: input.showName === true || input.showName === 'true' || input.showName === 'on',
         amount: Math.round(amount * 100) / 100,
         currency,
+        goalCurrency: settings.goalCurrency,
+        rate,
+        goalAmount,
         method,
         reference: cleanText(input.reference, 80),
         message: cleanText(input.message, 200),
@@ -168,7 +270,8 @@ async function addDonation(input, options) {
         const dup = await db.readRow({ clientId }, DB_NAME, DONATIONS);
         if (dup && dup.found) { return dup.listing; }
     }
-    const doc = normalizeDonation(input, options);
+    const settings = await getSettings();
+    const doc = normalizeDonation(input, options, settings);
     await db.createListing(doc, DB_NAME, DONATIONS);
     return doc;
 }
@@ -182,7 +285,11 @@ async function listDonations({ status, page, pageSize }) {
         const r = await db.readRowsPaged({ status: s }, DB_NAME, DONATIONS, 1, 1);
         counts[s] = r && !r.err ? r.total : 0;
     }
-    return { items: result.listings, total: result.total, counts };
+    // goalValue is what a gift is actually worth toward the goal, so the
+    // console can show that a gift in a currency with no rate is not counting.
+    const settings = await getSettings();
+    const items = result.listings.map((d) => Object.assign({}, d, { goalValue: giftValue(d, settings) }));
+    return { items, total: result.total, counts };
 }
 
 async function updateDonation(id, input, adminName) {
@@ -190,6 +297,7 @@ async function updateDonation(id, input, adminName) {
     const existing = await db.readRow({ _id: new ObjectId(id) }, DB_NAME, DONATIONS);
     if (!existing || !existing.found) { return null; }
 
+    const settings = await getSettings();
     const update = {};
     if (input.status !== undefined) {
         if (STATUSES.indexOf(input.status) === -1) { throw new Error('Invalid status'); }
@@ -211,6 +319,19 @@ async function updateDonation(id, input, adminName) {
     if (input.donatedAt !== undefined) {
         const d = new Date(input.donatedAt);
         if (!isNaN(d.getTime())) { update.donatedAt = d; }
+    }
+    // Correcting the amount or the currency changes what the gift is worth, so
+    // the stored conversion is recalculated. The gift keeps the rate it was
+    // recorded at unless the currency itself changed.
+    if (update.amount !== undefined || update.currency !== undefined) {
+        const currency = update.currency || existing.listing.currency;
+        const amount = update.amount !== undefined ? update.amount : Number(existing.listing.amount);
+        const rate = (currency === existing.listing.currency && existing.listing.rate > 0)
+            ? existing.listing.rate
+            : rateFor(currency, settings);
+        update.goalCurrency = settings.goalCurrency;
+        update.rate = rate;
+        update.goalAmount = rate > 0 ? Math.round((amount / rate) * 100) / 100 : 0;
     }
     if (!Object.keys(update).length) { throw new Error('Nothing to update'); }
 

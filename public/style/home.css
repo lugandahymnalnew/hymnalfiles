@@ -2,11 +2,17 @@
 body { margin: 0; min-width: 300px; color: #19302f; background: #eef3f2; font-family: "Segoe UI", Tahoma, Arial, sans-serif; }
 .contMain, .sdaL { display: none !important; }
 .home-hero { padding: 20px 18px 34px; color: #fff; background: linear-gradient(135deg, #0b5b55, #063f3b); border-bottom: 4px solid #daa520; }
-.home-nav { width: min(980px, 100%); margin: 0 auto 32px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.home-brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; }
+.home-nav { width: min(980px, 100%); margin: 0 auto 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.home-brand { display: flex; align-items: center; gap: 10px; min-width: 0; width: auto; color: #fff; text-decoration: none; font-weight: 800; }
 .home-brand img { width: 42px; height: 42px; border-radius: 10px; }
-.home-nav__links { display: flex; gap: 8px; }
-.home-nav__links a { padding: 9px 12px; border-radius: 999px; color: #fff; background: rgba(255,255,255,.13); text-decoration: none; font-size: .86rem; font-weight: 700; }
+.home-nav__links { display: flex; gap: 8px; margin-left: auto; }
+/* style.css sets a { width: 100% } for every link on the site, so the width
+   has to be reset here or each link claims the whole row. The links also
+   keep their own width and never wrap: without this they get squeezed by
+   the brand on a narrow screen, the text breaks over three lines, the row
+   grows tall and the 999px radius turns both links into circles instead
+   of pills. */
+.home-nav__links a { width: auto; flex: 0 0 auto; white-space: nowrap; padding: 9px 14px; border-radius: 999px; color: #fff; background: rgba(255,255,255,.13); text-decoration: none; font-size: .86rem; font-weight: 700; }
 .home-hero__content { width: min(880px, 100%); margin: 0 auto; text-align: center; }
 .home-kicker { color: #f4d78a; font-size: .78rem; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
 .home-hero h1 { margin: 10px 0; font-size: clamp(2rem, 7vw, 4rem); line-height: 1.03; }
@@ -28,10 +34,14 @@ body { margin: 0; min-width: 300px; color: #19302f; background: #eef3f2; font-fa
 #overlay { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.42); }
 .div1 { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: min(360px,calc(100% - 24px)); padding: 18px; border-radius: 15px; background: #fff; }
 #ins, #spin { display: none; }
-@media (max-width: 760px) { .home-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) {
+    .home-grid { grid-template-columns: 1fr 1fr; }
+    /* The brand name is 405px wide and would squeeze the two nav links off
+       the row. The logo alone carries the identity, so the name goes. */
+    .home-brand span { display: none; }
+}
 @media (max-width: 520px) {
     .home-nav { margin-bottom: 24px; }
-    .home-brand span { display: none; }
     .home-nav__links a:first-child { display: none; }
     .home-grid { grid-template-columns: 1fr; }
     .home-action { width: 100%; }

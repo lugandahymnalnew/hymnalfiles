@@ -34,8 +34,12 @@ const publicCors = cors({ origin: '*', methods: ['GET', 'POST', 'OPTIONS'], allo
 donationRoute.options('/donations/*', publicCors);
 
 // --- tiny in-memory throttle for the public "I donated" form ---------------
-// Enough to stop a script from flooding the pending queue; resets on restart.
-const REPORT_LIMIT = 5;
+// A gift is never dropped because of this: the donor has already paid, and a
+// rejected report reads as "my money vanished". The limit only decides how
+// much of a burst we acknowledge briefly, so it sits well above what one
+// shared mobile-network address can produce.
+// Resets on restart.
+const REPORT_LIMIT = 20;
 const REPORT_WINDOW_MS = 60 * 60 * 1000;
 const reportHits = new Map();
 
@@ -74,10 +78,17 @@ donationRoute.post('/donations/report', publicCors, jsonBody, async (req, res) =
         if (body.website) {
             return res.json({ success: true, message: 'Thank you!' });
         }
-        if (throttled(req.ip)) {
-            return res.status(429).json({ success: false, message: 'Too many reports from this connection. Please try again later.' });
-        }
+        // The gift is recorded before the throttle is consulted. A donor who
+        // has already paid must never be told the gift was lost, and mobile
+        // networks share one public address between many donors, so a
+        // throttle that drops reports punishes innocent people.
         await donationDb.addDonation(body, { source: 'self', approved: false });
+        if (throttled(req.ip)) {
+            return res.status(202).json({
+                success: true,
+                message: 'Thank you! We have recorded your gift. Confirming it against our payment records may take a little longer than usual.'
+            });
+        }
         res.status(201).json({
             success: true,
             message: 'Thank you! Your gift will show in the progress bar once it has been confirmed.'

@@ -125,7 +125,11 @@ function share(){
   
 }
 
-var player1 = `<section id="section3">
+// The player markup is only used on the hymn pages, where swipe.js defines
+// "pages" and "Npg" and is loaded before this file. On the donate page neither
+// exists, so this must not throw: an error here would stop the rest of this
+// file from running, which is where ussd(), wave() and paypal() live.
+var player1 = (typeof pages === 'undefined' || typeof Npg === 'undefined') ? '' : `<section id="section3">
 <!-- <h2>Custom player and visualizer style</h2> -->
 <midi-player
   src="../../midi/${pages[Npg]}.mid"
@@ -137,6 +141,7 @@ var player1 = `<section id="section3">
 </section>`
 
 function player1Update(){
+  if (typeof pages === 'undefined' || typeof Npg === 'undefined') { return ''; }
   player1 = `<section id="section3">
   <!-- <h2>Custom player and visualizer style</h2> -->
   <midi-player
@@ -147,18 +152,27 @@ function player1Update(){
     src="${pages[Npg]}.mid">
   </midi-visualizer> -->
   </section>`
+  return player1
 }
 
 function ussd(num){
-    // console.log("hi")
-    // trying("B4A.CallSub('Call', true ,num)");
-    var telUrl = 'tel:' + encodeURIComponent(num);
-    open_link(telUrl);
+    // The '#' terminator is encoded only where the platform needs it: iOS
+    // rejects a raw '#' inside a tel: href, while Android accepts one.
+    // A plain anchor is used rather than window.open, which popup blockers
+    // stop and which opens a blank tab on most phones.
+    var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    var code = ios ? String(num).replace(/#/g, '%23') : String(num);
+    var link = document.createElement('a');
+    link.href = 'tel:' + code;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 function open_link(link){
-  var newTab = window.open(link, '_blank');
-  newTab.focus();
-    // trying("B4A.CallSub('Open_web', true ,link)");
+    var newTab = window.open(link, '_blank');
+    // A blocked popup leaves newTab null, and calling focus() on it throws.
+    if (newTab && typeof newTab.focus === 'function') { newTab.focus(); }
 }
 
 function play(){
@@ -187,7 +201,10 @@ function P_prev(){
 }
 function wave(){
 	// trying("B4A.CallSub('Open_web', true, 'https://pay.wave.com')")
-  open_link("https://www.worldremit.com/en?amountfrom=100.00&selectfrom=us&currencyfrom=usd&selectto=ug&currencyto=ugx&transfer=bnk");
+  // No amount and no forced corridor: the donor chooses both. The old link
+  // pre-loaded every visitor with a $100 gift and locked the USD to UGX
+  // corridor, which excluded donors paying from another country.
+  open_link("https://www.worldremit.com/en");
 }
 function paypal(){
 	// trying("B4A.CallSub('Open_web', true, 'https://paypal.me/newlugandahymnal?country.x=en_US')")

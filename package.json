@@ -11,7 +11,8 @@
     "generate-db": "node scripts/generate-songs-db.js",
     "parse-songs": "node scripts/parse-songs-to-sqlite.js",
     "generate-bible-db": "node scripts/generate-bible-db.js",
-    "test:song-edits": "node scripts/test-song-edits.js"
+    "test:song-edits": "node scripts/test-song-edits.js",
+    "test:donations": "node scripts/test-donation-money-path.js"
   },
   "repository": {
     "type": "git",
