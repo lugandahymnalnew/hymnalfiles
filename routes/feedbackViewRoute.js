@@ -106,26 +106,15 @@ feedbackViewRoute.get('/feedback/create', async (req, res) => {
 });
 
 // GET /feedback/my-feedback - User's feedback submissions
-feedbackViewRoute.get('/feedback/my-feedback', async (req, res) => {
-    try {
-        // Get user from token
-        const token = req.headers.authorization?.replace('Bearer ', '');
-        if (!token) {
-            return res.redirect('/login?redirect=/feedback/my-feedback');
-        }
-
-        const { verifyAccessToken } = require('../modules/jwtAuth');
-        const decoded = verifyAccessToken(token);
-        if (!decoded) {
-            return res.redirect('/login?redirect=/feedback/my-feedback');
-        }
-
-        const userFeedback = await feedbackDb.getUserFeedback(String(decoded.sub));
-
-        res.render('feedback/my-feedback', { userFeedback });
-    } catch (error) {
-        res.render('error', { error: error.message });
-    }
+//
+// The page is a shell that the browser fills in. A browser navigating to a
+// page never sends an Authorization header, so reading the session here
+// always looked like a signed out visitor and redirected to the login page,
+// which redirected straight back here. The session lives in localStorage;
+// the data comes from /api/feedback/my-feedback, which is behind the same
+// auth check as before.
+feedbackViewRoute.get('/feedback/my-feedback', (req, res) => {
+    res.render('feedback/my-feedback');
 });
 
 module.exports = feedbackViewRoute;

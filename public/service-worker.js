@@ -55,13 +55,13 @@ const ki = [
 // The cache name is the version of the cached files. When it changes, the
 // old cache is dropped, so a new version of the site is not served from the
 // copy the browser kept from last time.
-const CACHE_NAME = 'my-website-cache-v9';
+const CACHE_NAME = 'my-website-cache-v10';
 const urlsToCache = ki;
 
 // Files that decide who is signed in. These are fetched from the network
 // first, so a new version is picked up straight away, with the cached copy
 // only as a fallback when there is no connection.
-const NETWORK_FIRST = ['/js/auth.js'];
+const NETWORK_FIRST = ['/js/auth.js', '/js/forum-account.js'];
 
 function isApiRequest(pathname) {
   return pathname === '/api' || pathname.indexOf('/api/') === 0;

@@ -334,6 +334,7 @@
     </div>
 
     <script src="/js/auth.js"></script>
+    <script src="/js/forum-account.js"></script>
     <script>
         const hymnNumber = '<%= feedback.hymnNumber %>';
 
@@ -341,7 +342,7 @@
             if (!auth.isLoggedIn()) {
                 document.getElementById('anonNotice').classList.remove('hidden');
                 document.getElementById('anonSignInLink').href =
-                    '/login?redirect=' + encodeURIComponent(window.location.pathname);
+                    '/login?returnTo=' + encodeURIComponent(window.location.pathname);
             }
             document.getElementById('newIssueForm').style.display = 'block';
         }

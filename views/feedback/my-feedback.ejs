@@ -15,6 +15,10 @@
             --line: rgba(22, 40, 48, 0.12);
             --gold: #b58538;
             --shadow: 0 24px 60px rgba(28, 40, 44, 0.14);
+            --success-bg: rgba(15, 118, 110, 0.12);
+            --success-ink: #0f766e;
+            --danger-bg: rgba(196, 62, 62, 0.12);
+            --danger-ink: #b23e3e;
         }
 
         * { box-sizing: border-box; }
@@ -173,66 +177,232 @@
             <p style="color: var(--muted); margin: 8px 0 0;">Track your submitted feedback and issues</p>
         </div>
 
-        <!-- Hymn Issues -->
-        <h2 class="section-title">Hymn Issues</h2>
-        <% if (userFeedback.hymnIssues && userFeedback.hymnIssues.length > 0) { %>
-            <% userFeedback.hymnIssues.forEach(function(hymn) { %>
-                <div class="card">
-                    <h3 style="margin-top: 0;">Hymn <%= hymn.hymnNumber %></h3>
-                    <% hymn.issues.forEach(function(issue) { %>
-                        <div class="feedback-item">
-                            <div class="feedback-header">
-                                <h4 class="feedback-title"><%= issue.title %></h4>
-                                <span class="status-badge status-<%= issue.status %>"><%= issue.status %></span>
-                            </div>
-                            <div class="feedback-meta">
-                                <span class="badge badge-hymn">Hymn Issue</span>
-                                <%= issue.category %> • <%= new Date(issue.createdAt).toLocaleDateString() %>
-                                <% if (issue.upvotes && issue.upvotes.length > 0) { %>
-                                    • ▲ <%= issue.upvotes.length %> upvotes
-                                <% } %>
-                            </div>
-                        </div>
-                    <% }); %>
-                    <a href="/feedback/hymn/<%= hymn.hymnNumber %>" class="btn btn-secondary" style="margin-top: 12px;">View Thread</a>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <div class="empty-state">
-                <p>You haven't reported any hymn issues yet.</p>
-                <a href="/feedback/create?type=hymn" class="btn btn-primary">Report an Issue</a>
-            </div>
-        <% } %>
+        <!--
+            This page is filled in by the browser, not by the server. The
+            session lives in localStorage, so the server cannot tell who is
+            asking when the page is first requested — it used to send every
+            visitor to the login page, which sent them back here. The data
+            comes from /api/feedback/my-feedback, which is behind the same
+            auth check as before.
+        -->
+        <div id="myFeedbackStatus" class="empty-state">Loading your feedback…</div>
 
-        <!-- General Feedback -->
+        <h2 class="section-title">Hymn Issues</h2>
+        <div id="hymnIssues"></div>
+
         <h2 class="section-title">General Feedback</h2>
-        <% if (userFeedback.generalFeedback && userFeedback.generalFeedback.length > 0) { %>
-            <% userFeedback.generalFeedback.forEach(function(fb) { %>
-                <div class="feedback-item">
-                    <div class="feedback-header">
-                        <h4 class="feedback-title">
-                            <a href="/feedback/general/<%= fb._id %>"><%= fb.title %></a>
-                        </h4>
-                        <span class="status-badge status-<%= fb.status %>"><%= fb.status %></span>
-                    </div>
-                    <div class="feedback-meta">
-                        <span class="badge badge-general">General</span>
-                        <%= fb.category %> • <%= new Date(fb.createdAt).toLocaleDateString() %>
-                        <% if (fb.upvotes && fb.upvotes.length > 0) { %>
-                            • ▲ <%= fb.upvotes.length %> upvotes
-                        <% } %>
-                        <% if (fb.replyCount && fb.replyCount > 0) { %>
-                            • 💬 <%= fb.replyCount %> replies
-                        <% } %>
-                    </div>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <div class="empty-state">
-                <p>You haven't submitted any general feedback yet.</p>
-                <a href="/feedback/create?type=general" class="btn btn-primary">Create Feedback</a>
-            </div>
-        <% } %>
+        <div id="generalFeedback"></div>
     </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/forum-account.js"></script>
+    <script>
+        (function () {
+            var statusBox = document.getElementById('myFeedbackStatus');
+            var hymnBox = document.getElementById('hymnIssues');
+            var generalBox = document.getElementById('generalFeedback');
+
+            function statusClass(status) {
+                return status === 'resolved' ? 'status-resolved' : 'status-open';
+            }
+
+            function formatDate(value) {
+                if (!value) return '';
+                var date = new Date(value);
+                if (isNaN(date.getTime())) return '';
+                return date.toLocaleDateString();
+            }
+
+            function addText(parent, text) {
+                parent.appendChild(document.createTextNode(text));
+            }
+
+            function badge(parent, text, className) {
+                var span = document.createElement('span');
+                span.className = className;
+                span.textContent = text;
+                parent.appendChild(span);
+            }
+
+            function statusBadge(parent, status) {
+                var span = document.createElement('span');
+                span.className = 'status-badge ' + statusClass(status);
+                span.textContent = status || '';
+                parent.appendChild(span);
+            }
+
+            function clear(node) {
+                while (node.firstChild) {
+                    node.removeChild(node.firstChild);
+                }
+            }
+
+            function emptyState(parent, message, linkText, linkHref) {
+                var box = document.createElement('div');
+                box.className = 'empty-state';
+
+                var para = document.createElement('p');
+                para.textContent = message;
+                box.appendChild(para);
+
+                var link = document.createElement('a');
+                link.href = linkHref;
+                link.className = 'btn btn-primary';
+                link.textContent = linkText;
+                box.appendChild(link);
+
+                parent.appendChild(box);
+            }
+
+            function metaLine(parent, badgeText, badgeClass, item) {
+                var meta = document.createElement('div');
+                meta.className = 'feedback-meta';
+
+                badge(meta, badgeText, badgeClass);
+
+                var category = item.category || '';
+                var date = formatDate(item.createdAt);
+                addText(meta, ' ' + (category && date ? category + ' • ' + date : (category || date)));
+
+                if (item.upvotes && item.upvotes.length > 0) {
+                    addText(meta, ' • ▲ ' + item.upvotes.length + ' upvotes');
+                }
+                if (item.replyCount && item.replyCount > 0) {
+                    addText(meta, ' • 💬 ' + item.replyCount + ' replies');
+                }
+
+                parent.appendChild(meta);
+            }
+
+            function hymnIssueItem(issue) {
+                var item = document.createElement('div');
+                item.className = 'feedback-item';
+
+                var head = document.createElement('div');
+                head.className = 'feedback-header';
+
+                var title = document.createElement('h4');
+                title.className = 'feedback-title';
+                title.textContent = issue.title || '';
+                head.appendChild(title);
+
+                statusBadge(head, issue.status);
+
+                item.appendChild(head);
+                metaLine(item, 'Hymn Issue', 'badge badge-hymn', issue);
+
+                return item;
+            }
+
+            function generalItem(fb) {
+                var item = document.createElement('div');
+                item.className = 'feedback-item';
+
+                var head = document.createElement('div');
+                head.className = 'feedback-header';
+
+                var title = document.createElement('h4');
+                title.className = 'feedback-title';
+
+                var link = document.createElement('a');
+                link.href = '/feedback/general/' + encodeURIComponent(fb._id);
+                link.textContent = fb.title || '';
+                title.appendChild(link);
+                head.appendChild(title);
+
+                statusBadge(head, fb.status);
+
+                item.appendChild(head);
+                metaLine(item, 'General', 'badge badge-general', fb);
+
+                return item;
+            }
+
+            function render(data) {
+                statusBox.style.display = 'none';
+
+                var hymnIssues = (data && data.hymnIssues) || [];
+                var generalFeedback = (data && data.generalFeedback) || [];
+
+                if (hymnIssues.length === 0) {
+                    emptyState(hymnBox,
+                        "You haven't reported any hymn issues yet.",
+                        'Report an Issue', '/feedback/create?type=hymn');
+                } else {
+                    hymnIssues.forEach(function (hymn) {
+                        var card = document.createElement('div');
+                        card.className = 'card';
+
+                        var heading = document.createElement('h3');
+                        heading.style.marginTop = '0';
+                        heading.textContent = 'Hymn ' + hymn.hymnNumber;
+                        card.appendChild(heading);
+
+                        (hymn.issues || []).forEach(function (issue) {
+                            card.appendChild(hymnIssueItem(issue));
+                        });
+
+                        var link = document.createElement('a');
+                        link.href = '/feedback/hymn/' + encodeURIComponent(hymn.hymnNumber);
+                        link.className = 'btn btn-secondary';
+                        link.style.marginTop = '12px';
+                        link.textContent = 'View Thread';
+                        card.appendChild(link);
+
+                        hymnBox.appendChild(card);
+                    });
+                }
+
+                if (generalFeedback.length === 0) {
+                    emptyState(generalBox,
+                        "You haven't submitted any general feedback yet.",
+                        'Create Feedback', '/feedback/create?type=general');
+                } else {
+                    generalFeedback.forEach(function (fb) {
+                        generalBox.appendChild(generalItem(fb));
+                    });
+                }
+            }
+
+            function signedOut() {
+                statusBox.style.display = '';
+                statusBox.textContent = '';
+                statusBox.appendChild(document.createTextNode('Sign in to see your feedback. '));
+
+                var link = document.createElement('a');
+                link.href = '/login?returnTo=' + encodeURIComponent('/feedback/my-feedback');
+                link.textContent = 'Sign in';
+                statusBox.appendChild(link);
+
+                clear(hymnBox);
+                clear(generalBox);
+            }
+
+            if (!window.auth) {
+                signedOut();
+                return;
+            }
+
+            window.auth.apiRequest('/api/feedback/my-feedback').then(function (response) {
+                if (response.status === 401 || response.status === 403) {
+                    signedOut();
+                    return;
+                }
+                if (!response.ok) {
+                    statusBox.textContent = 'Your feedback could not be loaded. Please try again in a moment.';
+                    return;
+                }
+                return response.json().then(function (body) {
+                    if (body && body.success) {
+                        render(body.data);
+                    } else {
+                        statusBox.textContent = 'Your feedback could not be loaded. Please try again in a moment.';
+                    }
+                });
+            }).catch(function () {
+                statusBox.textContent = 'Your feedback could not be loaded. Please try again in a moment.';
+            });
+        })();
+    </script>
 </body>
 </html>

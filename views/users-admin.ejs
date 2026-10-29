@@ -15,6 +15,8 @@
         body { margin: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.5; }
         header { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; padding: 22px 16px; border-bottom: 4px solid var(--gold); }
         header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        /* The links and the account control sit together on the right. */
+        header .wrap > div:not(.forum-account) { margin-left: auto; }
         header h1 { margin: 0; font-size: 22px; }
         header a { color: #f4d78a; text-decoration: none; font-weight: 600; }
         .wrap { max-width: 980px; margin: 0 auto; }
@@ -85,7 +87,7 @@
         [hidden] { display: none !important; }
     </style>
 </head>
-<body>
+<body data-account-into="header .wrap" data-account-theme="dark">
 <header>
     <div class="wrap">
         <h1>Users</h1>
@@ -195,6 +197,7 @@
 <div id="toast"></div>
 
 <script src="/js/auth.js"></script>
+<script src="/js/forum-account.js"></script>
 <script>
 (function () {
     'use strict';
