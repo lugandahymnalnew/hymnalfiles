@@ -264,7 +264,16 @@
         var rect = column.getBoundingClientRect();
         if (!rect || !rect.width) return;
 
-        var right = Math.round(window.innerWidth - rect.right);
+        // The page's own padding is not part of its content, so the control
+        // lines up with the text rather than with the outside of the column.
+        var paddingRight = 0;
+        try {
+            paddingRight = parseFloat(window.getComputedStyle(column).paddingRight) || 0;
+        } catch (e) {
+            paddingRight = 0;
+        }
+
+        var right = Math.round(window.innerWidth - (rect.right - paddingRight));
         el.style.right = (right > 16 ? right : 16) + 'px';
     }
 
