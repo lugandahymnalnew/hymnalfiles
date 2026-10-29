@@ -341,6 +341,7 @@
         </section>
     </div>
 
+    <script src="/js/auth.js"></script>
     <script>
       document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -352,39 +353,25 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Signing In...';
 
-        fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userName: document.getElementById('userName').value,
-            password: document.getElementById('password').value
-          })
-        })
-        .then(function(response) {
-          return response.json().then(function(data) {
-            return { status: response.status, data: data };
-          });
-        })
+        // auth.login() stores the tokens and, just as importantly, records
+        // when the access token expires so that it is refreshed before it
+        // lapses. Writing the tokens into localStorage by hand left that
+        // out, which is why the sign-in did not survive.
+        window.auth.login(
+          document.getElementById('userName').value,
+          document.getElementById('password').value
+        )
         .then(function(result) {
-          if (result.status !== 200 || !result.data.success) {
+          if (!result.success) {
             message.style.display = 'block';
-            message.textContent = result.data.message || 'Login failed';
+            message.textContent = result.error || 'Login failed';
             submitBtn.disabled = false;
             submitBtn.textContent = 'Sign In';
             return;
           }
 
-          // Store both access and refresh tokens
-          localStorage.setItem('accessToken', result.data.accessToken);
-          localStorage.setItem('refreshToken', result.data.refreshToken);
-          localStorage.setItem('authUser', JSON.stringify(result.data.user || {}));
-
-          // Redirect back to where the user came from, or the dashboard
-          var params = new URLSearchParams(window.location.search);
-          var returnTo = params.get('returnTo');
-          window.location.href = returnTo ? decodeURIComponent(returnTo) : '/dashboard';
+          // Redirect back to where the user came from, or the dashboard.
+          window.location.href = window.auth.getReturnTo() || '/dashboard';
         })
         .catch(function() {
           message.style.display = 'block';

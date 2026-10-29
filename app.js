@@ -88,6 +88,28 @@ const donationRoute = require('./routes/donationRoute');
 const songEditRoute = require('./routes/songEditRoute');
 const songEditViewRoute = require('./routes/songEditViewRoute');
 const db = require('./modules/mongoDBApi');
+const { cleanupExpiredTokens } = require('./modules/refreshToken');
+
+// Refresh tokens that have expired, and tokens that were signed out more
+// than a day ago, are removed. Without this the collection grows for as long
+// as the site is running.
+function scheduleTokenCleanup() {
+  const run = async () => {
+    try {
+      const result = await cleanupExpiredTokens();
+      if (result.success && result.count) {
+        console.log(`Removed ${result.count} expired refresh token(s)`);
+      }
+    } catch (error) {
+      console.log('Refresh token cleanup failed:', error.message);
+    }
+  };
+
+  setTimeout(run, 30000);
+  setInterval(run, 6 * 60 * 60 * 1000);
+}
+
+scheduleTokenCleanup();
 
 // Behind Render's proxy: without this every visitor shares the proxy's IP,
 // which would make the donation-report throttle apply to everyone at once.

@@ -220,7 +220,7 @@ const updateProfile = async (req, res) => {
 
 const changePassword = async (req, res) => {
     try {
-        const { currentPassword, newPassword } = req.body;
+        const { currentPassword, newPassword, refreshToken } = req.body;
 
         if (!currentPassword || !newPassword) {
             return res.status(400).json({ success: false, message: 'Current and new password are required' });
@@ -248,8 +248,10 @@ const changePassword = async (req, res) => {
             "users"
         );
 
-        // Keep this session valid, but sign every other session out.
-        await revokeAllUserTokens(String(req.user._id));
+        // Keep this session valid, but sign every other session out. The
+        // refresh token that made the request is the session to keep, so it
+        // is passed along and left alone.
+        await revokeAllUserTokens(String(req.user._id), refreshToken);
 
         res.json({ success: true, message: 'Password updated. Other devices have been signed out.' });
     } catch (error) {

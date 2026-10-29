@@ -795,11 +795,6 @@
         return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:linear-gradient(135deg,#60a5fa,#3b82f6);display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:${Math.round(size * 0.38)}px;">${getInitials(user)}</div>`;
     }
 
-    function getAuthHeaders() {
-        const token = auth.getAccessToken();
-        return { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
-    }
-
     function showToast(msg, type = 'info') {
         const container = document.getElementById('toastContainer');
         const el = document.createElement('div');
@@ -813,19 +808,18 @@
     async function loadStats() {
         const grid = document.getElementById('statsGrid');
         try {
-            const adminHeaders = { 'Authorization': 'Bearer ' + (auth.getAccessToken() || ''), 'Content-Type': 'application/json' };
             const [songsRes, hymnRes, feedbackRes, usersRes] = await Promise.all([
                 fetch('/lugSongs').catch(() => null),
-                fetch('/api/feedback/hymns').catch(() => null),
-                fetch('/api/feedback/general').catch(() => null),
-                userCan('users:manage') ? fetch('/api/admin/users', { headers: adminHeaders }).catch(() => null) : Promise.resolve(null)
+                apiFetch('/api/feedback/hymns').catch(() => null),
+                apiFetch('/api/feedback/general').catch(() => null),
+                userCan('users:manage') ? apiFetch('/api/admin/users').catch(() => null) : Promise.resolve(null)
             ]);
 
             const songs = songsRes ? (await songsRes.json()).data || [] : [];
-            const hymnRaw = hymnRes ? (await hymnRes.json()).data || {} : {};
+            const hymnRaw = hymnRes ? hymnRes.data || {} : {};
             const hymnIssues = Array.isArray(hymnRaw) ? hymnRaw : Object.values(hymnRaw || {});
-            const generalFeedback = feedbackRes ? (await feedbackRes.json()).data || [] : [];
-            const users = usersRes ? (await usersRes.json()).data || [] : [];
+            const generalFeedback = feedbackRes ? feedbackRes.data || [] : [];
+            const users = usersRes ? usersRes.data || [] : [];
             const pendingUsers = users.filter(u => u.status === 'pending');
 
             grid.innerHTML = `
@@ -873,8 +867,11 @@
     }
 
     // ── API Fetch helper ──
+    // auth.apiRequest puts the token on the request, and renews it and
+    // tries again when it has expired. Doing that by hand here is what used
+    // to leave the page empty after seven days.
     async function apiFetch(url, opts = {}) {
-        const res = await fetch(url, { ...opts, headers: { ...getAuthHeaders(), ...(opts.headers || {}) } });
+        const res = await auth.apiRequest(url, opts);
         const json = await res.json();
         if (!res.ok) throw new Error(json.message || 'Request failed');
         return json;
@@ -1315,7 +1312,9 @@
         try {
             const response = await auth.apiRequest('/api/auth/change-password', {
                 method: 'POST',
-                body: JSON.stringify({ currentPassword, newPassword })
+                // The refresh token identifies this session, so that changing
+                // the password signs out the other devices and not this one.
+                body: JSON.stringify({ currentPassword, newPassword, refreshToken: auth.getRefreshToken() })
             });
             const data = await response.json();
             if (!data.success) throw new Error(data.message || 'Failed to update password');
@@ -1351,7 +1350,8 @@
     async function refreshTokenNow() {
         const result = await auth.refreshAccessToken();
         if (result.success) showToast('Token refreshed!', 'success');
-        else showToast('Refresh failed. Please log in again.', 'error');
+        else if (result.fatal) showToast('Refresh failed. Please log in again.', 'error');
+        else showToast('Could not reach the server. Your sign-in is still good — try again in a moment.', 'error');
     }
 
     async function logoutAllSessions() {
