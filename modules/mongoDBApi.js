@@ -121,8 +121,9 @@ async function readRow(nameOfRow, dbName,tName){
         }
     }
     catch (err) {
-        return {"listing":err.message,"found":false,"err":true};
-    } 
+        console.log(`An error occurred: ${err.message}`);
+        return {"listing":null,"found":false,"err":true};
+    }
 }
 
 // Reading one rows
@@ -141,12 +142,38 @@ async function readRows(nameOfRow,dbName,tName){ // nameOfRow is place holder fo
         if(result){
             return {"listings":result,"found":true,"err":false};
         }else{
-            return {"listings":"No listings found","found":false,"err":false};
+            return {"listings":[],"found":false,"err":false};
         }
         // await client.close(true);
     }
     catch(err) {
-        return {"listings":err.message,"found":false,"err":true};
+        // The callers treat `listings` as a list. Returning the error text
+        // here meant a failed read handed back a string, which code looping
+        // over it then walked one character at a time.
+        console.log(`An error occurred: ${err.message}`);
+        return {"listings":[],"found":false,"err":true,"message":err.message};
+    }
+}
+
+// Creating an index
+/**
+ * Creates an index on a collection, so lookups by that field stay fast.
+ * @param {Object} nameOfRow - the index spec, e.g {lookupHash: 1}
+ * @param {string} dbName - The name of the database.
+ * @param {string} tName - The name of the collection/table.
+ * @param {Object} [options] - index options, e.g {unique: true, sparse: true}
+ * @returns {Promise<string|null>} the index name, or null if it could not be created.
+ */
+async function createIndex(nameOfRow,dbName,tName,options = {}){
+    if(!await checkClient()){return;}
+    try{
+        return await client.db(dbName).collection(tName).createIndex(nameOfRow, options);
+    }
+    catch (err) {
+        // An index that already exists with the same name but different
+        // options is not worth failing a request over.
+        console.log(`An error occurred: ${err.message}`);
+        return null;
     }
 }
 
@@ -415,5 +442,6 @@ module.exports = {
     listDatabeses,
     listTables,
     createTable,
+    createIndex,
     autoInc
 };

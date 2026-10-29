@@ -336,6 +336,7 @@
     </div>
 
     <script src="/js/auth.js"></script>
+    <script src="/js/forum-account.js"></script>
     <script>
         const feedbackId = '<%= feedback._id %>';
         // `feedback` itself is only an EJS (server-side) variable — referencing
@@ -362,7 +363,7 @@
             const notice = document.getElementById('anonNotice');
             notice.classList.remove('hidden');
             document.getElementById('anonSignInLink').href =
-                '/login?redirect=' + encodeURIComponent(window.location.pathname);
+                '/login?returnTo=' + encodeURIComponent(window.location.pathname);
         }
 
         async function upvoteFeedback() {

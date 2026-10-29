@@ -52,8 +52,20 @@ const ki = [
   "/style/song-editor.css"
 ];
 
-const CACHE_NAME = 'my-website-cache-v8';
+// The cache name is the version of the cached files. When it changes, the
+// old cache is dropped, so a new version of the site is not served from the
+// copy the browser kept from last time.
+const CACHE_NAME = 'my-website-cache-v10';
 const urlsToCache = ki;
+
+// Files that decide who is signed in. These are fetched from the network
+// first, so a new version is picked up straight away, with the cached copy
+// only as a fallback when there is no connection.
+const NETWORK_FIRST = ['/js/auth.js', '/js/forum-account.js'];
+
+function isApiRequest(pathname) {
+  return pathname === '/api' || pathname.indexOf('/api/') === 0;
+}
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -62,21 +74,66 @@ self.addEventListener('install', function(event) {
         return cache.addAll(urlsToCache);
       })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(names) {
+      return Promise.all(names.map(function(name) {
+        if (name !== CACHE_NAME) {
+          return caches.delete(name);
+        }
+      }));
+    }).then(function() {
+      return self.clients.claim();
+    })
+  );
 });
 
 self.addEventListener('fetch', function(event) {
+  const requestUrl = new URL(event.request.url);
+  const pathname = requestUrl.pathname;
+
+  // API answers, and anything that is not a plain GET, are never cached and
+  // never served from the cache. A cached answer can be months out of date,
+  // and a page served from the cache can show the wrong person signed in.
+  if (event.request.method !== 'GET' || isApiRequest(pathname)) {
+    return;
+  }
+
+  if (NETWORK_FIRST.indexOf(pathname) !== -1) {
+    event.respondWith(
+      fetch(event.request)
+        .then(function(response) {
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(function() {
+          return caches.open(CACHE_NAME).then(function(cache) {
+            return cache.match(event.request);
+          });
+        })
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        return cache.match(event.request);
+      })
       .then(function(response) {
         if (response) {
           return response;
         }
 
         // Modify the request URL to handle files in subdirectories
-        const requestUrl = new URL(event.request.url);
-        const pathname = requestUrl.pathname;
-
-        // Check if the requested file is in the cache
         return caches.open(CACHE_NAME)
           .then(function(cache) {
             return cache.match(pathname);

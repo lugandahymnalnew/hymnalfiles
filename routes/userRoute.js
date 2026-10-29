@@ -85,11 +85,43 @@ const userController = require('../controllers/userController');
 const auth = require('./../middleWares/auth');
 const roleAccess = require('../modules/roleAccess');
 const { signAccessToken } = require('../modules/jwtAuth');
-const { verifyRefreshToken, rotateRefreshToken, revokeAllUserTokens } = require('../modules/refreshToken');
+const { rotateRefreshToken, revokeRefreshToken, revokeAllUserTokens } = require('../modules/refreshToken');
 
 function isValidObjectId(id) {
   return ObjectId.isValid(id);
 }
+
+// The refresh endpoint is used before the visitor has anything to prove who
+// they are, so a flood of made up tokens would otherwise tie the server up
+// with password hashing. Each address is allowed a modest number of
+// attempts a minute; a real visitor refreshes once every few days.
+const REFRESH_ATTEMPT_WINDOW_MS = 60 * 1000;
+const REFRESH_ATTEMPT_LIMIT = 30;
+const refreshAttempts = new Map();
+
+function refreshAttemptAllowed(key) {
+  const now = Date.now();
+  const attempts = (refreshAttempts.get(key) || []).filter(t => now - t < REFRESH_ATTEMPT_WINDOW_MS);
+
+  if (attempts.length >= REFRESH_ATTEMPT_LIMIT) {
+    refreshAttempts.set(key, attempts);
+    return false;
+  }
+
+  attempts.push(now);
+  refreshAttempts.set(key, attempts);
+  return true;
+}
+
+// Keep the record of attempts from growing for ever.
+setInterval(() => {
+  const now = Date.now();
+  refreshAttempts.forEach((attempts, key) => {
+    const live = attempts.filter(t => now - t < REFRESH_ATTEMPT_WINDOW_MS);
+    if (live.length === 0) refreshAttempts.delete(key);
+    else refreshAttempts.set(key, live);
+  });
+}, REFRESH_ATTEMPT_WINDOW_MS).unref();
 
 function normalizeAdvertText(value, maxLength = 200) {
   if (typeof value !== 'string') {
@@ -238,7 +270,10 @@ user_route.post('/register',upload.any(), userController.register);
 // handling login
 user_route.get('/login',auth.isLogin, userController.loadLogin);
 user_route.post('/api/auth/login', userController.login);
-user_route.post('/api/auth/logout', auth.requireAuth, userController.logout);
+// Signing out revokes the refresh token that was sent, so it does not need a
+// valid access token — otherwise an expired access token would leave the
+// refresh token alive on the server.
+user_route.post('/api/auth/logout', userController.logout);
 user_route.get('/api/auth/me', auth.requireAuth, userController.me);
 
 // Email verification
@@ -264,20 +299,14 @@ user_route.post('/api/auth/refresh', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Refresh token required' });
     }
 
+    if (!refreshAttemptAllowed(req.ip || 'unknown')) {
+      return res.status(429).json({ success: false, message: 'Too many attempts. Please wait a minute and try again.' });
+    }
+
     // The refresh token is an opaque, DB-backed token (see modules/refreshToken.js) —
     // it is never a JWT, so it's only ever checked against the database.
-    const dbVerification = await verifyRefreshToken(refreshToken);
-    if (!dbVerification.valid) {
-      return res.status(401).json({ success: false, message: dbVerification.error || 'Token invalid' });
-    }
-
-    // Get fresh user data
-    const user = await db.readRow({ _id: new ObjectId(dbVerification.userId) }, 'newHymnal', 'users');
-    if (!user || !user.found) {
-      return res.status(404).json({ success: false, message: 'User not found' });
-    }
-
-    // Rotate refresh token
+    // Rotating it also checks it, so this is a single round trip rather than
+    // a check followed by a separate rotation.
     const rotationResult = await rotateRefreshToken(
       refreshToken,
       req.headers['user-agent'] || '',
@@ -286,6 +315,12 @@ user_route.post('/api/auth/refresh', async (req, res) => {
 
     if (!rotationResult.success) {
       return res.status(401).json({ success: false, message: rotationResult.error || 'Token rotation failed' });
+    }
+
+    // Get fresh user data
+    const user = await db.readRow({ _id: new ObjectId(rotationResult.userId) }, 'newHymnal', 'users');
+    if (!user || !user.found) {
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
 
     // Generate new access token

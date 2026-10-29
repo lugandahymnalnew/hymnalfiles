@@ -283,7 +283,39 @@
                 border-radius: 22px;
             }
         }
+
+        /* While the page is working out whether the visitor is already
+           signed in, the form is held back so it is not shown and then
+           taken away again. */
+        .checking-session #loginForm,
+        .checking-session #loginMessage,
+        .checking-session .lead,
+        .checking-session #loginHeading { display: none; }
+
+        #sessionNote {
+            display: none;
+            margin: 0;
+            padding: 14px 16px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .checking-session #sessionNote { display: block; }
     </style>
+    <script>
+        // A visitor who is already signed in has no business on this page.
+        // The server cannot know that, because the session lives in the
+        // browser, so the browser says so before the page is drawn.
+        try {
+            if (localStorage.getItem('refreshToken') || localStorage.getItem('accessToken')) {
+                document.documentElement.className += ' checking-session';
+            }
+        } catch (e) {
+            // No storage available. The form is shown as it always was.
+        }
+    </script>
 </head>
 <body>
     <div class="shell">
@@ -303,7 +335,7 @@
         <section class="auth-pane">
             <div class="auth-card">
                 <a class="top-link" href="/index.html">&#8249; Back to home</a>
-                <h2>Login</h2>
+                <h2 id="loginHeading">Login</h2>
                 <p class="lead">Use your username or email together with your password. You don't need an account to browse the hymns or leave feedback — an account just attaches your name to what you post, once it's approved.</p>
 
                 <% if (typeof message !== 'undefined') { %>
@@ -311,6 +343,8 @@
                 <% } %>
 
                 <div class="message error" id="loginMessage" style="display:none;"></div>
+
+                <p id="sessionNote">Checking your sign-in&hellip;</p>
 
                 <form id="loginForm" action="" method="POST">
                     <div class="field">
@@ -341,7 +375,47 @@
         </section>
     </div>
 
+    <script src="/js/auth.js"></script>
     <script>
+      // A visitor who is already signed in should not be on this page at
+      // all. The session lives in the browser, so the server cannot see it
+      // when the page is asked for; the browser checks and moves on.
+      (function () {
+        var checking = document.documentElement.className.indexOf('checking-session') !== -1;
+
+        function showForm() {
+          document.documentElement.className =
+            document.documentElement.className.replace('checking-session', '');
+        }
+
+        // Nothing was stored, so there is nothing to wait for.
+        if (!checking || !window.auth) {
+          showForm();
+          return;
+        }
+
+        // If the check does not finish, the form is shown anyway rather than
+        // leaving the visitor with nothing.
+        setTimeout(showForm, 5000);
+
+        window.auth.apiRequest('/api/auth/me').then(function (response) {
+          if (!response.ok) {
+            showForm();
+            return;
+          }
+          return response.json().then(function (data) {
+            if (data && data.success && data.user) {
+              // Back to wherever they were going, or to the dashboard.
+              window.location.replace(window.auth.getReturnTo() || '/dashboard');
+            } else {
+              showForm();
+            }
+          });
+        }).catch(function () {
+          showForm();
+        });
+      })();
+
       document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -352,39 +426,25 @@
         submitBtn.disabled = true;
         submitBtn.textContent = 'Signing In...';
 
-        fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userName: document.getElementById('userName').value,
-            password: document.getElementById('password').value
-          })
-        })
-        .then(function(response) {
-          return response.json().then(function(data) {
-            return { status: response.status, data: data };
-          });
-        })
+        // auth.login() stores the tokens and, just as importantly, records
+        // when the access token expires so that it is refreshed before it
+        // lapses. Writing the tokens into localStorage by hand left that
+        // out, which is why the sign-in did not survive.
+        window.auth.login(
+          document.getElementById('userName').value,
+          document.getElementById('password').value
+        )
         .then(function(result) {
-          if (result.status !== 200 || !result.data.success) {
+          if (!result.success) {
             message.style.display = 'block';
-            message.textContent = result.data.message || 'Login failed';
+            message.textContent = result.error || 'Login failed';
             submitBtn.disabled = false;
             submitBtn.textContent = 'Sign In';
             return;
           }
 
-          // Store both access and refresh tokens
-          localStorage.setItem('accessToken', result.data.accessToken);
-          localStorage.setItem('refreshToken', result.data.refreshToken);
-          localStorage.setItem('authUser', JSON.stringify(result.data.user || {}));
-
-          // Redirect back to where the user came from, or the dashboard
-          var params = new URLSearchParams(window.location.search);
-          var returnTo = params.get('returnTo');
-          window.location.href = returnTo ? decodeURIComponent(returnTo) : '/dashboard';
+          // Redirect back to where the user came from, or the dashboard.
+          window.location.href = window.auth.getReturnTo() || '/dashboard';
         })
         .catch(function() {
           message.style.display = 'block';
